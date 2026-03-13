@@ -7,9 +7,9 @@ INTERVAL_SECONDS = 5 * 60  # 5 minutes
 # Project root directory = directory of this script
 ROOT_DIR = Path(__file__).resolve().parent
 
-CMD1 = "../dist/nebula --db-user joshua --db-name nebula_local crawl --neighbors"
+CMD1 = "../dist/nebula --db-user joshua --db-name nebula_local --db-host db crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"
-CMD3 = "../dist/nebula --db-user joshua --db-name nebula_local resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
+CMD3 = "../dist/nebula --db-user joshua --db-name nebula_local --db-host db resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
 
 
 analysis_count = 0
