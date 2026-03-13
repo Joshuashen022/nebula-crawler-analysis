@@ -2,12 +2,15 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install minimal runtime dependencies if needed later
-# RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies from requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code and dist binary tree into the image
 COPY ./src ./src
 COPY ./dist ./dist
+COPY .env .env
+COPY ./database ./database
 # Remove local results directory from the image if present
 RUN rm -rf ./src/results
 

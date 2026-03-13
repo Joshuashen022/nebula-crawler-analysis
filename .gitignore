@@ -255,7 +255,6 @@ $RECYCLE.BIN/
 out
 .tool-versions
 **/*.dat
-**/*.mmdb
 *.logs
 *.log
 dist/
