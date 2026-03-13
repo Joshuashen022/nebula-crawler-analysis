@@ -2,8 +2,10 @@ version: "3.8"
 
 services:
   crawler:
-    build: .
+    image: crawler:latest
     container_name: crawler
     restart: unless-stopped
     working_dir: /app/src
     command: ["python", "start.py"]
+    volumes:
+      - ./results:/app/src/results

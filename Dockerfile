@@ -6,7 +6,7 @@ WORKDIR /app
 # RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code and dist binary tree into the image
-COPY . .
+COPY ./src ./src
 # Remove local results directory from the image if present
 RUN rm -rf ./src/results
 
