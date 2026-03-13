@@ -1,11 +1,14 @@
+import os
 import subprocess
 import time
 from pathlib import Path
 
 INTERVAL_SECONDS = 5 * 60  # 5 minutes
 
-# Project root directory = directory of this script
 ROOT_DIR = Path(__file__).resolve().parent
+
+DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
+INTERVAL_COUNT = int(os.getenv("INTERVAL_COUNT", 6))
 
 CMD1 = "../dist/nebula --db-user joshua --db-name nebula_local --db-host db crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"
@@ -62,7 +65,7 @@ def run():
             intervals_since_last_crawl += 1
 
             # every 6 * 5 minutes = 30 minutes, run crawl again
-            if intervals_since_last_crawl >= 6:
+            if intervals_since_last_crawl >= 3:
                 print(f"\n=== crawl cycle at {cycle_start} ===")
                 ok = run_cmd(CMD1)
                 print(f"CMD1: {ok} time: {time.time()}")
