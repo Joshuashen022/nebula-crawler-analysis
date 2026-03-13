@@ -1,1 +1,0 @@
-ssh -i ../.ssh/crawler.pem root@8.216.32.203
