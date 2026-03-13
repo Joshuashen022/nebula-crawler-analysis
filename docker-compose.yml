@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   crawler:
     image: crawler:latest
     container_name: crawler
@@ -11,3 +12,19 @@ services:
     command: ["python", "start.py"]
     volumes:
       - ./results:/app/src/results
+    depends_on:
+      - db
+  db:
+      image: postgres:16
+      container_name: nebula-postgres
+      environment:
+        POSTGRES_USER: joshua
+        POSTGRES_DB: nebula_local
+        POSTGRES_HOST_AUTH_METHOD: trust  # allows connections without password (dev only!)
+      ports:
+        - "5432:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+
+  volumes:
+    pgdata:

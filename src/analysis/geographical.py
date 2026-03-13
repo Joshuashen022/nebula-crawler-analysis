@@ -36,7 +36,7 @@ def _bucket_count(value: int) -> str:
 def fetch_geographical_data():
     """Return country/count/bucket data for multi_addresses."""
     conn = psycopg2.connect(
-        host="127.0.0.1",
+        host="db",
         port=5432,
         dbname="nebula_local",
         user="joshua",
