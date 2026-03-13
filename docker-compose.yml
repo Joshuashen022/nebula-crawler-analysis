@@ -6,8 +6,8 @@ services:
     image: crawler:latest
     container_name: crawler
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      - NEBULA_DATABASE_NAME=db
     ports:
       - "8080:8080"
     working_dir: /app/src
