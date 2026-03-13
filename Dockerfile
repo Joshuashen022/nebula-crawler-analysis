@@ -7,6 +7,7 @@ WORKDIR /app
 
 # Copy source code and dist binary tree into the image
 COPY ./src ./src
+COPY ./dist ./dist
 # Remove local results directory from the image if present
 RUN rm -rf ./src/results
 
