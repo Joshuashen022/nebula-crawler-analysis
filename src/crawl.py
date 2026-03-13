@@ -35,6 +35,7 @@ def run_cmd(cmd: str) -> bool:
     return True
 
 def run_analysis():
+    global analysis_count
     ok = run_cmd(CMD3)
     analysis_count += 1
     print(f"CMD3: {ok} time: {time.time()}")
@@ -42,6 +43,7 @@ def run_analysis():
 
 
 def run():
+    global run_count, intervals_since_last_crawl
     print("start scheduler, crawl every 30 minutes, checkalive every 5 minutes. press Ctrl+C to stop.")
     try:
         # run crawl commands immediately once at start
