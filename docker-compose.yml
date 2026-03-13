@@ -5,6 +5,8 @@ services:
     image: crawler:latest
     container_name: crawler
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     working_dir: /app/src
     command: ["python", "start.py"]
     volumes:
