@@ -33,7 +33,8 @@ def _bucket_count(value: int) -> str:
     return "10k+"
 
 
-def main():
+def fetch_geographical_data():
+    """Return country/count/bucket data for multi_addresses."""
     conn = psycopg2.connect(
         host="127.0.0.1",
         port=5432,
@@ -59,42 +60,46 @@ def main():
         countries = [row["country"] for row in rows if row["country"]]
         counts = [row["count"] for row in rows if row["country"]]
         buckets = [_bucket_count(count) for count in counts]
-
-        total = sum(counts)
-        print(f"Total rows counted: {total}")
-        for country, count, bucket in zip(countries, counts, buckets):
-            print(f"{country}: {count} ({bucket})")
-        
         countries_iso3 = [iso2_to_iso3.get(c, c) for c in countries]
 
-        if countries_iso3:
-            data = {
-                "country": countries_iso3,
-                "count": counts,
-                "bucket": buckets,
-            }
-            fig = px.choropleth(
-                data,
-                locations="country",
-                color="bucket",
-                locationmode="ISO-3",
-                title="Multi addresses per country (bucketed)",
-                hover_name="country",
-                hover_data={"count": True, "bucket": True},
-                category_orders={
-                    "bucket": ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
-                },
-                color_discrete_map={
-                    "0–9": "#f7fbff",
-                    "10–99": "#c6dbef",
-                    "100–999": "#6baed6",
-                    "1k–9,999": "#2171b5",
-                    "10k+": "#08306b",
-                },
-            )
-            fig.show()
+        if not countries_iso3:
+            return {"country": [], "count": [], "bucket": []}
+
+        data = {
+            "country": countries_iso3,
+            "count": counts,
+            "bucket": buckets,
+        }
+        return data
     finally:
         conn.close()
+
+
+def main():
+    data = fetch_geographical_data()
+    if not data["country"]:
+        return
+
+    fig = px.choropleth(
+        data,
+        locations="country",
+        color="bucket",
+        locationmode="ISO-3",
+        title="Multi addresses per country (bucketed)",
+        hover_name="country",
+        hover_data={"count": True, "bucket": True},
+        category_orders={
+            "bucket": ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
+        },
+        color_discrete_map={
+            "0–9": "#f7fbff",
+            "10–99": "#c6dbef",
+            "100–999": "#6baed6",
+            "1k–9,999": "#2171b5",
+            "10k+": "#08306b",
+        },
+    )
+    fig.show()
 
 
 if __name__ == "__main__":

@@ -9,7 +9,12 @@ ROOT_DIR = Path(__file__).resolve().parent
 
 CMD1 = "../dist/nebula --db-user joshua --db-name nebula_local crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"
+CMD3 = "../dist/nebula --db-user joshua --db-name nebula_local resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
 
+
+analysis_count = 0
+run_count = 0
+intervals_since_last_crawl = 0
 
 def run_cmd(cmd: str) -> bool:
     """Run a command and return whether it succeeded"""
@@ -29,6 +34,12 @@ def run_cmd(cmd: str) -> bool:
     print("command succeeded")
     return True
 
+def run_analysis():
+    ok = run_cmd(CMD3)
+    analysis_count += 1
+    print(f"CMD3: {ok} time: {time.time()}")
+    return ok
+
 
 def run():
     print("start scheduler, crawl every 30 minutes, checkalive every 5 minutes. press Ctrl+C to stop.")
@@ -40,9 +51,9 @@ def run():
         print(f"CMD1: {ok} time: {time.time()}")
         ok = run_cmd(CMD2)
         print(f"CMD2: {ok} time: {time.time()}")
-
+        run_count += 1
         # then enter 5-minute heartbeat loop, triggering crawl every 6 intervals
-        intervals_since_last_crawl = 0
+
         while True:
             cycle_start = time.strftime("%Y-%m-%d %H:%M:%S")
             print(f"[{cycle_start}] checkalive")
@@ -56,6 +67,7 @@ def run():
                 ok = run_cmd(CMD2)
                 print(f"CMD2: {ok} time: {time.time()}")
                 intervals_since_last_crawl = 0
+                run_count += 1
 
             print(f"sleep {INTERVAL_SECONDS} seconds...\n")
             time.sleep(INTERVAL_SECONDS)

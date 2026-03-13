@@ -261,7 +261,6 @@ out
 dist/
 results/
 
-database/
 .venv/
 
 .ssh/
