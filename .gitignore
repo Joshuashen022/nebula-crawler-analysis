@@ -263,3 +263,5 @@ results/
 
 database/
 .venv/
+
+.ssh/
