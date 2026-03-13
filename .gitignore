@@ -266,3 +266,4 @@ database/
 
 .ssh/
 connect.sh
+.env
