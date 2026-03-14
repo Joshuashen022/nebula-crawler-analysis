@@ -1,17 +1,16 @@
-import os
+
 import subprocess
 import time
 from pathlib import Path
-from dotenv import load_dotenv
 
-load_dotenv()
+import config
 
 INTERVAL_SECONDS = 5 * 60  # 5 minutes
 
 ROOT_DIR = Path(__file__).resolve().parent
 
-DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
-INTERVAL_COUNT = int(os.getenv("INTERVAL_COUNT", 6))
+DB_HOST = config.DB_HOST
+INTERVAL_COUNT = config.INTERVAL_COUNT
 
 CMD1 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"

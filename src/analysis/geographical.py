@@ -1,12 +1,11 @@
-import os
 from collections import Counter
 
 import plotly.express as px
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
-
+import config
+DB_HOST = config.DB_HOST
 iso2_to_iso3 = {
     "US": "USA", "DE": "DEU", "FR": "FRA", "FI": "FIN", "CA": "CAN",
     "GB": "GBR", "ES": "ESP", "NL": "NLD", "CN": "CHN", "VN": "VNM",

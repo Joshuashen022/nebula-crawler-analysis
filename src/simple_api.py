@@ -1,4 +1,4 @@
-import os
+
 import json
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -6,14 +6,12 @@ from pathlib import Path
 
 import crawl
 from analysis import geographical
+import config
 
 HOST = "0.0.0.0"
 PORT = 8080
-from dotenv import load_dotenv
 
-load_dotenv()
-
-AUTH_TOKEN = os.getenv("AUTH_TOKEN", "empty")
+AUTH_TOKEN = config.AUTH_TOKEN
 
 class ApiHandler(BaseHTTPRequestHandler):
     def _send_json(self, status_code: int, payload: dict):
@@ -35,10 +33,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/config":
-            self._send_json(200, {"ok": True, "service": "config", "config": {
-                "interval_count": crawl.INTERVAL_COUNT,
-                "db_host": crawl.DB_HOST,
-            }})
+            self._send_json(200, {"ok": True, "service": "config", "config": config.get_config()})
             return
 
         if self.path == "/status":
