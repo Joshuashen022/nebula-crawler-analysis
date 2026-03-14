@@ -1,0 +1,98 @@
+[
+    {
+        "data": {
+            "asn": {
+                "rank": 5106,
+                "asn": "1",
+                "asnName": "LVLT-1",
+                "source": "ARIN",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -63.3115119530151,
+                "latitude": 78.0530569229893,
+                "organization": {
+                    "orgId": "589f9199b0"
+                },
+                "cone": {
+                    "numberAsns": 4,
+                    "numberPrefixes": 156,
+                    "numberAddresses": 17264
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 9,
+                    "customer": 2,
+                    "peer": 1,
+                    "provider": 6
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 3349,
+                "asn": "2",
+                "asnName": "UDEL-DCN",
+                "source": "ARIN",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -72.8047451415708,
+                "latitude": 42.2461738589992,
+                "organization": {
+                    "orgId": "e78b020629"
+                },
+                "cone": {
+                    "numberAsns": 7,
+                    "numberPrefixes": 21,
+                    "numberAddresses": 75520
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 14,
+                    "customer": 4,
+                    "peer": 1,
+                    "provider": 9
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 5745,
+                "asn": "3",
+                "asnName": "MIT-GATEWAYS",
+                "source": "ARIN",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -71.0961692660076,
+                "latitude": 42.3637597404902,
+                "organization": {
+                    "orgId": "56823b7480"
+                },
+                "cone": {
+                    "numberAsns": 3,
+                    "numberPrefixes": 113,
+                    "numberAddresses": 1847040
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 18,
+                    "customer": 2,
+                    "peer": 4,
+                    "provider": 12
+                }
+            }
+        }
+    }
+]

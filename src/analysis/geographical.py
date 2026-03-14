@@ -1,11 +1,14 @@
 from collections import Counter
 
 import plotly.express as px
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import sys
+from pathlib import Path
 
-import config
-DB_HOST = config.DB_HOST
+from collections import defaultdict
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+
 iso2_to_iso3 = {
     "US": "USA", "DE": "DEU", "FR": "FRA", "FI": "FIN", "CA": "CAN",
     "GB": "GBR", "ES": "ESP", "NL": "NLD", "CN": "CHN", "VN": "VNM",
@@ -41,45 +44,27 @@ def _bucket_count(value: int) -> str:
 
 
 def fetch_geographical_data():
-    """Return country/count/bucket data for multi_addresses."""
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        port=5432,
-        dbname="nebula_local",
-        user="joshua",
-        password="",
-    )
+    """Return country/count/bucket data from peer_id prefix by country (ISO2 from fetch_peer_id_prefix_by_country)."""
+    rows = fetch_peer_id_prefix_by_country()  # list of (multi_hash, country), country in ISO2
+    country_counts = Counter()
+    for _peer_id, country in rows:
+        if country:
+            country_counts[country] += 1
+    sorted_items = country_counts.most_common()
+    countries = [c for c, _ in sorted_items]
+    counts = [n for _, n in sorted_items]
+    buckets = [_bucket_count(count) for count in counts]
+    countries_iso3 = [iso2_to_iso3.get(c, c) for c in countries]
 
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(
-                """
-                SELECT
-                    country,
-                    COUNT(*) AS count
-                FROM multi_addresses
-                GROUP BY country
-                ORDER BY count DESC;
-                """
-            )
-            rows = cur.fetchall()
+    if not countries_iso3:
+        return {"country": [], "count": [], "bucket": []}
 
-        countries = [row["country"] for row in rows if row["country"]]
-        counts = [row["count"] for row in rows if row["country"]]
-        buckets = [_bucket_count(count) for count in counts]
-        countries_iso3 = [iso2_to_iso3.get(c, c) for c in countries]
-
-        if not countries_iso3:
-            return {"country": [], "count": [], "bucket": []}
-
-        data = {
-            "country": countries_iso3,
-            "count": counts,
-            "bucket": buckets,
-        }
-        return data
-    finally:
-        conn.close()
+    data = {
+        "country": countries_iso3,
+        "count": counts,
+        "bucket": buckets,
+    }
+    return data
 
 
 def print_geographical_analysis(data: dict) -> None:
