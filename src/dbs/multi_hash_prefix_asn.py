@@ -19,12 +19,12 @@ def get_conn():
 
 # Example output:
 # ('12D3KooW9pPHa87JXvant21YMxEjUgeHNhXWU6tXtRDmHuVdFTos', None)
-# ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 'DE')
-# ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 'US')
-def fetch_peer_id_prefix_by_country():
+# ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 7018)
+# ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 197540)
+def fetch_peer_id_prefix_by_asn():
     """
-    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 country，
-    返回 list of (multi_hash, country)。
+    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 asn
+    返回 list of (multi_hash, asn)。
     """
 
     conn = get_conn()
@@ -34,7 +34,7 @@ def fetch_peer_id_prefix_by_country():
                 """
                 SELECT DISTINCT
                     p.multi_hash,
-                    m.country
+                    m.asn
                 FROM peers p
                 INNER JOIN peers_x_multi_addresses px ON p.id = px.peer_id
                 INNER JOIN multi_addresses m ON px.multi_address_id = m.id
@@ -42,12 +42,13 @@ def fetch_peer_id_prefix_by_country():
                 """
             )
             rows = cur.fetchall()
-        return [(row["multi_hash"], row["country"]) for row in rows]
+        return [(row["multi_hash"], row["asn"]) for row in rows]
     finally:
         conn.close()
 
+
 if __name__ == "__main__":
-    rows = fetch_peer_id_prefix_by_country()
+    rows = fetch_peer_id_prefix_by_asn()
     print(rows[0])
     print(rows[1])
     print(rows[2])

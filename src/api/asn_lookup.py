@@ -12,7 +12,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-ASN_DB_PATH = Path(__file__).resolve().parent.parent / "database" / "asn.json"
+ASN_DB_PATH = Path(__file__).resolve().parent.parent.parent / "database" / "asn.json"
 ASRANK_API = "https://api.asrank.caida.org/v2/restful/asns"
 
 
@@ -68,7 +68,7 @@ def lookup_asn(asn: str) -> dict:
 
 def main() -> None:
     try:
-        result = lookup_asn(3)
+        result = lookup_asn(10)
         print(json.dumps(result, indent=2))
     except (urllib.error.HTTPError, urllib.error.URLError, OSError) as e:
         print(f"API error: {e}", file=sys.stderr)
