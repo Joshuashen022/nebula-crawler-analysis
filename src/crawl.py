@@ -2,6 +2,9 @@ import os
 import subprocess
 import time
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 INTERVAL_SECONDS = 5 * 60  # 5 minutes
 
@@ -10,9 +13,9 @@ ROOT_DIR = Path(__file__).resolve().parent
 DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
 INTERVAL_COUNT = int(os.getenv("INTERVAL_COUNT", 6))
 
-CMD1 = "../dist/nebula --db-user joshua --db-name nebula_local --db-host db crawl --neighbors"
+CMD1 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"
-CMD3 = "../dist/nebula --db-user joshua --db-name nebula_local --db-host db resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
+CMD3 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
 
 
 analysis_count = 0
@@ -65,7 +68,7 @@ def run():
             intervals_since_last_crawl += 1
 
             # every 6 * 5 minutes = 30 minutes, run crawl again
-            if intervals_since_last_crawl >= 3:
+            if intervals_since_last_crawl >= INTERVAL_COUNT:
                 print(f"\n=== crawl cycle at {cycle_start} ===")
                 ok = run_cmd(CMD1)
                 print(f"CMD1: {ok} time: {time.time()}")
