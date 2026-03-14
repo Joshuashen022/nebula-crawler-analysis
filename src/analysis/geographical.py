@@ -1,6 +1,11 @@
+import os
+from collections import Counter
+
+import plotly.express as px
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import plotly.express as px
+
+DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
 
 iso2_to_iso3 = {
     "US": "USA", "DE": "DEU", "FR": "FRA", "FI": "FIN", "CA": "CAN",
@@ -21,6 +26,9 @@ iso2_to_iso3 = {
     "BY": "BLR", "UY": "URY", "IQ": "IRQ", "MT": "MLT"
 }
 
+BUCKET_ORDER = ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
+
+
 def _bucket_count(value: int) -> str:
     if value < 10:
         return "0–9"
@@ -36,7 +44,7 @@ def _bucket_count(value: int) -> str:
 def fetch_geographical_data():
     """Return country/count/bucket data for multi_addresses."""
     conn = psycopg2.connect(
-        host="db",
+        host=DB_HOST,
         port=5432,
         dbname="nebula_local",
         user="joshua",
@@ -75,10 +83,40 @@ def fetch_geographical_data():
         conn.close()
 
 
+def print_geographical_analysis(data: dict) -> None:
+    """Print summary, Top 15, and bucket distribution (same format as API analysis)."""
+    countries = data["country"]
+    counts = data["count"]
+    buckets = data.get("bucket") or []
+
+    total_addresses = sum(counts)
+    n_countries = len(countries)
+
+    print("=== Geographical API 分析 ===\n")
+    print(f"国家/地区数: {n_countries}")
+    print(f"多地址总数: {total_addresses:,}\n")
+
+    print("--- Top 15 按数量 ---")
+    for i, (c, n) in enumerate(zip(countries, counts), 1):
+        if i > 15:
+            break
+        bucket = buckets[i - 1] if i <= len(buckets) else ""
+        print(f"  {i:2}. {c}: {n:,}  ({bucket})")
+
+    if buckets:
+        print("\n--- 分桶分布 ---")
+        bucket_counts = Counter(buckets)
+        for b in BUCKET_ORDER:
+            if b in bucket_counts:
+                print(f"  {b}: {bucket_counts[b]} 个国家/地区")
+
+
 def main():
     data = fetch_geographical_data()
     if not data["country"]:
         return
+
+    print_geographical_analysis(data)
 
     fig = px.choropleth(
         data,
@@ -88,9 +126,7 @@ def main():
         title="Multi addresses per country (bucketed)",
         hover_name="country",
         hover_data={"count": True, "bucket": True},
-        category_orders={
-            "bucket": ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
-        },
+        category_orders={"bucket": BUCKET_ORDER},
         color_discrete_map={
             "0–9": "#f7fbff",
             "10–99": "#c6dbef",
