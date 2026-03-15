@@ -46,14 +46,32 @@ def main():
 
     print("ASN\t\tcount\t\tQm\t\t12D3\t\trank")
     for asn, count, qm_count, d3_count in result:
+        if count < 100:
+            continue
         rank = get_rank(asn)
+        print(f"{asn}\t\t{count}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
+
+def main2():
+    rows = fetch_peer_id_prefix_by_asn()
+    result = split_peer_ids_by_asn_count(rows)
+
+    # Filter count > 100, attach rank, sort by rank ascending (None last)
+    rows_with_rank = [
+        (asn, count, qm_count, d3_count, get_rank(asn))
+        for asn, count, qm_count, d3_count in result
+        if count > 100
+    ]
+    rows_with_rank.sort(key=lambda x: (x[4] is None, x[4] or 0))
+
+    print("ASN\t\tcount\t\tQm\t\t12D3\t\trank")
+    for asn, count, qm_count, d3_count, rank in rows_with_rank:
         print(f"{asn}\t\t{count}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
 
 
 if __name__ == "__main__":
     main()
 
-
+# main() output:
 # ASN             count           Qm              12D3            rank
 # 20473           816             22              794             94
 # 24940           541             73              468             633
@@ -74,3 +92,26 @@ if __name__ == "__main__":
 # 8075            100             76              24              2933
 # 63949           97              2               95              12426
 # 7922            88              3               85              36
+
+# main2() output:
+# ASN             count           Qm              12D3            rank
+# 4766            154             126             28              61
+# 20473           851             22              829             94
+# 22773           135             0               135             111
+# 4134            463             323             140             129
+# 16276           337             21              316             397
+# 16509           285             56              229             564
+# 24940           598             73              525             633
+# 4812            622             0               622             776
+# 24400           321             0               321             887
+# 17621           720             0               720             903
+# 36352           244             1               243             937
+# 14618           127             13              114             1266
+# 57043           102             0               102             1642
+# 8075            114             85              29              2933
+# 21928           499             0               499             4702
+# 14061           332             34              298             4709
+# 63949           108             2               106             12426
+# 51167           408             62              346             12505
+# 40021           183             27              156             12998
+# None            18010           900             17110           None
