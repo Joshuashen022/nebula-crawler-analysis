@@ -46,8 +46,6 @@ def main():
 
     print("ASN\t\tcount\t\tQm\t\t12D3\t\trank")
     for asn, count, qm_count, d3_count in result:
-        if count < 5:
-            time.sleep(1)
         rank = get_rank(asn)
         print(f"{asn}\t\t{count}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
 

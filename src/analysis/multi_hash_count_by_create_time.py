@@ -7,6 +7,10 @@ Display in UTC+8 (e.g. 2026-03-12 13:54:54+08) to avoid timezone confusion.
 import sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+from typing import Optional, Union
+
+import plotly.express as px
+import plotly.graph_objects as go
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.peers.read_multi_hashes_create_time import fetch_all_multi_hashes
@@ -37,7 +41,46 @@ def fetch_multi_hash_count_by_create_time(
         bucket_id = (ts - start_time) // step_length_seconds
         bucket_count[bucket_id] = bucket_count.get(bucket_id, 0) + 1
     return bucket_count
-    
+
+
+def plot_multi_hash_count_by_create_time(
+    rows: Optional[list[tuple[str, object]]] = None,
+    start_time: int = 1741743294,
+    step_length_seconds: int = 3600,
+    output_path: Optional[Union[str, Path]] = None,
+) -> go.Figure:
+    """
+    Plot a line chart: x = bucket start (+08), y = Count.
+    Uses fetch_multi_hash_count_by_create_time to get bucket counts.
+    """
+    if rows is None:
+        rows = fetch_all_multi_hashes()
+    bucket_count = fetch_multi_hash_count_by_create_time(
+        rows, start_time, step_length_seconds
+    )
+    xs = []
+    ys = []
+    for bucket_id in sorted(bucket_count.keys()):
+        bucket_start_ts = start_time + bucket_id * step_length_seconds
+        bucket_start_str = datetime.fromtimestamp(
+            bucket_start_ts, tz=TZ_UTC8
+        ).strftime("%Y-%m-%d %H:%M:%S+08")
+        xs.append(bucket_start_str)
+        ys.append(bucket_count[bucket_id])
+    # Exclude the first point; plot from the second bucket onward
+    fig = px.line(
+        x=xs[1:],
+        y=ys[1:],
+        labels={"x": "Timestamp (UTC+8)", "y": "Count"},
+    )
+    fig.update_traces(mode="lines+markers")
+    fig.update_layout(
+        xaxis_tickangle=-45,
+    )
+    if output_path is not None:
+        fig.write_html(str(output_path))
+    return fig
+
 
 def main():
     """
@@ -64,6 +107,14 @@ def main():
         print(f"{bucket_start_str:<28} {bucket_id:>8} {count:>12,}")
     print("-" * 50)
     print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
+
+    # Optional: generate line chart (x = bucket start +08, y = Count)
+    fig = plot_multi_hash_count_by_create_time(
+        rows=rows,
+        start_time=start_time,
+        step_length_seconds=step_length_seconds,
+    )
+    fig.show()
 
 
 if __name__ == "__main__":

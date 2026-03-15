@@ -28813,5 +28813,453 @@
                 }
             }
         }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 1237,
+                "asn": "23201",
+                "asnName": "",
+                "source": "LACNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -57.3988698163556,
+                "latitude": -25.3376674990264,
+                "organization": {
+                    "orgId": "d1f15a476c"
+                },
+                "cone": {
+                    "numberAsns": 27,
+                    "numberPrefixes": 3269,
+                    "numberAddresses": 2672896
+                },
+                "country": {
+                    "iso": "PY"
+                },
+                "asnDegree": {
+                    "total": 24,
+                    "customer": 22,
+                    "peer": 0,
+                    "provider": 2
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 863,
+                "asn": "6697",
+                "asnName": "BELPAK-AS",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 27.3725641700605,
+                "latitude": 53.7370132994312,
+                "organization": {
+                    "orgId": "4edf2bd502"
+                },
+                "cone": {
+                    "numberAsns": 44,
+                    "numberPrefixes": 1159,
+                    "numberAddresses": 1683456
+                },
+                "country": {
+                    "iso": "BY"
+                },
+                "asnDegree": {
+                    "total": 143,
+                    "customer": 34,
+                    "peer": 99,
+                    "provider": 10
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 13228,
+                "asn": "49223",
+                "asnName": "EVEREST-AS",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 28.1348375820088,
+                "latitude": 49.2765376915806,
+                "organization": {
+                    "orgId": "1e7390899c"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 92,
+                    "numberAddresses": 81920
+                },
+                "country": {
+                    "iso": "UA"
+                },
+                "asnDegree": {
+                    "total": 11,
+                    "customer": 0,
+                    "peer": 4,
+                    "provider": 7
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 25904,
+                "asn": "134972",
+                "asnName": "IKUUU-AS-AP",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 124.565526105333,
+                "latitude": 20.3209617117975,
+                "organization": {
+                    "orgId": "ef93880288"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 5,
+                    "numberAddresses": 2304
+                },
+                "country": {
+                    "iso": "HK"
+                },
+                "asnDegree": {
+                    "total": 1,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 1
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 12390,
+                "asn": "27699",
+                "asnName": "",
+                "source": "LACNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -47.052704387146,
+                "latitude": -23.4690288736072,
+                "organization": {
+                    "orgId": "20a52c3d40"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 130,
+                    "numberAddresses": 4644608
+                },
+                "country": {
+                    "iso": "BR"
+                },
+                "asnDegree": {
+                    "total": 3,
+                    "customer": 0,
+                    "peer": 1,
+                    "provider": 2
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 20848,
+                "asn": "43357",
+                "asnName": "OWL",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 12.3122272035069,
+                "latitude": 54.3266314262767,
+                "organization": {
+                    "orgId": "1529684eed"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 18,
+                    "numberAddresses": 4608
+                },
+                "country": {
+                    "iso": "VU"
+                },
+                "asnDegree": {
+                    "total": 2,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 2
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 12442,
+                "asn": "56045",
+                "asnName": "CMNET-Jiangxi-AP",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 116.107753390521,
+                "latitude": 36.0837381574276,
+                "organization": {
+                    "orgId": "a9c39f310b"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 654,
+                    "numberAddresses": 962560
+                },
+                "country": {
+                    "iso": "CN"
+                },
+                "asnDegree": {
+                    "total": 1,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 1
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 27027,
+                "asn": "49117",
+                "asnName": "DTNETSK-AS",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 19.5377864830287,
+                "latitude": 48.4413274816703,
+                "organization": {
+                    "orgId": "ca99c59851"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 8,
+                    "numberAddresses": 2048
+                },
+                "country": {
+                    "iso": "SK"
+                },
+                "asnDegree": {
+                    "total": 2,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 2
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 1799,
+                "asn": "31257",
+                "asnName": "ORIONNET-KRK",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 92.8061601774215,
+                "latitude": 55.9496510632427,
+                "organization": {
+                    "orgId": "c05c70d152"
+                },
+                "cone": {
+                    "numberAsns": 17,
+                    "numberPrefixes": 128,
+                    "numberAddresses": 72192
+                },
+                "country": {
+                    "iso": "RU"
+                },
+                "asnDegree": {
+                    "total": 116,
+                    "customer": 14,
+                    "peer": 95,
+                    "provider": 7
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 12452,
+                "asn": "17716",
+                "asnName": "NTU-TW",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 121.496044622843,
+                "latitude": 25.0299831446499,
+                "organization": {
+                    "orgId": "98f8be08d6"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 173,
+                    "numberAddresses": 813824
+                },
+                "country": {
+                    "iso": "TW"
+                },
+                "asnDegree": {
+                    "total": 6,
+                    "customer": 0,
+                    "peer": 2,
+                    "provider": 4
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 15972,
+                "asn": "50053",
+                "asnName": "ANTON-LEVIN-AS",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 22.5551228644097,
+                "latitude": 49.9332308682123,
+                "organization": {
+                    "orgId": "75a55bb700"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 65,
+                    "numberAddresses": 16896
+                },
+                "country": {
+                    "iso": "GE"
+                },
+                "asnDegree": {
+                    "total": 6,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 6
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 13331,
+                "asn": "51645",
+                "asnName": "IRKUTSK-AS",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 103.742178484647,
+                "latitude": 52.5115344386257,
+                "organization": {
+                    "orgId": "7b7a859417"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 108,
+                    "numberAddresses": 73216
+                },
+                "country": {
+                    "iso": "RU"
+                },
+                "asnDegree": {
+                    "total": 3,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 3
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 13459,
+                "asn": "202053",
+                "asnName": "UPCLOUD",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 41.3944879833018,
+                "latitude": 54.4408936010541,
+                "organization": {
+                    "orgId": "3b95d84cf1"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 48,
+                    "numberAddresses": 67584
+                },
+                "country": {
+                    "iso": "FI"
+                },
+                "asnDegree": {
+                    "total": 155,
+                    "customer": 0,
+                    "peer": 146,
+                    "provider": 9
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 25121,
+                "asn": "394699",
+                "asnName": "ZENFI-ACCESS",
+                "source": "ARIN",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -73.9840108498237,
+                "latitude": 40.7730048493828,
+                "organization": {
+                    "orgId": "6772aa2dfd"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 6,
+                    "numberAddresses": 2560
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 2,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 2
+                }
+            }
+        }
     }
 ]
