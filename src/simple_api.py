@@ -37,6 +37,8 @@ class ApiHandler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/status":
+            crawl_thread = getattr(self.server, "crawl_thread", None)
+            monitor_thread = getattr(self.server, "monitor_thread", None)
             self._send_json(
                 200,
                 {
@@ -44,8 +46,8 @@ class ApiHandler(BaseHTTPRequestHandler):
                     "service": "simple_api",
                     "analysis_count": crawl.analysis_count,
                     "run_count": crawl.run_count,
-                    "crawl_thread": self.crawl_thread.is_alive() if self.crawl_thread else False,
-                    "monitor_thread": self.monitor_thread.is_alive() if self.monitor_thread else False,
+                    "crawl_thread": crawl_thread.is_alive() if crawl_thread else False,
+                    "monitor_thread": monitor_thread.is_alive() if monitor_thread else False,
                     "intervals_since_last_crawl": crawl.intervals_since_last_crawl,
                 },
             )
@@ -81,16 +83,18 @@ class ApiHandler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/crawl":
-            self.crawl_thread = threading.Thread(
+            self.server.crawl_thread = threading.Thread(
                 target=crawl.run,
                 daemon=True,
                 name="crawl-runner",
-            ).start()
-            self.monitor_thread = threading.Thread(
+            )
+            self.server.crawl_thread.start()
+            self.server.monitor_thread = threading.Thread(
                 target=crawl.run_monitor,
                 daemon=True,
                 name="monitor-runner",
-            ).start()
+            )
+            self.server.monitor_thread.start()
             self._send_json(200, {"ok": True, "service": "crawl", "started": True, "monitor": True})
             return
 
