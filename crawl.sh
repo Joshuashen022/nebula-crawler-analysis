@@ -11,5 +11,5 @@
 ./dist/nebula --db-user joshua --db-name nebula_local crawl --neighbors
 
 # ./dist/nebula  --db-user joshua --db-name nebula_local monitor
-
+    
 caffeinate -disu python3 src/start.py

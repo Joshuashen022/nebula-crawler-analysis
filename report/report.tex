@@ -1,0 +1,44 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+\geometry{margin=0.75in}
+\setstretch{0.95}
+\parskip=0.3em
+
+\title{IPFS Network Geographical Distribution Analysis}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This report presents an analysis of the geographical distribution of nodes in the IPFS network.
+
+\section{Results}
+
+Figure~\ref{fig:global} shows the geographical distribution of multiaddresses per country, bucketed into four tiers. The United States and parts of Canada exhibit the highest concentration (1,000--9,999 addresses). Europe, Russia, China, India, Australia, and most of South America fall in the 100--999 range. Many countries in Africa, Southeast Asia, and Mexico lie in the 10--99 tier, while the lowest bucket (0--9) and uncoloured regions indicate sparse or absent representation. Overall, nodes concentrate in North America and major economies, with a long tail across the rest of the world.
+
+\begin{figure*}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{pics/global.png}
+  \caption{Multiaddresses per country (bucketed). Colour intensity reflects node count: light yellow (0--9), light green (10--99), teal (100--999), dark blue (1,000--9,999). Grey areas have no data.}
+  \label{fig:global}
+\end{figure*}
+
+Based on the analysis of 8,046 multiaddresses across 86 countries, the IPFS network exhibits a strong concentration in the United States, which hosts nearly a third of all nodes (2,618), followed by significant clusters in China (900) and key European nations like France (719) and Germany (656). This distribution reveals that the top five countries account for nearly 60\% of the network, highlighting both the robust infrastructure in Western nations and Asia-Pacific tech hubs, while the long tail of 71 countries in the 10--99 node tier suggests ample room for global decentralization and growth.
+
+\section{Conclusion}
+
+The geographical analysis indicates substantial concentration in a few regions alongside a diverse long tail, pointing to both existing infrastructure hubs and potential for further global decentralization of the IPFS network.
+
+\end{document}

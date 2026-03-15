@@ -5,10 +5,10 @@ from typing import Any, Dict
 
 def properties_not_empty(props: Any) -> bool:
     """
-    判断 Properties 是否“非空”：
-    - 不是 None
-    - 不是空字典 {}
-    - 不是空列表 []
+    Check whether Properties is "non-empty":
+    - not None
+    - not empty dict {}
+    - not empty list []
     """
     if props is None:
         return False
@@ -22,7 +22,7 @@ def filter_visits_with_properties(
     output_path: Path,
 ) -> None:
     """
-    从 ndjson 中筛选出 Properties 不为空的整行，并写入到新的 ndjson 文件。
+    Filter ndjson lines where Properties is non-empty and write them to a new ndjson file.
     """
     with input_path.open("r", encoding="utf-8") as fin, output_path.open(
         "w", encoding="utf-8"

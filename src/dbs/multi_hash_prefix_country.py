@@ -23,8 +23,8 @@ def get_conn():
 # ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 'US')
 def fetch_peer_id_prefix_by_country():
     """
-    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 country，
-    返回 list of (multi_hash, country)。
+    Get peerId (multi_hash) from peers; join via peers_x_multi_addresses to multi_addresses for country.
+    Returns list of (multi_hash, country).
     """
 
     conn = get_conn()

@@ -23,8 +23,8 @@ def get_conn():
 # ('/ipfs/kad/1.0.0', '12D3KooWNas7F1UqWWLxNpyZM7wW2CSUjnXCKsQfKtH1LT1neWSn')
 def fetch_protocol_peer_count():
     """
-    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 country，
-    返回 list of (multi_hash, country)。
+    Get peerId (multi_hash) from peers; join via peers_x_multi_addresses to multi_addresses for country.
+    Returns list of (protocol, multi_hash).
     """
 
     conn = get_conn()

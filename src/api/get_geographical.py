@@ -46,11 +46,11 @@ def analyze_geographical_response(raw: dict) -> None:
     total_addresses = sum(counts)
     n_countries = len(countries)
 
-    print("=== Geographical API 分析 ===\n")
-    print(f"国家/地区数: {n_countries}")
-    print(f"多地址总数: {total_addresses:,}\n")
+    print("=== Geographical API Analysis ===\n")
+    print(f"Countries/regions: {n_countries}")
+    print(f"Total multi-addresses: {total_addresses:,}\n")
 
-    print("--- Top 15 按数量 ---")
+    print("--- Top 15 by count ---")
     for i, (c, n) in enumerate(zip(countries, counts), 1):
         if i > 15:
             break
@@ -58,11 +58,11 @@ def analyze_geographical_response(raw: dict) -> None:
         print(f"  {i:2}. {c}: {n:,}  ({bucket})")
 
     if buckets:
-        print("\n--- 分桶分布 ---")
+        print("\n--- Bucket distribution ---")
         bucket_counts = Counter(buckets)
         for b in BUCKET_ORDER:
             if b in bucket_counts:
-                print(f"  {b}: {bucket_counts[b]} 个国家/地区")
+                print(f"  {b}: {bucket_counts[b]} countries/regions")
 
 
 def show_choropleth(raw: dict) -> None:

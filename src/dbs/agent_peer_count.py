@@ -23,8 +23,8 @@ def get_conn():
 # ('kubo/0.18.1/675f8bd/docker', '12D3KooWSjGF3yMJhovuWD21VyBvWcdiVrzLJJ6nah2epVrfcnvw')
 def fetch_agent_peer_count():
     """
-    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 country，
-    返回 list of (multi_hash, country)。
+    Get peerId (multi_hash) from peers; join via peers_x_multi_addresses to multi_addresses for country.
+    Returns list of (agent_version, multi_hash).
     """
 
     conn = get_conn()

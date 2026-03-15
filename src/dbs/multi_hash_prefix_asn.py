@@ -23,8 +23,8 @@ def get_conn():
 # ('12D3KooW9pPUBnqbkTEQhUNKzs2R3ZYeeTVHg542Phawj4sPWQg3', 197540)
 def fetch_peer_id_prefix_by_asn():
     """
-    从 peers 取 peerId (multi_hash)，通过 peers_x_multi_addresses 关联 multi_addresses 得到 asn
-    返回 list of (multi_hash, asn)。
+    Get peerId (multi_hash) from peers; join via peers_x_multi_addresses to multi_addresses for asn.
+    Returns list of (multi_hash, asn).
     """
 
     conn = get_conn()

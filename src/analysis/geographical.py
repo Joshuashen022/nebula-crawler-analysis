@@ -28,10 +28,10 @@ iso2_to_iso3 = {
     "BY": "BLR", "UY": "URY", "IQ": "IRQ", "MT": "MLT"
 }
 
-BUCKET_ORDER = ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
+BRACKET_ORDER = ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
 
 
-def _bucket_count(value: int) -> str:
+def _bracket_count(value: int) -> str:
     if value < 10:
         return "0–9"
     if value < 100:
@@ -44,7 +44,7 @@ def _bucket_count(value: int) -> str:
 
 
 def fetch_geographical_data():
-    """Return country/count/bucket data from peer_id prefix by country (ISO2 from fetch_peer_id_prefix_by_country)."""
+    """Return country/count/bracket data from peer_id prefix by country (ISO2 from fetch_peer_id_prefix_by_country)."""
     rows = fetch_peer_id_prefix_by_country()  # list of (multi_hash, country), country in ISO2
     country_counts = Counter()
     for _peer_id, country in rows:
@@ -53,46 +53,46 @@ def fetch_geographical_data():
     sorted_items = country_counts.most_common()
     countries = [c for c, _ in sorted_items]
     counts = [n for _, n in sorted_items]
-    buckets = [_bucket_count(count) for count in counts]
+    brackets = [_bracket_count(count) for count in counts]
     countries_iso3 = [iso2_to_iso3.get(c, c) for c in countries]
 
     if not countries_iso3:
-        return {"country": [], "count": [], "bucket": []}
+        return {"country": [], "count": [], "bracket": []}
 
     data = {
         "country": countries_iso3,
         "count": counts,
-        "bucket": buckets,
+        "bracket": brackets,
     }
     return data
 
 
 def print_geographical_analysis(data: dict) -> None:
-    """Print summary, Top 15, and bucket distribution (same format as API analysis)."""
+    """Print summary, Top 15, and bracket distribution (same format as API analysis)."""
     countries = data["country"]
     counts = data["count"]
-    buckets = data.get("bucket") or []
+    brackets = data.get("bracket") or []
 
     total_addresses = sum(counts)
     n_countries = len(countries)
 
-    print("=== Geographical API 分析 ===\n")
-    print(f"国家/地区数: {n_countries}")
-    print(f"多地址总数: {total_addresses:,}\n")
+    print("=== Geographical API Analysis ===\n")
+    print(f"Countries/regions: {n_countries}")
+    print(f"Total multi-addresses: {total_addresses:,}\n")
 
-    print("--- Top 15 按数量 ---")
+    print("--- Top 15 by count ---")
     for i, (c, n) in enumerate(zip(countries, counts), 1):
         if i > 15:
             break
-        bucket = buckets[i - 1] if i <= len(buckets) else ""
-        print(f"  {i:2}. {c}: {n:,}  ({bucket})")
+        bracket = brackets[i - 1] if i <= len(brackets) else ""
+        print(f"  {i:2}. {c}: {n:,}  ({bracket})")
 
-    if buckets:
-        print("\n--- 分桶分布 ---")
-        bucket_counts = Counter(buckets)
-        for b in BUCKET_ORDER:
-            if b in bucket_counts:
-                print(f"  {b}: {bucket_counts[b]} 个国家/地区")
+    if brackets:
+        print("\n--- Bracket distribution ---")
+        bracket_counts = Counter(brackets)
+        for b in BRACKET_ORDER:
+            if b in bracket_counts:
+                print(f"  {b}: {bracket_counts[b]} countries/regions")
 
 
 def main():
@@ -105,19 +105,28 @@ def main():
     fig = px.choropleth(
         data,
         locations="country",
-        color="bucket",
+        color="bracket",
         locationmode="ISO-3",
-        title="Multi addresses per country (bucketed)",
         hover_name="country",
-        hover_data={"count": True, "bucket": True},
-        category_orders={"bucket": BUCKET_ORDER},
+        hover_data={"count": True, "bracket": True},
+        category_orders={"bracket": BRACKET_ORDER},
         color_discrete_map={
-            "0–9": "#f7fbff",
-            "10–99": "#c6dbef",
-            "100–999": "#6baed6",
-            "1k–9,999": "#2171b5",
-            "10k+": "#08306b",
+            "0–9": "#ffffcc",   # pale yellow
+            "10–99": "#a1dab4",  # light green
+            "100–999": "#41b6c4",  # teal
+            "1k–9,999": "#225ea8",  # blue
+            "10k+": "#081d58",   # dark blue
         },
+    )
+    fig.update_layout(
+        legend_title_text="",
+        legend=dict(
+            x=0.82,
+            y=0.5,
+            font=dict(size=14),
+            itemsizing="constant",
+            itemwidth=30,
+        ),
     )
     fig.show()
 

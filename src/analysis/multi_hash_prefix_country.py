@@ -1,6 +1,6 @@
 """
-从 peers 表读取所有 multi_hash，统计 Qm 开头、12D3 开头的数量，并检查是否存在其他前缀。
-按国家（country，来自 multi_addresses）统计 peerId（peers.multi_hash）以 Qm / 12D3 开头的数量。
+Read all multi_hash from peers table; count those starting with Qm vs 12D3 and check for other prefixes.
+Per country (from multi_addresses), count peerIds (peers.multi_hash) starting with Qm / 12D3.
 """
 import sys
 from pathlib import Path
@@ -41,8 +41,8 @@ def split_peer_ids_by_country_count(rows):
 
 def main():
     """
-    按国家统计：来自 peers 的 peerId (multi_hash) 以 Qm、12D3 开头的数量。
-    使用 read_peers + read_multi_addresses 的关联（peers_x_multi_addresses）。
+    Per-country counts of peerIds (multi_hash from peers) starting with Qm or 12D3.
+    Uses join via peers_x_multi_addresses (read_peers + read_multi_addresses).
     """
     rows = fetch_peer_id_prefix_by_country()
     # per country: {"Qm": count, "12D3": count}
