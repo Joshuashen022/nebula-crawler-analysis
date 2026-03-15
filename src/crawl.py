@@ -15,8 +15,7 @@ INTERVAL_COUNT = config.INTERVAL_COUNT
 CMD1 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} crawl --neighbors"
 CMD2 = "../dist/nebula --json-out ./results/ crawl --neighbors"
 CMD3 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} resolve --maxmind-asn ../database/GeoLite2-ASN.mmdb --maxmind-country ../database/GeoLite2-Country.mmdb"
-
-
+CMD4 = f"../dist/nebula --db-user joshua --db-name nebula_local --db-host {DB_HOST} monitor"
 analysis_count = 0
 run_count = 0
 intervals_since_last_crawl = 0
@@ -46,6 +45,10 @@ def run_analysis():
     print(f"CMD3: {ok} time: {time.time()}")
     return ok
 
+def run_monitor():
+    ok = run_cmd(CMD4)
+    print(f"CMD4: {ok} time: {time.time()}")
+    return ok
 
 def run():
     global run_count, intervals_since_last_crawl
