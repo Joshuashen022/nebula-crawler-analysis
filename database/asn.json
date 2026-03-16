@@ -29261,5 +29261,197 @@
                 }
             }
         }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 3630,
+                "asn": "7497",
+                "asnName": "CSTNET-AS-AP",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 116.142722577279,
+                "latitude": 38.5376340815921,
+                "organization": {
+                    "orgId": "08949a98ca"
+                },
+                "cone": {
+                    "numberAsns": 6,
+                    "numberPrefixes": 537,
+                    "numberAddresses": 760320
+                },
+                "country": {
+                    "iso": "CN"
+                },
+                "asnDegree": {
+                    "total": 29,
+                    "customer": 3,
+                    "peer": 20,
+                    "provider": 6
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 1515,
+                "asn": "9541",
+                "asnName": "CYBERNET-AP",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 70.3177578030565,
+                "latitude": 29.4058382147181,
+                "organization": {
+                    "orgId": "af838a1861"
+                },
+                "cone": {
+                    "numberAsns": 21,
+                    "numberPrefixes": 1377,
+                    "numberAddresses": 345600
+                },
+                "country": {
+                    "iso": "PK"
+                },
+                "asnDegree": {
+                    "total": 58,
+                    "customer": 20,
+                    "peer": 31,
+                    "provider": 7
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 7726,
+                "asn": "135918",
+                "asnName": "DVS-AS-VN",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 107.089337026587,
+                "latitude": 15.8643408967781,
+                "organization": {
+                    "orgId": "8f0efef9fd"
+                },
+                "cone": {
+                    "numberAsns": 2,
+                    "numberPrefixes": 174,
+                    "numberAddresses": 138496
+                },
+                "country": {
+                    "iso": "VN"
+                },
+                "asnDegree": {
+                    "total": 3,
+                    "customer": 1,
+                    "peer": 0,
+                    "provider": 2
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 162,
+                "asn": "4657",
+                "asnName": "STARHUB-INTERNET",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 103.83,
+                "latitude": 1.31,
+                "organization": {
+                    "orgId": "15b42256b5"
+                },
+                "cone": {
+                    "numberAsns": 337,
+                    "numberPrefixes": 12938,
+                    "numberAddresses": 19923542
+                },
+                "country": {
+                    "iso": "SG"
+                },
+                "asnDegree": {
+                    "total": 475,
+                    "customer": 145,
+                    "peer": 320,
+                    "provider": 10
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 338,
+                "asn": "8953",
+                "asnName": "ASN-ORANGE-ROMANIA",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 25.8069549422883,
+                "latitude": 45.3710100543424,
+                "organization": {
+                    "orgId": "8e30ed50eb"
+                },
+                "cone": {
+                    "numberAsns": 148,
+                    "numberPrefixes": 764,
+                    "numberAddresses": 691712
+                },
+                "country": {
+                    "iso": "RO"
+                },
+                "asnDegree": {
+                    "total": 123,
+                    "customer": 108,
+                    "peer": 10,
+                    "provider": 5
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 476,
+                "asn": "11426",
+                "asnName": "TWC-11426-CAROLINAS",
+                "source": "ARIN",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -80.8848012029663,
+                "latitude": 35.5443029303655,
+                "organization": {
+                    "orgId": "07d02b6834"
+                },
+                "cone": {
+                    "numberAsns": 93,
+                    "numberPrefixes": 1081,
+                    "numberAddresses": 7838208
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 87,
+                    "customer": 86,
+                    "peer": 0,
+                    "provider": 1
+                }
+            }
+        }
     }
 ]
