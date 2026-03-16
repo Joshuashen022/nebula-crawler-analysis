@@ -65,18 +65,43 @@ def count_reliable_peers_by_country(reliable_peers, peer_country_rows):
     return dict(sorted(country_counts.items(), key=lambda x: (-x[1], x[0])))
 
 
-def main():
-    """Fetch data and print uptime percentage distributions."""
-    rows = fetch_uptime_duration()
-    reliable_peers, totals = aggregate_uptime_by_multi_hash(rows, 0.9)
-    peer_country_rows = fetch_peer_id_prefix_by_country()
-    country_counts = count_reliable_peers_by_country(reliable_peers, peer_country_rows)
+def plot_reliable_peers_by_country(rows, peer_country_rows):
+    """Build a grouped bar chart for reliable peers by country at different thresholds."""
+    thresholds = [0.9, 0.8, 0.7]
+    plot_rows = []
 
-    print(f"Total peers with uptime data: {len(totals)}")
-    print(f"Reliable peers (ratio > 0.9): {len(reliable_peers)}")
-    print("Reliable peers by country (count):")
-    for country, count in country_counts.items():
-        print(f"{country}\t{count}")
+    for threshold in thresholds:
+        reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
+        country_counts = count_reliable_peers_by_country(reliable_peers, peer_country_rows)
+
+        for country, count in country_counts.items():
+            # Skip countries with very few reliable peers
+            if count < 50:
+                continue
+            plot_rows.append(
+                {
+                    "country": country,
+                    "count": count,
+                    "threshold": str(threshold),
+                }
+            )
+
+    fig = px.bar(
+        plot_rows,
+        x="country",
+        y="count",
+        color="threshold",
+        barmode="group",
+        title="Reliable peers by country at different uptime thresholds",
+    )
+    fig.show()
+
+
+def main():
+    """Fetch data and show reliable peers by country chart."""
+    rows = fetch_uptime_duration()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
+    plot_reliable_peers_by_country(rows, peer_country_rows)
 
 
 
