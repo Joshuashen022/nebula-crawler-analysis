@@ -8,6 +8,7 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{subcaption}
+\usepackage[nomarkers]{endfloat}
 
 \geometry{margin=0.75in}
 \setstretch{0.95}
@@ -70,6 +71,32 @@ This multi-series time-series chart tracks the reachability of nodes over severa
   \label{fig:global-metrics}
 \end{figure*}
 
+
+\section{Protocol Distribution}
+
+To characterize the roles played by discovered peers, we analyzed the application protocols advertised during identification. Across regions, the crawler most frequently observed \textbf{foundational IPFS/libp2p infrastructure}---basic connectivity and discovery (e.g., \texttt{/ipfs/ping}, \texttt{/ipfs/id}), routing and peer discovery (Kademlia DHT), and content exchange (Bitswap). In contrast, \textbf{higher-layer messaging protocols} (PubSub / Meshsub) appeared at substantially lower rates, suggesting that many reachable nodes primarily provide routing/storage connectivity rather than participating in active publish--subscribe overlays.
+
+Regional protocol mixes also reflect local network conditions and operator behavior. In the United States (Figure~\ref{fig:protocol-dist-us}), the distribution is dominated by core IPFS/libp2p primitives and a large share of Bitswap-capable peers, consistent with broad participation in content exchange and well-connected public infrastructure. China (Figure~\ref{fig:protocol-dist-cn}) shows comparatively stronger representation of NAT traversal and relay-related capabilities, aligning with a more restrictive networking environment where peers rely on relay-assisted connectivity to remain reachable.
+
+Notably, the presence of \texttt{/sbptp/1.0.0} in the China sample indicates that the crawler encountered peers advertising a protocol previously associated with IPFS-based botnet activity (often referred to as IPStorm). While protocol advertisement alone does not prove malicious operation, its visibility in the crawl motivates targeted follow-up analysis (e.g., peer uptime, co-advertised protocol sets, and stability over time) to distinguish opportunistic exposure from sustained, coordinated behavior.
+
+\begin{figure*}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/protocol_distribution_US.png}
+    \caption{Protocol distribution for the United States.}
+    \label{fig:protocol-dist-us}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/protocol_distribution_CN.png}
+    \caption{Protocol distribution for China.}
+    \label{fig:protocol-dist-cn}
+  \end{subfigure}
+  \caption{Regional protocol distributions observed during the crawl.}
+  \label{fig:protocol-distributions}
+\end{figure*}
 
 \section{Peer Id Version}
 
