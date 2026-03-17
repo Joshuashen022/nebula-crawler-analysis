@@ -49,13 +49,19 @@ def plot_neighbor_count_vs_nodes(rows):
     fig = go.Figure(
         data=[go.Bar(x=xs, y=ys, name="nodes")],
         layout=go.Layout(
-            title="Nodes by neighbor count",
-            xaxis_title="Neighbor count",
-            yaxis_title="Number of nodes",
+            xaxis=dict(
+                tickfont=dict(size=40),
+            ),
+            yaxis=dict(
+                tickfont=dict(size=40),
+            ),
             showlegend=False,
         ),
     )
-    fig.show()
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_peer_neighbour.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(out_path), width=1600, height=800, scale=2)
+    # fig.show()
 
 
 def main():

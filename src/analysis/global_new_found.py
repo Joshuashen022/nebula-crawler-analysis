@@ -71,14 +71,36 @@ def plot_multi_hash_count_by_create_time(
     fig = px.line(
         x=xs[1:],
         y=ys[1:],
-        labels={"x": "Timestamp (UTC+8)", "y": "Count"},
+        # labels={"x": "Timestamp (UTC+8)", "y": ""},
     )
     fig.update_traces(mode="lines+markers")
     fig.update_layout(
+        xaxis_title=None,
+        yaxis_title=None,
         xaxis_tickangle=-45,
+        margin=dict(l=160, r=60, t=60, b=100),
+        font=dict(size=42),  # global default font
+        xaxis=dict(
+            # title_font=dict(size=48),
+            tickfont=dict(size=40),
+        ),
+        yaxis=dict(
+            # title_font=dict(size=48),
+            tickfont=dict(size=40),
+        ),
+        legend=dict(
+            font=dict(size=20),
+        ),
     )
     if output_path is not None:
-        fig.write_html(str(output_path))
+        out_path = Path(output_path)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        # If user passes an HTML path, keep interactive output; otherwise save static image for LaTeX/PDF.
+        if out_path.suffix.lower() == ".html":
+            fig.write_html(str(out_path))
+        else:
+            # Requires the 'kaleido' package to be installed.
+            fig.write_image(str(out_path), width=1600, height=800, scale=2)
     return fig
 
 
@@ -87,8 +109,8 @@ def main():
     start_time: Unix timestamp (seconds). If None, use the min created_at in the data.
     step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
     """
-    rows = fetch_all_multi_hashes() # 1773294894
-    start_time = 1741743294# 2026-03-12 13:54:54.811238+08 -> 1741743294 
+    rows = fetch_all_multi_hashes()  # 1773294894
+    start_time = 1741743294  # 2026-03-12 13:54:54.811238+08 -> 1741743294
     start_str = datetime.fromtimestamp(start_time, tz=TZ_UTC8).strftime("%Y-%m-%d %H:%M:%S+08")
     print(f"Using start_time: {start_time} ({start_str})")
     step_length_seconds = 3600
@@ -109,12 +131,16 @@ def main():
     print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
 
     # Optional: generate line chart (x = bucket start +08, y = Count)
-    fig = plot_multi_hash_count_by_create_time(
+    plot_multi_hash_count_by_create_time(
         rows=rows,
         start_time=start_time,
         step_length_seconds=step_length_seconds,
+        output_path=Path(__file__).resolve().parents[2]
+        / "report"
+        / "pics"
+        / "global_new_found.png",
     )
-    fig.show()
+    # fig.show()
 
 
 if __name__ == "__main__":

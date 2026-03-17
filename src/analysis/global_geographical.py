@@ -121,14 +121,20 @@ def main():
     fig.update_layout(
         legend_title_text="",
         legend=dict(
-            x=0.82,
+            x=1.0,
             y=0.5,
-            font=dict(size=14),
+            xanchor="left",
+            yanchor="middle",
+            font=dict(size=50),
             itemsizing="constant",
-            itemwidth=30,
+            itemwidth=36,
         ),
+        margin=dict(r=220),
     )
-    fig.show()
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_geographical.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(out_path), width=1600, height=800, scale=2)
+    # fig.show()
 
 
 if __name__ == "__main__":

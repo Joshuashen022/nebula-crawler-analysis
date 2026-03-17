@@ -279,3 +279,5 @@ test.py
 *.synctex(busy)
 *.synctex.gz(busy)
 *.pdf
+
+pics/

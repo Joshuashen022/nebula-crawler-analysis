@@ -37,8 +37,8 @@ def main():
 
     print("=== peers.multi_hash prefix stats ===\n")
     print(f"Total rows: {total:,}")
-    print(f"  Starting with Qm:  {count_qm:,}")
-    print(f"  Starting with 12D3: {count_12d3:,}")
+    print(f"  Starting with Qm:  {count_qm:,}, percentage: {count_qm / total * 100:.2f}%")
+    print(f"  Starting with 12D3: {count_12d3:,} percentage: {count_12d3 / total * 100:.2f}%")
     print()
     print("--- Duplicate check ---")
     print(f"Unique count: {unique_count:,}")
@@ -53,14 +53,14 @@ def main():
             print(f"  {snippet!r}: {c} occurrences")
     print()
 
-    others = total - count_qm - count_12d3
-    if others > 0:
-        print(f"Other prefix count: {others:,}\n")
-        print("--- All prefix distribution (first 4 chars) ---")
-        for prefix, cnt in prefix_counter.most_common():
-            print(f"  {prefix!r}: {cnt:,}")
-    else:
-        print("No other prefixes besides Qm and 12D3.")
+    # others = total - count_qm - count_12d3
+    # if others > 0:
+    #     print(f"Other prefix count: {others:,}\n")
+    #     print("--- All prefix distribution (first 4 chars) ---")
+    #     for prefix, cnt in prefix_counter.most_common():
+    #         print(f"  {prefix!r}: {cnt:,}")
+    # else:
+    #     print("No other prefixes besides Qm and 12D3.")
 
 
 if __name__ == "__main__":

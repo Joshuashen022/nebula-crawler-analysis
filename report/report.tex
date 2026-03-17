@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{hyperref}
+\usepackage{subcaption}
 
 \geometry{margin=0.75in}
 \setstretch{0.95}
@@ -28,14 +29,47 @@ This report presents an analysis of the geographical distribution of nodes in th
 
 Figure~\ref{fig:global} shows the geographical distribution of multiaddresses per country, bucketed into four tiers. The United States and parts of Canada exhibit the highest concentration (1,000--9,999 addresses). Europe, Russia, China, India, Australia, and most of South America fall in the 100--999 range. Many countries in Africa, Southeast Asia, and Mexico lie in the 10--99 tier, while the lowest bucket (0--9) and uncoloured regions indicate sparse or absent representation. Overall, nodes concentrate in North America and major economies, with a long tail across the rest of the world.
 
+Based on the analysis of 8,046 multiaddresses across 86 countries, the IPFS network exhibits a strong concentration in the United States, which hosts nearly a third of all nodes (2,618), followed by significant clusters in China (900) and key European nations like France (719) and Germany (656). This distribution reveals that the top five countries account for nearly 60\% of the network, highlighting both the robust infrastructure in Western nations and Asia-Pacific tech hubs, while the long tail of 71 countries in the 10--99 node tier suggests ample room for global decentralization and growth.
+
+The histogram illustrates a highly concentrated distribution of peer connections, with the vast majority of IPFS nodes maintaining between 170 and 185 neighbors, alongside a distinct smaller cluster of better-connected nodes peaking around 200 connections.
+
+The time-series line chart tracks the fluctuating count of network events or nodes from March 12 to March 16, 2026, showing a significant initial decline from a peak of nearly 800 followed by a period of relative stability and occasional spikes between 100 and 200.
+
+This multi-series time-series chart tracks the reachability of nodes over several days, showing that while the total crawled peers fluctuates between roughly 5,000 and 9,000, there is a consistent gap where \texttt{undialable\_peers} generally outnumber dialable peers.
+
 \begin{figure*}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{pics/global.png}
-  \caption{Multiaddresses per country (bucketed). Colour intensity reflects node count: light yellow (0--9), light green (10--99), teal (100--999), dark blue (1,000--9,999). Grey areas have no data.}
-  \label{fig:global}
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_geographical.png}
+    \caption{Multiaddresses per country (bucketed).}
+    \label{fig:global}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_peer_neighbour.png}
+    \caption{Peer neighbour distribution.}
+    \label{fig:global-peer-neighbour}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_new_found.png}
+    \caption{New peers found over time.}
+    \label{fig:global-new-found}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_each_crawl.png}
+    \caption{Peers per crawl over time.}
+    \label{fig:global-each-crawl}
+  \end{subfigure}
+  \caption{Global map and additional crawl metrics.}
+  \label{fig:global-metrics}
 \end{figure*}
 
-Based on the analysis of 8,046 multiaddresses across 86 countries, the IPFS network exhibits a strong concentration in the United States, which hosts nearly a third of all nodes (2,618), followed by significant clusters in China (900) and key European nations like France (719) and Germany (656). This distribution reveals that the top five countries account for nearly 60\% of the network, highlighting both the robust infrastructure in Western nations and Asia-Pacific tech hubs, while the long tail of 71 countries in the 10--99 node tier suggests ample room for global decentralization and growth.
 
 \section{Conclusion}
 
