@@ -71,8 +71,47 @@ This multi-series time-series chart tracks the reachability of nodes over severa
 \end{figure*}
 
 
-\section{Conclusion}
+\section{Peer Id Version}
 
-The geographical analysis indicates substantial concentration in a few regions alongside a diverse long tail, pointing to both existing infrastructure hubs and potential for further global decentralization of the IPFS network.
+This data provides a snapshot of the IPFS network's transition from \textbf{v0 (Qm)} to \textbf{v1 (12D3)} PeerIDs, based on the crawler's results from 27,202 nodes (see Table~\ref{tab:peerid_country}). Analyzing the ratio of v0 to v1 nodes identifies the network's technical maturity and cryptographic agility by distinguishing between legacy, RSA-based infrastructure and modern, self-describing protocols that support enhanced security features like origin isolation.
 
+\subsection{The Global Shift to v1}
+
+The network has overwhelmingly migrated to the newer CID/PeerID format. 93.11\% of the network uses the newer format. Only 6.88\% of nodes remain on the legacy format.
+
+\subsection{Regional Adoption Leaders}
+
+The adoption of v1 is not uniform. We can categorize the regions based on their ``modernity''. Taiwan (\textbf{TW}) and Hong Kong (\textbf{HK}) stand out with over \textbf{50\%} of their nodes still using v0. South Korea (\textbf{KR}) follows at \textbf{42.66\%}. This suggests these regions may be hosting older, stable infrastructure or long-running nodes that haven't been updated/restarted with new IDs. Western and North American regions show very high v1 adoption. Canada (\textbf{CA}), the Netherlands (\textbf{NL}), and Spain (\textbf{ES}) have almost entirely phased out v0, with legacy nodes making up less than \textbf{6\%} of their total count.
+
+\begin{table}[ht]
+    \centering
+    \caption{Countries with total nodes $>100$, sorted by v0 (Qm) share}
+    \label{tab:peerid_country}
+    \begin{tabular}{lrrrr}
+        \hline
+        Country & Qm & 12D3 & Total & Qm / Total \\
+        \hline
+        TW & 79  & 61   & 140  & 56.43\% \\
+        HK & 81  & 69   & 150  & 54.00\% \\
+        KR & 125 & 168  & 293  & 42.66\% \\
+        SG & 32  & 205  & 237  & 13.50\% \\
+        FI & 45  & 307  & 352  & 12.78\% \\
+        RU & 25  & 209  & 234  & 10.68\% \\
+        CN & 435 & 4100 & 4535 & 9.59\%  \\
+        DE & 76  & 720  & 796  & 9.55\%  \\
+        US & 281 & 2754 & 3035 & 9.26\%  \\
+        FR & 76  & 773  & 849  & 8.95\%  \\
+        JP & 11  & 147  & 158  & 6.96\%  \\
+        IN & 11  & 158  & 169  & 6.51\%  \\
+        GB & 25  & 407  & 432  & 5.79\%  \\
+        ES & 8   & 136  & 144  & 5.56\%  \\
+        NL & 12  & 206  & 218  & 5.50\%  \\
+        CA & 11  & 270  & 281  & 3.91\%  \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Infrastructure Giants}
+
+China (\textbf{CN}) has the highest absolute number of v0 nodes (435). However, its massive total volume (4,535) means it is actually quite modern, with a \textbf{9.59\%} legacy rate. Similarly, the US (\textbf{US}) maintains a high volume of nodes with a low legacy percentage (\textbf{9.26\%}).
 \end{document}

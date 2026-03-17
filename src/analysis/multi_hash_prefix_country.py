@@ -66,11 +66,33 @@ def main():
     for country in sorted_countries:
         qm = by_country[country]["Qm"]
         d3 = by_country[country]["12D3"]
-        print(f"{country:<6} {qm:>10,} {d3:>10,} {qm + d3:>10,}")
+        print(f"{country:<6} {qm:>10,}({qm/(qm+d3)* 100:.2f}%) {d3:>10,} {qm + d3:>10,}")
     total_qm = sum(by_country[c]["Qm"] for c in by_country)
     total_d3 = sum(by_country[c]["12D3"] for c in by_country)
     print("-" * 40)
     print(f"{'Total':<6} {total_qm:>10,} {total_d3:>10,} {total_qm + total_d3:>10,}")
+
+    # Extra analysis: countries with Total > 100, sorted by Qm / Total descending
+    filtered_countries = []
+    for country in by_country:
+        qm = by_country[country]["Qm"]
+        d3 = by_country[country]["12D3"]
+        total = qm + d3
+        if total > 100:
+            ratio = qm / total
+            filtered_countries.append((country, qm, d3, total, ratio))
+
+    if filtered_countries:
+        print()
+        print("Countries with Total > 100, sorted by Qm/Total desc")
+        print(f"{'Country':<6} {'Qm':>10} {'12D3':>10} {'Total':>10} {'Qm/Total':>10}")
+        print("-" * 60)
+        for country, qm, d3, total, ratio in sorted(
+            filtered_countries, key=lambda x: x[4], reverse=True
+        ):
+            print(
+                f"{country:<6} {qm:>10,} {d3:>10,} {total:>10,} {ratio*100:>9.2f}%"
+            )
 
 
 
@@ -78,90 +100,22 @@ if __name__ == "__main__":
     main()
 
 
-# Country         Qm       12D3      Total
-# ----------------------------------------
-# US            194      2,171      2,365
-# FR             70        601        671
-# DE             73        488        561
-# GB             23        250        273
-# CN            131        141        272
-# FI             40        231        271
-# CA             10        165        175
-# SG             28        142        170
-# KR             44        124        168
-# NL             11        153        164
-# JP             11        116        127
-# RU             10         98        108
-# ES              5         85         90
-# IN              8         63         71
-# HK             22         41         63
-# TW             22         39         61
-# SE             10         50         60
-# AU              5         53         58
-# TH              0         57         57
-# PL             10         45         55
-# CH             10         44         54
-# AT              3         40         43
-# UA              6         23         29
-# BR              7         22         29
-# AE              0         29         29
-# IT              1         27         28
-# PT              3         21         24
-# MX              8         16         24
-# VN              2         20         22
-# AR              0         21         21
-# ID              1         19         20
-# IE              3         17         20
-# LT              4         14         18
-# TR              1         12         13
-# LV              3          8         11
-# BE              0         11         11
-# CZ              0         10         10
-# NO              2          7          9
-# HU              2          7          9
-# RO              0          9          9
-# RS              0          8          8
-# GR              0          8          8
-# BG              3          5          8
-# DK              0          7          7
-# IL              1          6          7
-# MY              0          7          7
-# NZ              0          5          5
-# ZA              1          4          5
-# PA              3          2          5
-# CL              1          3          4
-# IS              0          4          4
-# BD              0          4          4
-# SI              0          3          3
-# SK              0          3          3
-# CO              1          2          3
-# GE              1          2          3
-# MT              0          2          2
-# RE              0          2          2
-# EE              0          2          2
-# PK              0          2          2
-# LU              0          2          2
-# KW              0          2          2
-# KZ              0          2          2
-# SC              0          2          2
-# IM              0          1          1
-# PR              0          1          1
-# MN              0          1          1
-# MD              0          1          1
-# VG              0          1          1
-# HR              0          1          1
-# CW              0          1          1
-# AQ              0          1          1
-# CY              0          1          1
-# BO              0          1          1
-# KH              0          1          1
-# DO              0          1          1
-# BY              0          1          1
-# MO              0          1          1
-# AM              1          0          1
-# AL              0          1          1
-# TN              0          1          1
-# PH              0          1          1
-# VE              1          0          1
-# ----------------------------------------
-# Total         796      5,596      6,392
+# Countries with Total > 100, sorted by Qm/Total desc
+# Country         Qm       12D3      Total   Qm/Total
+# ------------------------------------------------------------
+# TW             79         61        140     56.43%
+# HK             81         69        150     54.00%
+# KR            125        168        293     42.66%
+# SG             32        205        237     13.50%
+# FI             45        307        352     12.78%
+# RU             25        209        234     10.68%
+# CN            435      4,100      4,535      9.59%
+# DE             76        720        796      9.55%
+# US            281      2,754      3,035      9.26%
+# FR             76        773        849      8.95%
+# JP             11        147        158      6.96%
+# IN             11        158        169      6.51%
+# GB             25        407        432      5.79%
+# ES              8        136        144      5.56%
+# NL             12        206        218      5.50%
+# CA             11        270        281      3.91%

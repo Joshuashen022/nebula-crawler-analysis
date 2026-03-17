@@ -66,12 +66,9 @@ def main():
 if __name__ == "__main__":
     main()
 
-# === peers.multi_hash prefix stats ===
-#
-# Total rows: 17,238
-#   Starting with Qm:  1,269
-#   Starting with 12D3: 15,969
-#
+# Total rows: 27,202
+#   Starting with Qm:  1,872, percentage: 6.88%
+#   Starting with 12D3: 25,329 percentage: 93.11%
+
 # --- Duplicate check ---
-# Unique count: 17,238
-# No duplicate multi_hash.
+# Unique count: 27,202
