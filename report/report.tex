@@ -6,9 +6,10 @@
 \usepackage{parskip}
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{subcaption}
-\usepackage[nomarkers]{endfloat}
+\usepackage{float}
 
 \geometry{margin=0.75in}
 \setstretch{0.95}
@@ -26,90 +27,23 @@
 
 This report presents an analysis of the geographical distribution of nodes in the IPFS network.
 
-\section{Results}
+\section{General Network Metrics}
+Figure~\ref{fig:global} shows the geographical distribution of multiaddresses per country, bucketed into four tiers. Figure~\ref{fig:global-peer-neighbour}  illustrates a highly concentrated distribution of peer connections, with the vast majority of IPFS nodes maintaining between 170 and 185 neighbors, alongside a distinct smaller cluster of better-connected nodes peaking around 200 connections.
+Figure~\ref{fig:global-new-found} tracks the fluctuating count of network newly founded peer after each crawl, showing the trend of declining.
+Figure~\ref{fig:global-each-crawl}  tracks the reachability of nodes over several days, the “stable” between march 15 to 18 indicates network stability affects greatly of the reachability.
 
-Figure~\ref{fig:global} shows the geographical distribution of multiaddresses per country, bucketed into four tiers. The United States and parts of Canada exhibit the highest concentration (1,000--9,999 addresses). Europe, Russia, China, India, Australia, and most of South America fall in the 100--999 range. Many countries in Africa, Southeast Asia, and Mexico lie in the 10--99 tier, while the lowest bucket (0--9) and uncoloured regions indicate sparse or absent representation. Overall, nodes concentrate in North America and major economies, with a long tail across the rest of the world.
-
-Based on the analysis of 8,046 multiaddresses across 86 countries, the IPFS network exhibits a strong concentration in the United States, which hosts nearly a third of all nodes (2,618), followed by significant clusters in China (900) and key European nations like France (719) and Germany (656). This distribution reveals that the top five countries account for nearly 60\% of the network, highlighting both the robust infrastructure in Western nations and Asia-Pacific tech hubs, while the long tail of 71 countries in the 10--99 node tier suggests ample room for global decentralization and growth.
-
-The histogram illustrates a highly concentrated distribution of peer connections, with the vast majority of IPFS nodes maintaining between 170 and 185 neighbors, alongside a distinct smaller cluster of better-connected nodes peaking around 200 connections.
-
-The time-series line chart tracks the fluctuating count of network events or nodes from March 12 to March 16, 2026, showing a significant initial decline from a peak of nearly 800 followed by a period of relative stability and occasional spikes between 100 and 200.
-
-This multi-series time-series chart tracks the reachability of nodes over several days, showing that while the total crawled peers fluctuates between roughly 5,000 and 9,000, there is a consistent gap where \texttt{undialable\_peers} generally outnumber dialable peers.
-
-\begin{figure*}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/global_geographical.png}
-    \caption{Multiaddresses per country (bucketed).}
-    \label{fig:global}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/global_peer_neighbour.png}
-    \caption{Peer neighbour distribution.}
-    \label{fig:global-peer-neighbour}
-  \end{subfigure}
-
-  \vspace{0.5em}
-
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/global_new_found.png}
-    \caption{New peers found over time.}
-    \label{fig:global-new-found}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/global_each_crawl.png}
-    \caption{Peers per crawl over time.}
-    \label{fig:global-each-crawl}
-  \end{subfigure}
-  \caption{Global map and additional crawl metrics.}
-  \label{fig:global-metrics}
-\end{figure*}
+\mbox{} % Figures moved to last page to control placement.
 
 
 \section{Protocol Distribution}
+To characterize the roles played by discovered peers, we analyzed the application protocols advertised during identification. Across regions, the crawler most frequently observed \textbf{foundational IPFS/libp2p infrastructure}---basic connectivity and discovery (e.g., \texttt{/ipfs/ping}, \texttt{/ipfs/id}), routing and peer discovery (Kademlia DHT), and content exchange (Bitswap). In contrast, \textbf{higher-layer messaging protocols}
 
-To characterize the roles played by discovered peers, we analyzed the application protocols advertised during identification. Across regions, the crawler most frequently observed \textbf{foundational IPFS/libp2p infrastructure}---basic connectivity and discovery (e.g., \texttt{/ipfs/ping}, \texttt{/ipfs/id}), routing and peer discovery (Kademlia DHT), and content exchange (Bitswap). In contrast, \textbf{higher-layer messaging protocols} (PubSub / Meshsub) appeared at substantially lower rates, suggesting that many reachable nodes primarily provide routing/storage connectivity rather than participating in active publish--subscribe overlays.
+Regional protocol mixes reflect local network conditions and operator behavior. In the United States (Figure~\ref{fig:protocol-dist-us}), the distribution is dominated by core IPFS/libp2p primitives and a large share of Bitswap-capable peers, consistent with broad participation in content exchange and well-connected public infrastructure. China (Figure~\ref{fig:protocol-dist-cn}) shows comparatively stronger representation of NAT traversal and relay-related capabilities, aligning with a more restrictive networking environment where peers rely on relay-assisted connectivity to remain reachable.Notably, the presence of \texttt{/sbptp/1.0.0} in the China sample indicates that the crawler encountered peers advertising a protocol previously associated with IPFS-based botnet activity (often referred to as IPStorm). 
 
-Regional protocol mixes also reflect local network conditions and operator behavior. In the United States (Figure~\ref{fig:protocol-dist-us}), the distribution is dominated by core IPFS/libp2p primitives and a large share of Bitswap-capable peers, consistent with broad participation in content exchange and well-connected public infrastructure. China (Figure~\ref{fig:protocol-dist-cn}) shows comparatively stronger representation of NAT traversal and relay-related capabilities, aligning with a more restrictive networking environment where peers rely on relay-assisted connectivity to remain reachable.
-
-Notably, the presence of \texttt{/sbptp/1.0.0} in the China sample indicates that the crawler encountered peers advertising a protocol previously associated with IPFS-based botnet activity (often referred to as IPStorm). While protocol advertisement alone does not prove malicious operation, its visibility in the crawl motivates targeted follow-up analysis (e.g., peer uptime, co-advertised protocol sets, and stability over time) to distinguish opportunistic exposure from sustained, coordinated behavior.
-
-\begin{figure*}[htbp]
-  \centering
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/protocol_distribution_US.png}
-    \caption{Protocol distribution for the United States.}
-    \label{fig:protocol-dist-us}
-  \end{subfigure}\hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{pics/protocol_distribution_CN.png}
-    \caption{Protocol distribution for China.}
-    \label{fig:protocol-dist-cn}
-  \end{subfigure}
-  \caption{Regional protocol distributions observed during the crawl.}
-  \label{fig:protocol-distributions}
-\end{figure*}
+\mbox{} % Figures moved to last page to control placement.
 
 \section{Peer Id Version}
-
-This data provides a snapshot of the IPFS network's transition from \textbf{v0 (Qm)} to \textbf{v1 (12D3)} PeerIDs, based on the crawler's results from 27,202 nodes (see Table~\ref{tab:peerid_country}). Analyzing the ratio of v0 to v1 nodes identifies the network's technical maturity and cryptographic agility by distinguishing between legacy, RSA-based infrastructure and modern, self-describing protocols that support enhanced security features like origin isolation.
-
-\subsection{The Global Shift to v1}
-
-The network has overwhelmingly migrated to the newer CID/PeerID format. 93.11\% of the network uses the newer format. Only 6.88\% of nodes remain on the legacy format.
-
-\subsection{Regional Adoption Leaders}
-
-The adoption of v1 is not uniform. We can categorize the regions based on their ``modernity''. Taiwan (\textbf{TW}) and Hong Kong (\textbf{HK}) stand out with over \textbf{50\%} of their nodes still using v0. South Korea (\textbf{KR}) follows at \textbf{42.66\%}. This suggests these regions may be hosting older, stable infrastructure or long-running nodes that haven't been updated/restarted with new IDs. Western and North American regions show very high v1 adoption. Canada (\textbf{CA}), the Netherlands (\textbf{NL}), and Spain (\textbf{ES}) have almost entirely phased out v0, with legacy nodes making up less than \textbf{6\%} of their total count.
-
+This data provides a snapshot of the IPFS network's transition from \textbf{v0 (Qm)} to \textbf{v1 (12D3)} PeerIDs. Analyzing the ratio of v0 to v1 nodes identifies the network's technical maturity and cryptographic agility by distinguishing between legacy. From the result from the crawler, the network has overwhelmingly migrated to the newer CID/PeerID format. 93.11\% of the network uses the newer format. Only 6.88\% of nodes remain on the legacy format. However, the adoption of v1 is not uniform. We can categorize the regions based on their ``modernity''. 
 \begin{table}[ht]
     \centering
     \caption{Countries with total nodes $>100$, sorted by v0 (Qm) share}
@@ -138,18 +72,9 @@ The adoption of v1 is not uniform. We can categorize the regions based on their 
     \end{tabular}
 \end{table}
 
-\subsection{Infrastructure Giants}
-
-China (\textbf{CN}) has the highest absolute number of v0 nodes (435). However, its massive total volume (4,535) means it is actually quite modern, with a \textbf{9.59\%} legacy rate. Similarly, the US (\textbf{US}) maintains a high volume of nodes with a low legacy percentage (\textbf{9.26\%}).
-
 \section{Agent Version Distribution}
 
-Agent strings provide an operator-facing view of the software deployed across regions (e.g., Kubo vs legacy go-ipfs and vendor-branded builds). We summarize (i) how often an agent string was observed per country and (ii) how concentrated each country is around a single dominant agent.
-
-\subsection{Agent Identification Coverage}
-
-Across countries, agent availability is uneven: some regions expose many reachable peers but only a small fraction return an agent string. Table~\ref{tab:agent-coverage-country} shows the largest countries by total observations and how many included an agent value.
-
+Table~\ref{tab:agent-coverage-country} shows that across countries, agent availability is uneven: some regions expose many reachable peers but only a small fraction return an agent string. Table~\ref{tab:agent-topshare-country} reveals a fragmentation of deployments characterized by a mix of legacy software and vendor-branded clusters. In Asia, particularly across China, South Korea, and Taiwan, the dominance of \texttt{go-ipfs/0.8.0} suggests pockets of outdated infrastructure that risk protocol incompatibility and exposure to older implementation bugs. In the United States, substantial infrastructure appears associated with \texttt{kubo/0.22.0/.../gala.games} and Docker-based deployments, implying that a small number of operator templates can shape regional risk: unpatched vulnerabilities or misconfigurations may be amplified when many nodes share the same build and operational pattern.
 \begin{table}[ht]
     \centering
     \caption{Agent coverage by country (sample excerpt)}
@@ -179,9 +104,6 @@ Across countries, agent availability is uneven: some regions expose many reachab
     \end{tabular}
 \end{table}
 
-\subsection{Per-country Dominant Agent (Top Share)}
-
-To highlight monocultures and legacy holdouts, we compute the share of the most common agent within each country (Table~\ref{tab:agent-topshare-country}). China (\textbf{CN}) and South Korea (\textbf{KR}) show strong concentration around legacy \texttt{go-ipfs/0.8.0}, while the United States (\textbf{US}) and several European countries are led by Kubo variants (including a prominent \texttt{kubo/0.22.0/.../gala.games} string).
 
 \begin{table}[ht]
     \centering
@@ -189,28 +111,162 @@ To highlight monocultures and legacy holdouts, we compute the share of the most 
     \label{tab:agent-topshare-country}
     \begin{tabular}{llrr}
         \hline
-        Country & Top agent & Top count & Top share \\
+        Country & Top agent & Top share \\
         \hline
-        US & \texttt{kubo/0.22.0/3f884d3/gala.games} & 551 & 22.36\% \\
-        CN & \texttt{go-ipfs/0.8.0/48f94e2} & 233 & 64.01\% \\
-        FR & \texttt{kubo/0.22.0/3f884d3/gala.games} & 146 & 19.89\% \\
-        KR & \texttt{go-ipfs/0.8.0/48f94e2} & 98 & 40.00\% \\
-        GB & \texttt{kubo/0.39.0/} & 47 & 16.67\% \\
-        DE & \texttt{kubo/0.22.0/3f884d3/gala.games} & 40 & 6.58\% \\
-        FI & \texttt{kubo/0.25.0/} & 37 & 11.71\% \\
-        CA & \texttt{kubo/0.37.0/6898472/docker} & 33 & 13.31\% \\
-        JP & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 25.64\% \\
-        SG & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 16.30\% \\
-        NL & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 14.85\% \\
-        TW & \texttt{go-ipfs/0.8.0/48f94e2} & 23 & 34.33\% \\
-        IN & \texttt{kubo/0.32.1/} & 23 & 31.51\% \\
-        ES & \texttt{kubo/0.37.0/6898472/docker} & 23 & 26.14\% \\
+        CN & \texttt{go-ipfs/0.8.0/...} & 64.01\% \\
+        KR & \texttt{go-ipfs/0.8.0/...} & 40.00\% \\
+        TW & \texttt{go-ipfs/0.8.0/...} & 34.33\% \\
+        IN & \texttt{kubo/0.32.1/} & 31.51\% \\
+        ES & \texttt{kubo/0.37.0/../docker} & 26.14\% \\
+        JP & \texttt{kubo/0.22.0/../gala.games} & 25.64\% \\
+        US & \texttt{kubo/0.22.0/../gala.games} & 22.36\% \\
+        FR & \texttt{kubo/0.22.0/../gala.games} & 19.89\% \\
+        GB & \texttt{kubo/0.39.0/} & 16.67\% \\
+        SG & \texttt{kubo/0.22.0/../gala.games} & 16.30\% \\
+        NL & \texttt{kubo/0.22.0/../gala.games} & 14.85\% \\
+        CA & \texttt{kubo/0.37.0/../docker} & 13.31\% \\
+        FI & \texttt{kubo/0.25.0/} & 11.71\% \\
+        DE & \texttt{kubo/0.22.0/../gala.games} & 6.58\% \\
         \hline
     \end{tabular}
 \end{table}
 
-\subsection{Operational and Security Implications}
+\section{Node Availability}
+\label{sec:available-nodes}
 
-The agent landscape reveals a fragmentation of deployments characterized by a mix of legacy software and vendor-branded clusters. In Asia, particularly across China, South Korea, and Taiwan, the dominance of \texttt{go-ipfs/0.8.0} suggests pockets of outdated infrastructure that risk protocol incompatibility and exposure to older implementation bugs. In the United States, substantial infrastructure appears associated with \texttt{kubo/0.22.0/.../gala.games} and Docker-based deployments, implying that a small number of operator templates can shape regional risk: unpatched vulnerabilities or misconfigurations may be amplified when many nodes share the same build and operational pattern.
+To assess node reliability despite intermittent monitoring outages, we employ a \textbf{Relative Availability Index (RAI)}. Unlike absolute uptime, which requires a continuous 24/7 observation window, RAI measures a peer's presence relative only to the periods when the Nebula crawler was active. This ensures that the reliability scores reflect the node's actual network behavior rather than the monitoring station's connectivity gaps.
+
+$$RAI = \frac{\sum \text{Individual Peer Uptime}}{\sum \text{Total Crawler Active Sessions}}$$
+Our analysis reveals a troubling \textbf{security-reliability paradox}  within the IPFS network, identified through a Relative Availability Index that isolates stable infrastructure from transient noise. While the network is anchored by high-availability "Pillar" nodes, our data shows that a significant portion of this stable backbone is composed of compromised or high-risk entities. Specifically, the consistent detection of the  \texttt{/sbptp/} protocol—a known communication channel for the InterPlanetary Storm (IPFSStorm) botnet—among our most reliable peers suggests that malicious actors are maintaining a persistent, high-uptime presence to facilitate proxying and command-and-control activities. This risk is further compounded by the prevalence of outdated and vulnerable agents, such as \texttt{kubo/0.18.1} and \texttt{go-ipfs}, which serve as stable but exploitable entry points. While the US maintains a higher percentage of reliable infrastructure compared to the high churn observed in CN-based peers. The fact that these "reliable" nodes are running malicious protocols or vulnerable software indicates that the network's most dependable participants are also its primary vectors for systemic instability and attack.
+\begin{table}[H]
+    \centering
+    \small
+    \caption{Most frequently observed protocols (global)}
+    \label{tab:protocol_counts_global}
+    \begin{tabular}{lr}
+        \hline
+        Protocol & Count \\
+        \hline
+        \texttt{/ipfs/ping/1.0.0} & 3429 \\
+        \texttt{/ipfs/id/1.0.0} & 3426 \\
+        \texttt{/ipfs/id/push/1.0.0} & 3423 \\
+        \texttt{/ipfs/kad/1.0.0} & 3156 \\
+        \texttt{/libp2p/autonat/1.0.0} & 3119 \\
+        \texttt{/ipfs/bitswap/1.0.0} & 3100 \\
+        \texttt{/ipfs/bitswap/1.1.0} & 3100 \\
+        \texttt{/ipfs/bitswap} & 3097 \\
+        \texttt{/libp2p/circuit/relay/0.2.0/stop} & 3097 \\
+        \texttt{/x/} & 3086 \\
+        \texttt{/ipfs/bitswap/1.2.0} & 3072 \\
+        \texttt{/ipfs/lan/kad/1.0.0} & 2916 \\
+        \texttt{/libp2p/dcutr} & 2894 \\
+        \texttt{/libp2p/circuit/relay/0.2.0/hop} & 2704 \\
+        \texttt{/libp2p/autonat/2/dial-back} & 1422 \\
+        \texttt{/libp2p/autonat/2/dial-request} & 1422 \\
+        \texttt{/libp2p/circuit/relay/0.1.0} & 814 \\
+        \texttt{/p2p/id/delta/1.0.0} & 785 \\
+        \texttt{/meshsub/1.0.0} & 251 \\
+        \texttt{/meshsub/1.1.0} & 250 \\
+        \texttt{/floodsub/1.0.0} & 249 \\
+        \texttt{/sbptp/1.0.0} & 203 \\
+        \texttt{/meshsub/1.2.0} & 162 \\
+        \hline
+    \end{tabular}
+\end{table}
+\begin{table}[ht]
+  \centering
+  \small
+  \caption{Reliable agent share at \(RAI \ge 0.9\) (top agents)}
+  \label{tab:reliable-agent-share-rai-09}
+  \begin{tabular}{p{0.72\linewidth}r}
+      \hline
+      Agent & Percent \\
+      \hline
+      \texttt{kubo/0.22.0/3f884d3/gala.games} & 17.13\% \\
+      \texttt{kubo/0.18.1/675f8bd/docker} & 10.06\% \\
+      \texttt{kubo/0.37.0/6898472/docker} & 6.68\% \\
+      \texttt{kubo/0.39.0/} & 6.28\% \\
+      \texttt{go-ipfs/0.8.0/48f94e2} & 5.23\% \\
+      \texttt{kubo/0.32.1/} & 3.58\% \\
+      \texttt{kubo/0.39.0/2896aed/docker} & 3.32\% \\
+      \texttt{kubo/0.37.0/6898472} & 1.96\% \\
+      \texttt{kubo/0.40.1/39f8a65/docker} & 1.79\% \\
+      \hline
+  \end{tabular}
+\end{table}
+\mbox{} % Figures moved to last page to control placement.
+
+\clearpage
+\onecolumn
+
+% Force Figure 1-3 onto the final page.
+\captionsetup{font=footnotesize,skip=2pt}
+\captionsetup[subfigure]{font=tiny,skip=1pt}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_geographical.png}
+    \caption{Multiaddresses per country (bucketed).}
+    \label{fig:global}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_peer_neighbour.png}
+    \caption{Peer neighbour distribution.}
+    \label{fig:global-peer-neighbour}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_new_found.png}
+    \caption{New peers found over time.}
+    \label{fig:global-new-found}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/global_each_crawl.png}
+    \caption{Peers per crawl over time.}
+    \label{fig:global-each-crawl}
+  \end{subfigure}
+  \caption{Global map and additional crawl metrics.}
+  \label{fig:global-metrics}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/protocol_distribution_US.png}
+    \caption{Protocol distribution for the United States.}
+    \label{fig:protocol-dist-us}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/protocol_distribution_CN.png}
+    \caption{Protocol distribution for China.}
+    \label{fig:protocol-dist-cn}
+  \end{subfigure}
+  \caption{Regional protocol distributions observed during the crawl.}
+  \label{fig:protocol-distributions}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pics/peer_uptime_percentage.png}
+    \caption{Distribution of peer RAI values (bucketed).}
+    \label{fig:peer-uptime-percentage}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pics/peer_uptime_country.png}
+    \caption{Reliable peers by country at different RAI thresholds.}
+    \label{fig:peer-uptime-country}
+  \end{subfigure}
+  \caption{Relative Availability Index (RAI) analysis across thresholds.}
+  \label{fig:peer-uptime-metrics}
+\end{figure}
 
 \end{document}

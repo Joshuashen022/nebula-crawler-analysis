@@ -49,3 +49,37 @@
   \caption{Regional protocol distributions observed during the crawl.}
   \label{fig:protocol-distributions}
 \end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/peer_uptime_percentage.png}
+    \caption{Distribution of peer RAI values (bucketed).}
+    \label{fig:peer-uptime-percentage}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/peer_uptime_country.png}
+    \caption{Reliable peers by country at different RAI thresholds.}
+    \label{fig:peer-uptime-country}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/peer_uptime_agent.png}
+    \caption{Reliable peers by agent at different RAI thresholds.}
+    \label{fig:peer-uptime-agent}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pics/peer_uptime_protocol.png}
+    \caption{Reliable peers by protocol at different RAI thresholds.}
+    \label{fig:peer-uptime-protocol}
+  \end{subfigure}
+  \caption{Relative Availability Index (RAI) analysis across thresholds.}
+  \label{fig:peer-uptime-metrics}
+\end{figure*}

@@ -1,5 +1,42 @@
 \begin{table}[ht]
     \centering
+    \small
+    \caption{Most frequently observed protocols (global)}
+    \label{tab:protocol_counts_global}
+    \begin{tabular}{lr}
+        \hline
+        Protocol & Count \\
+        \hline
+        \texttt{/ipfs/ping/1.0.0} & 3429 \\
+        \texttt{/ipfs/id/1.0.0} & 3426 \\
+        \texttt{/ipfs/id/push/1.0.0} & 3423 \\
+        \texttt{/ipfs/kad/1.0.0} & 3156 \\
+        \texttt{/libp2p/autonat/1.0.0} & 3119 \\
+        \texttt{/ipfs/bitswap/1.0.0} & 3100 \\
+        \texttt{/ipfs/bitswap/1.1.0} & 3100 \\
+        \texttt{/ipfs/bitswap} & 3097 \\
+        \texttt{/libp2p/circuit/relay/0.2.0/stop} & 3097 \\
+        \texttt{/x/} & 3086 \\
+        \texttt{/ipfs/bitswap/1.2.0} & 3072 \\
+        \texttt{/ipfs/lan/kad/1.0.0} & 2916 \\
+        \texttt{/libp2p/dcutr} & 2894 \\
+        \texttt{/libp2p/circuit/relay/0.2.0/hop} & 2704 \\
+        \texttt{/libp2p/autonat/2/dial-back} & 1422 \\
+        \texttt{/libp2p/autonat/2/dial-request} & 1422 \\
+        \texttt{/libp2p/circuit/relay/0.1.0} & 814 \\
+        \texttt{/p2p/id/delta/1.0.0} & 785 \\
+        \texttt{/meshsub/1.0.0} & 251 \\
+        \texttt{/meshsub/1.1.0} & 250 \\
+        \texttt{/floodsub/1.0.0} & 249 \\
+        \texttt{/sbptp/1.0.0} & 203 \\
+        \texttt{/meshsub/1.2.0} & 162 \\
+        \hline
+    \end{tabular}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[ht]
+    \centering
     \caption{Countries with total nodes $>100$, sorted by v0 (Qm) share}
     \label{tab:peerid_country}
     \begin{tabular}{lrrrr}

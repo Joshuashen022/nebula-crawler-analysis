@@ -341,8 +341,8 @@ def main():
 
     # protocol distribution for a single country
     # counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
-    cn_rows = get_protocol_distribution_for_country(counts, "CN", top_n=30)
-    plot_protocol_distribution_for_country(cn_rows, "CN")
+    cn_rows = get_protocol_distribution_for_country(counts, "US", top_n=30)
+    plot_protocol_distribution_for_country(cn_rows, "US")
 
     # single protocol distribution across countries
     # show_protocol_distribution_across_countries("/sbptp/1.0.0", top_n=40)

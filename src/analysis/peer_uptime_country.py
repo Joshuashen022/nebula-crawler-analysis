@@ -92,9 +92,39 @@ def plot_reliable_peers_by_country(rows, peer_country_rows):
         y="count",
         color="threshold",
         barmode="group",
-        title="Reliable peers by country at different uptime thresholds",
+    )
+
+    # Tweak overall font and legend position
+    fig.update_layout(
+        font=dict(
+            family="Arial, sans-serif",
+            size=18,
+        ),
+        legend=dict(
+            title="threshold",
+            x=0.99,
+            y=0.99,
+            xanchor="right",
+            yanchor="top",
+        ),
+    )
+
+    # Enlarge x and y axis fonts
+    fig.update_xaxes(
+        title=None,
+        tickfont=dict(size=20),
+        tickangle=-30,
+    )
+    fig.update_yaxes(
+        title=None,
+        tickfont=dict(size=20),
     )
     fig.show()
+    # Save figure as PNG under report/pics
+    project_root = Path(__file__).resolve().parents[2]
+    output_path = project_root / "report" / "pics" / "peer_uptime_country.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(output_path), scale=2)
 
 
 def main():

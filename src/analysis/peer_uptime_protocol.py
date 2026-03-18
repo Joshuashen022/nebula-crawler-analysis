@@ -14,7 +14,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
 from src.dbs.protocol_peer_count import fetch_protocol_peer_count
 
-
+        # SELECT 
+        #             p.multi_hash,
+        #             s.first_successful_visit,
+        #             s.updated_at,
+        #             (s.updated_at - s.first_successful_visit) AS crawler_track_duration,
+        #             s.uptime,
+        #             (upper(s.uptime) - lower(s.uptime)) AS peer_actual_uptime
+        #         FROM sessions s
+        #         JOIN peers p ON s.peer_id = p.id
+        #         ORDER BY s.first_successful_visit DESC;
+        
 def aggregate_uptime_by_multi_hash(rows, threshold: float = 0.8):
     """
     Group rows by multi_hash and sum crawler_track_duration and peer_actual_uptime.
@@ -105,10 +115,45 @@ def plot_reliable_peers_by_protocol(rows, protocol_rows):
         y="count",
         color="threshold",
         barmode="group",
-        title="Reliable peers by protocol at different uptime thresholds",
+        title=None,
     )
-    fig.update_layout(xaxis_tickangle=-45)
+    fig.update_layout(
+        title=None,
+        xaxis=dict(
+            title=None,
+            tickangle=-30,
+        ),
+        yaxis=dict(
+            title=None,
+            tickfont=dict(size=30),
+        ),
+        margin=dict(l=80, r=30, t=80, b=80),
+    )
+
+    # Save figure as PNG under report/pics
+    project_root = Path(__file__).resolve().parents[2]
+    output_path = project_root / "report" / "pics" / "peer_uptime_protocol.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(output_path), scale=2)
     fig.show()
+
+
+def print_reliable_protocol_counts(threshold: float = 0.9):
+    """
+    Print (protocol, count) for peers whose uptime ratio exceeds `threshold`,
+    sorted from highest count to lowest.
+    """
+    rows = fetch_uptime_duration()
+    protocol_rows = fetch_protocol_peer_count()
+
+    reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
+    protocol_counts = count_reliable_peers_by_protocol(reliable_peers, protocol_rows)
+    print("=== Reliable protocol counts at threshold 0.9 ===")
+    print("Count\tProtocol")
+    print("-" * 20)
+    for protocol, count in protocol_counts.items():
+        print(f"{count}\t{protocol}")
+    print("-" * 20)
 
 
 def main():
@@ -116,6 +161,7 @@ def main():
     rows = fetch_uptime_duration()
     protocol_rows = fetch_protocol_peer_count()
     plot_reliable_peers_by_protocol(rows, protocol_rows)
+    print_reliable_protocol_counts(0.9) 
 
 
 if __name__ == "__main__":

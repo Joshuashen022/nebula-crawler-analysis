@@ -7,7 +7,7 @@ from pathlib import Path
 from collections import defaultdict
 from datetime import timedelta
 
-import plotly.express as px
+import plotly.graph_objects as go
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
@@ -70,7 +70,7 @@ def build_percentage_distributions(aggregated):
             raise Exception("Ratio is greater than 1")
         # Map ratio to 5%-wide bins based on percentage
         pct = ratio * 100
-        bin_index = int(pct // 5)
+        bin_index = min(int(pct // 5), num_bins - 1)
 
         bin_counts[bin_index] += 1
         total_entries += 1
@@ -89,13 +89,44 @@ def plot_ratio_histogram(bin_labels, bin_counts):
     """
     Plot bar chart for peer/crawler ratio distribution using plotly.
     """
-    fig = px.bar(
-        x=bin_labels,
-        y=bin_counts,
-        labels={"x": "Peer/Crawler uptime ratio (5% bins)", "y": "Count of multi_hash"},
-        title="Peer/Crawler uptime ratio distribution",
+    # Draw bars at bin centers (2.5, 7.5, ..., 97.5) so that x-axis ticks at
+    # 5%, 10%, ..., 100% fall between two adjacent bars.
+    bin_centers = [i * 5 + 2.5 for i in range(len(bin_counts))]
+    tick_vals = list(range(5, 101, 5))
+    tick_text = [f"{v}%" for v in tick_vals]
+
+    fig = go.Figure(
+        data=[
+            go.Bar(
+                x=bin_centers,
+                y=bin_counts,
+                width=5,
+            )
+        ]
     )
-    fig.update_layout(xaxis_tickangle=-45)
+    fig.update_layout(
+        title=None,
+        xaxis=dict(
+            title=None,
+            tickmode="array",
+            tickvals=tick_vals,
+            ticktext=tick_text,
+            range=[0, 100],
+            tickfont=dict(size=16),
+            tickangle=-30,
+        ),
+        yaxis=dict(
+            title=None,
+            tickfont=dict(size=30),
+        ),
+        margin=dict(l=80, r=30, t=80, b=80),
+    )
+
+    # Save figure as PNG under report/pics
+    project_root = Path(__file__).resolve().parents[2]
+    output_path = project_root / "report" / "pics" / "peer_uptime_percentage.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(output_path), scale=2)
     fig.show()
 
 
