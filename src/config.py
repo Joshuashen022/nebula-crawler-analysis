@@ -1,7 +1,11 @@
 import os
-from dotenv import load_dotenv
+try:
+    # Optional: keeps local/dev runs working even if python-dotenv isn't installed.
+    from dotenv import load_dotenv
 
-load_dotenv()
+    load_dotenv()
+except ModuleNotFoundError:
+    pass
 
 DB_HOST = os.getenv("NEBULA_DATABASE_NAME", "localhost")
 INTERVAL_COUNT = int(os.getenv("INTERVAL_COUNT", 6))

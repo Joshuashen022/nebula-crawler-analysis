@@ -5,7 +5,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import crawl
-from analysis import geographical
 import config
 
 HOST = "0.0.0.0"
@@ -54,7 +53,11 @@ class ApiHandler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/geographical":
-            data = geographical.fetch_geographical_data()
+            # Lazy import so the API server can start even if optional
+            # visualization deps (e.g. plotly) are not installed.
+            from analysis.global_geographical import fetch_geographical_data
+
+            data = fetch_geographical_data()
             self._send_json(
                 200,
                 {
