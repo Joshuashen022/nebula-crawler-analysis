@@ -80,7 +80,8 @@ class ApiHandler(BaseHTTPRequestHandler):
 
         if self.path == "/each-crawl":
             from analysis.global_each_crawl import load_crawl_stats
-            data = load_crawl_stats()
+            results_dir = Path(__file__).resolve().parent / "results"
+            data = load_crawl_stats(results_dir)
             self._send_json(200, {
                 "ok": True,
                 "service": "each-crawl",
