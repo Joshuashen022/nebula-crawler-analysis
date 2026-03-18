@@ -1,10 +1,10 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-# import config
+import config
 
-# DB_HOST = config.DB_HOST
-DB_HOST = "localhost"
+DB_HOST = config.DB_HOST
+# DB_HOST = "localhost"
 
 
 def get_conn():
