@@ -68,6 +68,26 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if self.path == "/new-found":
+            from analysis.global_new_found import fetch_multi_hash_count_by_create_time
+            data = fetch_multi_hash_count_by_create_time()
+            self._send_json(200, {
+                "ok": True,
+                "service": "new-found",
+                "data": data,
+            })
+            return
+
+        if self.path == "/each-crawl":
+            from analysis.global_each_crawl import load_crawl_stats
+            data = load_crawl_stats()
+            self._send_json(200, {
+                "ok": True,
+                "service": "each-crawl",
+                "data": data,
+            })
+            return
+
         self._send_json(404, {"error": "not found"})
 
     def do_POST(self):
