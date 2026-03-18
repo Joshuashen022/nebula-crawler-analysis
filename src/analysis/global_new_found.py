@@ -131,7 +131,7 @@ def main():
     print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
 
     # Optional: generate line chart (x = bucket start +08, y = Count)
-    plot_multi_hash_count_by_create_time(
+    fig = plot_multi_hash_count_by_create_time(
         rows=rows,
         start_time=start_time,
         step_length_seconds=step_length_seconds,
@@ -140,7 +140,7 @@ def main():
         / "pics"
         / "global_new_found.png",
     )
-    # fig.show()
+    fig.show()
 
 
 if __name__ == "__main__":

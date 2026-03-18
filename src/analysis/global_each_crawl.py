@@ -99,7 +99,7 @@ def plot_crawl_peers_over_time(
     out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_each_crawl.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=800, height=400, scale=2)
-    # fig.show()
+    fig.show()
 
 
 def main():

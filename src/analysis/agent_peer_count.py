@@ -18,6 +18,8 @@ def main():
     for agent, multi_hash in rows:
         agent_hashes[agent].add(multi_hash)
 
+    total_distinct_pairs = sum(len(hashes) for hashes in agent_hashes.values())
+
     # sort by count descending, then by protocol name
     sorted_agents = sorted(
         agent_hashes.items(),
@@ -25,12 +27,14 @@ def main():
     )
 
     print("=== Agent distinct multi_hash (peer) count ===\n")
-    print(f"{'Agent':<60} {'Distinct multi_hash':>20}")
-    print("-" * 82)
+    print(f"{'Agent':<60} {'Distinct multi_hash':>20} {'% of total':>10}")
+    print("-" * 94)
     for agent, hashes in sorted_agents:
-        print(f"{agent:<60} {len(hashes):>20,}")
-    print("-" * 82)
+        share = (len(hashes) / total_distinct_pairs * 100.0) if total_distinct_pairs else 0.0
+        print(f"{agent:<60} {len(hashes):>20,} {share:>9.2f}%")
+    print("-" * 94)
     print(f"{'Total agents':<60} {len(agent_hashes):>20,}")
+    print(f"{'Total distinct (agent, multi_hash) pairs':<60} {total_distinct_pairs:>20,}")
     print(f"{'Total (agent, multi_hash) pairs':<60} {len(rows):>20,}")
 
 
@@ -38,24 +42,26 @@ if __name__ == "__main__":
     main()
 
 
-# kubo/0.22.0/3f884d3/gala.games                                                914
-# kubo/0.37.0/6898472/docker                                                    445
-# kubo/0.18.1/675f8bd/docker                                                    431
-# go-ipfs/0.8.0/48f94e2                                                         426
-# kubo/0.39.0/                                                                  335
-# kubo/0.32.1/                                                                  207
-# kubo/0.39.0/2896aed/docker                                                    150
-# storm                                                                         138
-# kubo/0.40.1/desktop                                                           106
-# kubo/0.37.0/6898472                                                            95
-# kubo/0.40.1/39f8a65/docker                                                     94
-# kubo/0.36.0/                                                                   91
-# kubo/0.40.1                                                                    91
-# kubo/0.28.0/                                                                   83
-# kubo/0.33.2/                                                                   63
-# kubo/0.25.0/                                                                   60
-# kubo/0.24.0/                                                                   50
-# kubo/0.22.0/                                                                   49
-# kubo/0.39.0/desktop                                                            47
-# kubo/0.37.0/                                                                   44
-# kubo/0.36.0/37b8411/docker                                                     40
+# Agent                                                                   Distinct      percent
+# ----------------------------------------------------------------------------------------------
+# kubo/0.22.0/3f884d3/gala.games                                              1,007     14.37%
+# go-ipfs/0.8.0/48f94e2                                                         683      9.75%
+# kubo/0.37.0/6898472/docker                                                    522      7.45%
+# kubo/0.18.1/675f8bd/docker                                                    445      6.35%
+# kubo/0.39.0/                                                                  411      5.86%
+# kubo/0.32.1/                                                                  301      4.30%
+# kubo/0.39.0/2896aed/docker                                                    161      2.30%
+# storm                                                                         160      2.28%
+# kubo/0.40.1/desktop                                                           157      2.24%
+# kubo/0.40.1/39f8a65/docker                                                    116      1.66%
+# kubo/0.40.1                                                                   115      1.64%
+# kubo/0.37.0/6898472                                                           110      1.57%
+# kubo/0.28.0/                                                                   98      1.40%
+# kubo/0.36.0/                                                                   97      1.38%
+# kubo/0.24.0/                                                                   74      1.06%
+# kubo/0.33.2/                                                                   64      0.91%
+# kubo/0.25.0/                                                                   62      0.88%
+# kubo/0.22.0/                                                                   61      0.87%
+# kubo/0.39.0/desktop                                                            61      0.87%
+# kubo/0.17.0/4485d6b                                                            60      0.86%
+# server@d266990fa-dirty                                                         60      0.86%

@@ -25,3 +25,60 @@
         \hline
     \end{tabular}
 \end{table}
+\efloatseparator
+ 
+\begin{table}[ht]
+    \centering
+    \caption{Agent coverage by country (sample excerpt)}
+    \label{tab:agent-coverage-country}
+    \begin{tabular}{lrrr}
+        \hline
+        Country & Total & With agent & Without agent \\
+        \hline
+        CN & 6,155 & 366 & 5,789 \\
+        US & 3,269 & 2,463 & 806 \\
+        FR & 925 & 732 & 193 \\
+        DE & 866 & 607 & 259 \\
+        GB & 483 & 291 & 192 \\
+        FI & 366 & 311 & 55 \\
+        KR & 310 & 244 & 66 \\
+        CA & 307 & 247 & 60 \\
+        NL & 270 & 199 & 71 \\
+        SG & 262 & 189 & 73 \\
+        RU & 235 & 148 & 87 \\
+        IN & 170 & 75 & 95 \\
+        JP & 168 & 123 & 45 \\
+        ES & 162 & 85 & 77 \\
+        HK & 140 & 88 & 52 \\
+        TW & 128 & 68 & 60 \\
+        TH & 114 & 60 & 54 \\
+        \hline
+    \end{tabular}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[ht]
+    \centering
+    \caption{Dominant agent per country (sample excerpt)}
+    \label{tab:agent-topshare-country}
+    \begin{tabular}{llrr}
+        \hline
+        Country & Top agent & Top count & Top share \\
+        \hline
+        US & \texttt{kubo/0.22.0/3f884d3/gala.games} & 551 & 22.36\% \\
+        CN & \texttt{go-ipfs/0.8.0/48f94e2} & 233 & 64.01\% \\
+        FR & \texttt{kubo/0.22.0/3f884d3/gala.games} & 146 & 19.89\% \\
+        KR & \texttt{go-ipfs/0.8.0/48f94e2} & 98 & 40.00\% \\
+        GB & \texttt{kubo/0.39.0/} & 47 & 16.67\% \\
+        DE & \texttt{kubo/0.22.0/3f884d3/gala.games} & 40 & 6.58\% \\
+        FI & \texttt{kubo/0.25.0/} & 37 & 11.71\% \\
+        CA & \texttt{kubo/0.37.0/6898472/docker} & 33 & 13.31\% \\
+        JP & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 25.64\% \\
+        SG & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 16.30\% \\
+        NL & \texttt{kubo/0.22.0/3f884d3/gala.games} & 30 & 14.85\% \\
+        TW & \texttt{go-ipfs/0.8.0/48f94e2} & 23 & 34.33\% \\
+        IN & \texttt{kubo/0.32.1/} & 23 & 31.51\% \\
+        ES & \texttt{kubo/0.37.0/6898472/docker} & 23 & 26.14\% \\
+        \hline
+    \end{tabular}
+\end{table}
