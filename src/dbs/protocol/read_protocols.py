@@ -24,10 +24,9 @@ def fetch_protocols():
             )
             rows = cur.fetchall()
 
-        for row in rows:
-            print(row)
     finally:
         conn.close()
+    return rows
 
 
 if __name__ == "__main__":
