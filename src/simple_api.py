@@ -279,11 +279,11 @@ class ApiHandler(BaseHTTPRequestHandler):
                 }, 
             )
             return
-        if self.path.startswith("/agent-distribution-country"):
+        if self.path.startswith("/country-distribution-agent"):
             query = urlparse(self.path).query
             qs = parse_qs(query)
             agent = (qs.get("agent") or [None])[0]
-            logger.info(f"agent-distribution-country: {agent}, {self.path}")
+            logger.info(f"country-distribution-agent: {agent}, {self.path}")
             data = agent_distribution_country.get_country_distribution_for_agent(agent)
             self._send_json(
                 200,
