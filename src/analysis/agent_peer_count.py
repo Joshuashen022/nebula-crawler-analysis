@@ -25,8 +25,13 @@ def get_agent_peer_count():
         agent_hashes.items(),
         key=lambda x: (-len(x[1]), x[0]),
     )
+
+    # JSON responses can't include `set`, so convert hashes to a stable list.
+    # (Tuples are fine for json; sets are not.)
+    sorted_agents_json = [(agent, sorted(hashes)) for agent, hashes in sorted_agents]
+
     result = dict()
-    result["sorted_agents"] = sorted_agents
+    result["sorted_agents"] = sorted_agents_json
     result["total_distinct_pairs"] = total_distinct_pairs
     return result
 
@@ -63,7 +68,7 @@ def main():
 
 
 if __name__ == "__main__":
-    remote_main()
+    main()
 
 
 # Agent                                                                   Distinct      percent
