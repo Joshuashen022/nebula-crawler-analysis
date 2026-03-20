@@ -265,6 +265,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path.startswith("/agent-distribution-country"):
+            query = urlparse(self.path).query
             qs = parse_qs(query)
             country = (qs.get("country") or [None])[0]
             logger.info(f"agent-distribution-country: {country}, {self.path}")
@@ -279,6 +280,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path.startswith("/agent-distribution-country"):
+            query = urlparse(self.path).query
             qs = parse_qs(query)
             agent = (qs.get("agent") or [None])[0]
             logger.info(f"agent-distribution-country: {agent}, {self.path}")
@@ -304,6 +306,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path.startswith("/agent-country-share"):
+            query = urlparse(self.path).query
             qs = parse_qs(query)
             agent = (qs.get("agent") or [None])[0]
             logger.info(f"agent-country-share: {agent}, {self.path}")

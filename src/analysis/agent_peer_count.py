@@ -68,7 +68,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 
 # Agent                                                                   Distinct      percent
