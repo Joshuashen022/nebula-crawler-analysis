@@ -144,7 +144,7 @@ def remote_main():
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 # --- Top 15 by count ---
 #    1. CHN: 5,844  (1k–9,999)

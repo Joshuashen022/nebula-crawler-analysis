@@ -65,7 +65,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path == "/global-new-found":
-            data = global_new_found.fetch_multi_hash_count_by_create_time()
+            data = global_new_found.fetch_all_multi_hashes()
             self._send_json(
                 200,
                 {

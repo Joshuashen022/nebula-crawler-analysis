@@ -12,7 +12,7 @@ down:
 	docker compose down
 
 logs:
-	docker compose logs -f
+	docker compose logs -f crawler -n 10
 
 ps:
 	docker compose ps

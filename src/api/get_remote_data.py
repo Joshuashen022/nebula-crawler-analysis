@@ -24,7 +24,17 @@ def get_remote_data(path: str) -> dict:
     req = urllib.request.Request(url, method="GET")
     req.add_header("Authorization", f"Bearer {AUTH_TOKEN}")
     with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+        raw = json.loads(resp.read().decode("utf-8"))
+        if not raw.get("ok"):
+            print("API returned ok=False", file=sys.stderr)
+            return
+        if raw.get("service") != "geographical":
+            print("Unexpected service:", raw.get("service"), file=sys.stderr)
+        data = raw.get("data")
+        if not data or not data.get("country"):
+            print("No geographical data (empty country list).")
+            return
+        return data
 
 
 

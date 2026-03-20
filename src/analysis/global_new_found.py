@@ -12,8 +12,10 @@ from typing import Optional, Union
 import plotly.express as px
 import plotly.graph_objects as go
 
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.peers.read_multi_hashes_create_time import fetch_all_multi_hashes
+from src.api.get_remote_data import get_remote_data
 
 TZ_UTC8 = timezone(timedelta(hours=8))
 start_time = 1741743294  # 2026-03-12 13:54:54.811238+08 -> 1741743294
@@ -138,6 +140,39 @@ def main():
     )
     fig.show()
 
+def remote_main():
+    """
+    start_time: Unix timestamp (seconds). If None, use the min created_at in the data.
+    step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
+    """
+    
+    rows = get_remote_data("/global-new-found")
+    bucket_count = fetch_multi_hash_count_by_create_time(rows)
+    
+    print(f"\n=== multi_hash count by create_time (step = 1 hour) ===\n")
+    print(f"{'Bucket start (+08)':<28} {'Bucket':>8} {'Count':>12}")
+    print("-" * 50)
+
+    for bucket_id in sorted(bucket_count.keys()):
+        bucket_start_ts = start_time + bucket_id * step_length_seconds
+        bucket_start_str = datetime.fromtimestamp(bucket_start_ts, tz=TZ_UTC8).strftime("%Y-%m-%d %H:%M:%S+08")
+        count = bucket_count[bucket_id]
+        print(f"{bucket_start_str:<28} {bucket_id:>8} {count:>12,}")
+    print("-" * 50)
+    print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
+
+    # Optional: generate line chart (x = bucket start +08, y = Count)
+    fig = plot_multi_hash_count_by_create_time(
+        rows=rows,
+        start_time=start_time,
+        step_length_seconds=step_length_seconds,
+        output_path=Path(__file__).resolve().parents[2]
+        / "report"
+        / "pics"
+        / "global_new_found.png",
+    )
+    fig.show()
+
 
 if __name__ == "__main__":
-    main()
+    remote_main()
