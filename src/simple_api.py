@@ -9,7 +9,8 @@ logger = logging.getLogger("crawler.api")
 
 import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
-    global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol
+    global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
+    peer_uptime_percentage
 import config
 
 HOST = "0.0.0.0"
@@ -32,6 +33,7 @@ class ApiHandler(BaseHTTPRequestHandler):
         return auth_header == expected
 
     def do_GET(self):
+        logger.info(f"GET request: {self.path}")
         if not self._is_authorized():
             self._send_json(401, {"error": "unauthorized"})
             return
@@ -160,9 +162,21 @@ class ApiHandler(BaseHTTPRequestHandler):
                 },
             )
             return
+        if self.path == "/uptime-percentage-distributions":
+            data = peer_uptime_percentage.get_uptime_percentage_distributions()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "uptime-percentage-distributions",
+                    "data": data,
+                },
+            )
+            return
         self._send_json(404, {"error": "not found"})
 
     def do_POST(self):
+        logger.info(f"POST request: {self.path}")
         if not self._is_authorized():
             self._send_json(401, {"error": "unauthorized"})
             return

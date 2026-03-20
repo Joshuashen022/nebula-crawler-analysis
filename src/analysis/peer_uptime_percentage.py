@@ -130,12 +130,16 @@ def plot_ratio_histogram(bin_labels, bin_counts):
     fig.show()
 
 
-def main():
-    """Fetch data and print uptime percentage distributions."""
+def get_uptime_percentage_distributions():
     rows = fetch_uptime_duration()
     aggregated = aggregate_uptime_by_multi_hash(rows)
-
     bin_labels, bin_counts = build_percentage_distributions(aggregated)
+    return bin_labels, bin_counts
+
+def main():
+    """Fetch data and print uptime percentage distributions."""
+
+    bin_labels, bin_counts = get_uptime_percentage_distributions()
 
     print("Peer/Crawler uptime ratio distribution in 5% bins")
     print("Bin\tCount")

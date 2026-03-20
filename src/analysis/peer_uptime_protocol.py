@@ -164,5 +164,5 @@ def remote_main():
     print("-" * 20)
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
