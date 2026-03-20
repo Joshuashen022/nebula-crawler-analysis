@@ -16,7 +16,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.peers.read_multi_hashes_create_time import fetch_all_multi_hashes
 
 TZ_UTC8 = timezone(timedelta(hours=8))
-
+start_time = 1741743294  # 2026-03-12 13:54:54.811238+08 -> 1741743294
+step_length_seconds = 3600
 
 def _to_timestamp(t) -> int:
     if hasattr(t, "timestamp"):
@@ -26,7 +27,7 @@ def _to_timestamp(t) -> int:
 
 def fetch_multi_hash_count_by_create_time(
     rows: list[tuple[str, object]],
-    start_time: int,
+    start_time: int=1741743294,
     step_length_seconds: int = 3600,
 ):
     """
@@ -110,15 +111,10 @@ def main():
     step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
     """
     rows = fetch_all_multi_hashes()  # 1773294894
-    start_time = 1741743294  # 2026-03-12 13:54:54.811238+08 -> 1741743294
-    start_str = datetime.fromtimestamp(start_time, tz=TZ_UTC8).strftime("%Y-%m-%d %H:%M:%S+08")
-    print(f"Using start_time: {start_time} ({start_str})")
-    step_length_seconds = 3600
     
-    bucket_count = fetch_multi_hash_count_by_create_time(rows, start_time, step_length_seconds)
+    bucket_count = fetch_multi_hash_count_by_create_time(rows)
     
-    step_hours = step_length_seconds / 3600
-    print(f"\n=== multi_hash count by create_time (step = {step_length_seconds}s = {step_hours:.2f}h) ===\n")
+    print(f"\n=== multi_hash count by create_time (step = 1 hour) ===\n")
     print(f"{'Bucket start (+08)':<28} {'Bucket':>8} {'Count':>12}")
     print("-" * 50)
 

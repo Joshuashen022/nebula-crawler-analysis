@@ -5,7 +5,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import crawl
-from analysis import geographical
+import analysis
 import config
 
 HOST = "0.0.0.0"
@@ -53,8 +53,8 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
 
-        if self.path == "/geographical":
-            data = geographical.fetch_geographical_data()
+        if self.path == "/global-geographical":
+            data = analysis.global_geographical.fetch_geographical_data()
             self._send_json(
                 200,
                 {
@@ -64,7 +64,40 @@ class ApiHandler(BaseHTTPRequestHandler):
                 },
             )
             return
+        if self.path == "/global-new-found":
+            data = analysis.global_new_found.fetch_multi_hash_count_by_create_time()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "new-found",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/global-each-crawl":
+            data = analysis.global_each_crawl.load_crawl_stats()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "each-crawl",
+                    "data": data,
+                },
+            )
+            return
 
+        if self.path == "/global-peer-neighbour":
+            data = analysis.global_peer_neighbour.fetch_neighbor_peer()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "peer-neighbour",
+                    "data": data,
+                },
+            )
+            return
         self._send_json(404, {"error": "not found"})
 
     def do_POST(self):

@@ -1,10 +1,9 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-# import config
+import config
 
-# DB_HOST = config.DB_HOST
-DB_HOST = "localhost"
+DB_HOST = config.DB_HOST
 # example:
 # ('QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt', 1773294894)
 # ('QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ', 1773294895)

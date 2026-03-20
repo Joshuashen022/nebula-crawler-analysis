@@ -8,6 +8,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+from src.api.get_remote_data import get_remote_data
 
 iso2_to_iso3 = {
     "US": "USA", "DE": "DEU", "FR": "FRA", "FI": "FIN", "CA": "CAN",
@@ -135,7 +136,11 @@ def main():
 
     print_geographical_analysis(data)
     illustrate_geographical_data(data)
-    
+
+def remote_main():
+    data = get_remote_data("/global-geographical")
+    print_geographical_analysis(data)
+    illustrate_geographical_data(data)
 
 
 if __name__ == "__main__":
