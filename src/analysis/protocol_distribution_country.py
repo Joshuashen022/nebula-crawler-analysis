@@ -17,6 +17,7 @@ import plotly.express as px
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.protocol_peer_count import fetch_protocol_peer_count
 from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+from src.api.get_remote_data import get_remote_data
 
 
 def build_protocol_country_counts(protocol_rows, peer_country_rows):
@@ -326,7 +327,12 @@ def main():
     rows =get_country_distribution_for_protocol("/sbptp/1.0.0", top_n=40)
     plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
+def remote_main():
+    rows = get_remote_data("/protocol-distribution-country?country=US", top_n=30)
+    plot_protocol_distribution_for_country(rows, "US")
+    rows =get_remote_data("/country-distribution-protocol?protocol=sbptp/1.0.0", top_n=40)
+    plot_country_distribution_for_protocol(rows,"sbptp/1.0.0",)
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()

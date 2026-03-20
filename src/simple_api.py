@@ -113,7 +113,7 @@ class ApiHandler(BaseHTTPRequestHandler):
                 },
             )
             return
-        if self.path.startswith("/protocol-distribution-country/"):
+        if self.path.startswith("/protocol-distribution-country"):
             qs = parse_qs(self.path)
             country = (qs.get("country") or [None])[0]
 
@@ -127,7 +127,7 @@ class ApiHandler(BaseHTTPRequestHandler):
                 },
             )
             return
-        if self.path.startswith("/country-distribution-protocol/"):
+        if self.path.startswith("/country-distribution-protocol"):
             qs = parse_qs(self.path)
             protocol = (qs.get("protocol") or [None])[0]
             data = protocol_distribution_country.get_country_distribution_for_protocol(protocol, top_n=30)
