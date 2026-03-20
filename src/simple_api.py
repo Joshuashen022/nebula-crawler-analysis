@@ -116,7 +116,10 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path.startswith("/protocol-distribution-country"):
-            qs = parse_qs(self.path)
+            # `BaseHTTPRequestHandler.path` includes the query string (e.g. `/foo?country=US`).
+            # `parse_qs()` expects *only* the query portion, so we must extract it first.
+            query = urlparse(self.path).query
+            qs = parse_qs(query)
             country = (qs.get("country") or [None])[0]
             logger.info(f"protocol-distribution-country: {country}, {self.path}")
             data = protocol_distribution_country.get_protocol_distribution_for_country(country, top_n=30)
@@ -131,7 +134,8 @@ class ApiHandler(BaseHTTPRequestHandler):
             )
             return
         if self.path.startswith("/country-distribution-protocol"):
-            qs = parse_qs(self.path)
+            query = urlparse(self.path).query
+            qs = parse_qs(query)
             protocol = (qs.get("protocol") or [None])[0]
             logger.info(f"country-distribution-protocol: {protocol}, {self.path}")
             data = protocol_distribution_country.get_country_distribution_for_protocol(protocol, top_n=30)
