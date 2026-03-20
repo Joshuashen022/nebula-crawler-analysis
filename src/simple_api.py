@@ -12,7 +12,7 @@ from analysis import global_geographical, global_new_found, global_each_crawl, \
     global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
     peer_uptime_percentage, peer_uptime_country, peer_uptime_agent, multi_hash_prefix, multi_hash_prefix_country,\
     multi_hash_prefix_asn, multi_hash_count_by_update_duration, agent_peer_count, \
-    agent_distribution_country
+    agent_distribution_country, compromized_peer_metadata
 import config
 
 HOST = "0.0.0.0"
@@ -316,6 +316,17 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "agent-country-share",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/compromized-peer-metadata":
+            data = compromized_peer_metadata.build_compromized_peer_metadata()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "compromized-peer-metadata",
                     "data": data,
                 },
             )

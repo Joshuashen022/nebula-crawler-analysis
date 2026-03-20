@@ -505,42 +505,42 @@ def main():
     country_stats = get_country_with_without_agent()
     print_country_agent_presence(country_stats, min_total=10)
 
-    # Example: agent distribution for a single country
-    cn_rows = get_agent_distribution_for_country(country)
-    plot_agent_distribution_for_country(cn_rows, country)
-
     # Per-country: top agent count and its share of that country's total agents
     top_rows = get_country_top_agent_share()
     print_country_top_agent_share(top_rows, max_countries=10)
 
-    # Example: single agent distribution across countries
-    rows = get_country_distribution_for_agent(agent)
-    plot_country_distribution_for_agent(rows, agent)
+    # # Example: agent distribution for a single country
+    # cn_rows = get_agent_distribution_for_country(country)
+    # plot_agent_distribution_for_country(cn_rows, country)
 
-    # Example: agent share by country (percentage of total agents of all country)
-    rows = get_country_share_for_agent(agent)
-    plot_country_share_for_agent(rows, agent)
+    # # Example: single agent distribution across countries
+    # rows = get_country_distribution_for_agent(agent)
+    # plot_country_distribution_for_agent(rows, agent)
+
+    # # Example: agent share by country (percentage of total agents of all country)
+    # rows = get_country_share_for_agent(agent)
+    # plot_country_share_for_agent(rows, agent)
 
 def remote_main():
     agent = "kubo/0.18.1/675f8bd/docker"
     country = "US"
     # CLI: show per-country counts of peers with / without agent
-    # country_stats = get_remote_data("/agent-country-with-without")
-    # print_country_agent_presence(country_stats, min_total=10)
-
-    # Example: agent distribution for a single country
-    # cn_rows = get_remote_data("/country-distribution-agent?country=US")
-    # plot_agent_distribution_for_country(cn_rows, country)
+    country_stats = get_remote_data("/agent-country-with-without")
+    print_country_agent_presence(country_stats, min_total=10)
 
     # # Per-country: top agent count and its share of that country's total agents
-    # top_rows = get_remote_data("/agent-country-top-share")
-    # print_country_top_agent_share(top_rows, max_countries=20)
+    top_rows = get_remote_data("/agent-country-top-share")
+    print_country_top_agent_share(top_rows, max_countries=20)
 
-    # # Example: single agent distribution across countries
-    # rows = get_remote_data("/agent-distribution-country?agent=kubo/0.18.1/675f8bd/docker")
+    # # Example: agent distribution for a single country
+    # cn_rows = get_remote_data("/agent-distribution-country?country=US")
+    # plot_agent_distribution_for_country(cn_rows, country)
+
+    # # # Example: single agent distribution across countries
+    # rows = get_remote_data("/country-distribution-agent?agent=kubo/0.18.1/675f8bd/docker")
     # plot_country_distribution_for_agent(rows, agent)
 
-    # # Example: agent share by country (percentage of total agents of all country)
+    # # # Example: agent share by country (percentage of total agents of all country)
     # rows = get_remote_data("/agent-country-share?agent=kubo/0.18.1/675f8bd/docker")
     # plot_country_share_for_agent(rows, agent)
 
