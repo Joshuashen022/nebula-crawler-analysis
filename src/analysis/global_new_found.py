@@ -147,6 +147,7 @@ def remote_main():
     """
     
     rows = get_remote_data("/global-new-found")
+    print(rows[0])
     bucket_count = fetch_multi_hash_count_by_create_time(rows)
     
     print(f"\n=== multi_hash count by create_time (step = 1 hour) ===\n")

@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.neighbors_multihash import fetch_neighbor_peer
+from src.api.get_remote_data import get_remote_data
 
 
 def dedupe_by_multi_hash(rows):
@@ -61,7 +62,7 @@ def plot_neighbor_count_vs_nodes(rows):
     out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_peer_neighbour.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=1600, height=800, scale=2)
-    # fig.show()
+    fig.show()
 
 
 def main():
@@ -72,5 +73,10 @@ def main():
     plot_neighbor_count_vs_nodes(rows=rows)
 
 
+def remote_main():
+    rows = get_remote_data("/global-peer-neighbour")
+    rows = dedupe_by_multi_hash(rows)
+    plot_neighbor_count_vs_nodes(rows)
+
 if __name__ == "__main__":
-    main()
+    remote_main()

@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
+from src.api.get_remote_data import get_remote_data
 
 def load_crawl_stats(results_dir: Union[str, Path]) -> Dict[str, Dict[str, int]]:
     """
@@ -153,7 +154,11 @@ def main():
     # plot_crawl_peers_over_time(stats)
     load_crawl_neighors(results_dir)
 
+def remote_main():
+    rows = get_remote_data("/global-each-crawl")
+    plot_crawl_peers_over_time(rows)
+
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 

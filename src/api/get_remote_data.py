@@ -28,15 +28,7 @@ def get_remote_data(path: str) -> dict:
         if not raw.get("ok"):
             print("API returned ok=False", file=sys.stderr)
             return
-        if raw.get("service") != "geographical":
-            print("Unexpected service:", raw.get("service"), file=sys.stderr)
-        data = raw.get("data")
-        if not data or not data.get("country"):
-            print("No geographical data (empty country list).")
-            return
-        return data
-
-
+        return raw.get("data")
 
 def main() -> None:
     raw = get_remote_data(GEOGRAPHICAL_PATH)
