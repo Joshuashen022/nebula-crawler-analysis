@@ -335,9 +335,6 @@ def main():
     peer_country_rows = fetch_peer_id_prefix_by_country()
 
     counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
-    # all_rows = get_top3_protocols_per_country(counts, min_peers=50)
-    # plot_rows = get_top3_protocols_per_country(counts, min_peers=50, max_countries=20)
-
 
     # protocol distribution for a single country
     # counts = build_protocol_country_counts(protocol_rows, peer_country_rows)

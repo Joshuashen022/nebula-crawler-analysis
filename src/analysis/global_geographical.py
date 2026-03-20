@@ -94,14 +94,7 @@ def print_geographical_analysis(data: dict) -> None:
             if b in bracket_counts:
                 print(f"  {b}: {bracket_counts[b]} countries/regions")
 
-
-def main():
-    data = fetch_geographical_data()
-    if not data["country"]:
-        return
-
-    print_geographical_analysis(data)
-
+def illustrate_geographical_data(data: dict) -> None:
     fig = px.choropleth(
         data,
         locations="country",
@@ -136,6 +129,13 @@ def main():
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=1600, height=800, scale=2)
     fig.show()
+
+def main():
+    data = fetch_geographical_data()
+
+    print_geographical_analysis(data)
+    illustrate_geographical_data(data)
+    
 
 
 if __name__ == "__main__":

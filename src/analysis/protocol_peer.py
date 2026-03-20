@@ -10,10 +10,7 @@ from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.protocol_peer_count import fetch_protocol_peer_count
 
-
-def main():
-    rows = fetch_protocol_peer_count()
-    # protocol -> set of multi_hash for distinct count
+def sort_protocol_peer_count(rows):
     protocol_hashes: dict[str, set[str]] = defaultdict(set)
     for protocol, multi_hash in rows:
         protocol_hashes[protocol].add(multi_hash)
@@ -23,15 +20,29 @@ def main():
         protocol_hashes.items(),
         key=lambda x: (-len(x[1]), x[0]),
     )
+    result = dict()
+    count = []
+    for protocol, hashes in sorted_protocols:
+        count.append((protocol, len(hashes)))
+    result["counts"] = count
+    result["total"] = len(protocol_hashes)
+    result["pair"] = len(rows)
+    return result
+
+def main():
+    rows = fetch_protocol_peer_count()
+    result = sort_protocol_peer_count(rows)
 
     print("=== Protocol distinct multi_hash (peer) count ===\n")
     print(f"{'Protocol':<60} {'Distinct multi_hash':>20}")
     print("-" * 82)
-    for protocol, hashes in sorted_protocols:
-        print(f"{protocol:<60} {len(hashes):>20,}")
+    for protocol, count in result["counts"]:
+        print(f"{protocol:<60} {count:>20,}")
     print("-" * 82)
-    print(f"{'Total protocols':<60} {len(protocol_hashes):>20,}")
-    print(f"{'Total (protocol, multi_hash) pairs':<60} {len(rows):>20,}")
+    print(result["total"])
+    print(f"{'Total protocols':<60} {result['total']:>20,}")
+    print(f"{'Total (protocol, multi_hash) pairs':<60} {result['pair']:>20,}")
+
 
 
 if __name__ == "__main__":
