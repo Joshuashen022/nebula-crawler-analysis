@@ -9,7 +9,7 @@ logger = logging.getLogger("crawler.api")
 
 import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
-    global_peer_neighbour, protocol_peer, protocol_distribution_country
+    global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol
 import config
 
 HOST = "0.0.0.0"
@@ -145,6 +145,17 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "country-distribution-protocol",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/reliable-protocol-counts":
+            data = peer_uptime_protocol.get_reliable_protocol_counts(0.9)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "peer-uptime-protocol",
                     "data": data,
                 },
             )

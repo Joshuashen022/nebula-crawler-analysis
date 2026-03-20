@@ -13,17 +13,7 @@ import plotly.express as px
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
 from src.dbs.protocol_peer_count import fetch_protocol_peer_count
-
-        # SELECT 
-        #             p.multi_hash,
-        #             s.first_successful_visit,
-        #             s.updated_at,
-        #             (s.updated_at - s.first_successful_visit) AS crawler_track_duration,
-        #             s.uptime,
-        #             (upper(s.uptime) - lower(s.uptime)) AS peer_actual_uptime
-        #         FROM sessions s
-        #         JOIN peers p ON s.peer_id = p.id
-        #         ORDER BY s.first_successful_visit DESC;
+from src.api.get_remote_data import get_remote_data
         
 def aggregate_uptime_by_multi_hash(rows, threshold: float = 0.8):
     """
@@ -138,7 +128,7 @@ def plot_reliable_peers_by_protocol(rows, protocol_rows):
     fig.show()
 
 
-def print_reliable_protocol_counts(threshold: float = 0.9):
+def get_reliable_protocol_counts(threshold: float = 0.9):
     """
     Print (protocol, count) for peers whose uptime ratio exceeds `threshold`,
     sorted from highest count to lowest.
@@ -148,6 +138,15 @@ def print_reliable_protocol_counts(threshold: float = 0.9):
 
     reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
     protocol_counts = count_reliable_peers_by_protocol(reliable_peers, protocol_rows)
+    return protocol_counts
+
+
+def main():
+    """Fetch data and show reliable peers by protocol chart."""
+    # rows = fetch_uptime_duration()
+    # protocol_rows = fetch_protocol_peer_count()
+    # plot_reliable_peers_by_protocol(rows, protocol_rows)
+    protocol_counts = get_reliable_protocol_counts(0.9) 
     print("=== Reliable protocol counts at threshold 0.9 ===")
     print("Count\tProtocol")
     print("-" * 20)
@@ -155,14 +154,14 @@ def print_reliable_protocol_counts(threshold: float = 0.9):
         print(f"{count}\t{protocol}")
     print("-" * 20)
 
-
-def main():
-    """Fetch data and show reliable peers by protocol chart."""
-    rows = fetch_uptime_duration()
-    protocol_rows = fetch_protocol_peer_count()
-    plot_reliable_peers_by_protocol(rows, protocol_rows)
-    print_reliable_protocol_counts(0.9) 
-
+def remote_main():
+    protocol_counts = get_remote_data("/reliable-protocol-counts")
+    print("=== Reliable protocol counts at threshold 0.9 ===")
+    print("Count\tProtocol")
+    print("-" * 20)
+    for protocol, count in protocol_counts.items():
+        print(f"{count}\t{protocol}")
+    print("-" * 20)
 
 if __name__ == "__main__":
     main()
