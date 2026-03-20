@@ -17,7 +17,7 @@ def fetch_protocols():
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
                 """
-                SELECT*
+                SELECT id, protocol
                 FROM protocols
                 ORDER BY id;
                 """
