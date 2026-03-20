@@ -17,6 +17,7 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.agent_peer_count import fetch_agent_peer_count
 from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+from src.api.get_remote_data import get_remote_data
 
 
 def build_agent_country_counts(agent_rows, peer_country_rows):
@@ -113,11 +114,9 @@ def print_country_agent_presence(country_stats, *, min_total: int = 1, max_count
     print(f"Total countries: {len(rows):,}")
 
 
-def get_agent_distribution_for_country(
+def _agent_distribution_for_country(
     counts,
-    country: str,
-    top_n: int = 20,
-    min_count: int = 1,
+    country: str
 ):
     """
     Build rows for plotting agent distribution in one country.
@@ -132,8 +131,6 @@ def get_agent_distribution_for_country(
         if (c or "").strip().upper() != country_norm:
             continue
         if not agent:
-            continue
-        if count < min_count:
             continue
 
         # Derive a shorter label for display, similar to `agent_peer_count.py` examples
@@ -151,8 +148,6 @@ def get_agent_distribution_for_country(
         )
 
     rows.sort(key=lambda r: (-r["count"], r["agent"]))
-    if top_n is not None:
-        rows = rows[:top_n]
     return rows
 
 
@@ -203,7 +198,7 @@ def plot_agent_distribution_for_country(
     fig.show()
 
 
-def get_country_distribution_for_agent(
+def _country_distribution_for_agent(
     counts,
     agent: str,
     top_n: int = 40,
@@ -233,14 +228,7 @@ def get_country_distribution_for_agent(
     return rows
 
 
-def get_country_share_for_agent(
-    counts,
-    agent: str,
-    *,
-    min_country_total_agents: int = 1,
-    top_n: int = 40,
-    min_count: int = 1,
-):
+def _country_share_for_agent(counts,agent: str):
     """
     对于给定 agent，计算其在每个国家中占该国「总 agent 数量」的百分比。
 
@@ -275,12 +263,8 @@ def get_country_share_for_agent(
             continue
         if not country:
             continue
-        if count < min_count:
-            continue
 
         total_agents = country_totals.get(country, 0)
-        if total_agents < min_country_total_agents or total_agents == 0:
-            continue
 
         share = 100.0 * count / total_agents
         rows.append(
@@ -296,18 +280,10 @@ def get_country_share_for_agent(
     # 按占比从大到小排序，其次按国家代码
     rows.sort(key=lambda r: (-r["share"], r["country"]))
 
-    if top_n is not None:
-        rows = rows[:top_n]
-
     return rows
 
 
-def calculate_country_top_agent_share(
-    counts,
-    *,
-    min_country_total_agents: int = 1,
-    top_n: Optional[int] = None,
-):
+def calculate_country_top_agent_share(counts):
     """
     For each country, calculate:
     - top_agent_count: the maximum peer count among agents in that country
@@ -340,8 +316,6 @@ def calculate_country_top_agent_share(
 
     rows: list[dict] = []
     for country, total in country_totals.items():
-        if total < min_country_total_agents or total == 0:
-            continue
         top_count = country_max_count.get(country, 0)
         top_agent = country_max_agent.get(country, "")
         share = 100.0 * top_count / total if total else 0.0
@@ -356,8 +330,6 @@ def calculate_country_top_agent_share(
         )
 
     rows.sort(key=lambda r: (-r["top_agent_count"], -r["top_agent_share"], r["country"]))
-    if top_n is not None:
-        rows = rows[:top_n]
     return rows
 
 
@@ -495,72 +467,85 @@ def plot_country_share_for_agent(
     fig.show()
 
 
-def show_agent_distribution_across_countries(
-    agent: str,
-    *,
-    top_n: int = 40,
-    min_count: int = 1,
-    out_path: Optional[Path] = None,
-    title: Optional[str] = None,
-):
-    """
-    One-shot helper: fetch data, build counts, then plot a single agent's
-    distribution across countries.
-    """
+def get_country_with_without_agent():
+    agent_rows = fetch_agent_peer_count()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
+    return build_country_agent_presence(agent_rows, peer_country_rows)
+
+def get_agent_distribution_for_country(country: str):
     agent_rows = fetch_agent_peer_count()
     peer_country_rows = fetch_peer_id_prefix_by_country()
     counts = build_agent_country_counts(agent_rows, peer_country_rows)
+    return _agent_distribution_for_country(counts, country)
 
-    rows = get_country_distribution_for_agent(
-        counts,
-        agent,
-        top_n=top_n,
-        min_count=min_count,
-    )
-    plot_country_distribution_for_agent(
-        rows,
-        agent,
-        out_path=out_path,
-        title=title,
-    )
+def get_country_distribution_for_agent(agent: str):
+    agent_rows = fetch_agent_peer_count()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
+    counts = build_agent_country_counts(agent_rows, peer_country_rows)
+    rows = _country_distribution_for_agent(counts, agent)
     return rows
 
-
-def main():
+def get_country_top_agent_share():
     agent_rows = fetch_agent_peer_count()
     peer_country_rows = fetch_peer_id_prefix_by_country()
-
     counts = build_agent_country_counts(agent_rows, peer_country_rows)
+    return calculate_country_top_agent_share(counts)
+
+def get_country_share_for_agent(agent: str):
+    agent_rows = fetch_agent_peer_count()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
+    counts = build_agent_country_counts(agent_rows, peer_country_rows)
+    rows = _country_share_for_agent(counts, agent)
+    return rows
+
+def main():
     agent = "kubo/0.18.1/675f8bd/docker"
     country = "US"
     # CLI: show per-country counts of peers with / without agent
-    # country_stats = build_country_agent_presence(agent_rows, peer_country_rows)
-    # print_country_agent_presence(country_stats, min_total=10)
+    country_stats = get_country_with_without_agent()
+    print_country_agent_presence(country_stats, min_total=10)
 
     # Example: agent distribution for a single country
-    # cn_rows = get_agent_distribution_for_country(counts, country, top_n=10)
-    # plot_agent_distribution_for_country(cn_rows, country)
+    cn_rows = get_agent_distribution_for_country(country)
+    plot_agent_distribution_for_country(cn_rows, country)
 
     # Per-country: top agent count and its share of that country's total agents
-    top_rows = calculate_country_top_agent_share(counts, min_country_total_agents=1)
-    print_country_top_agent_share(top_rows)
+    top_rows = get_country_top_agent_share()
+    print_country_top_agent_share(top_rows, max_countries=10)
 
     # Example: single agent distribution across countries
-    # show_agent_distribution_across_countries(agent, top_n=40)
+    rows = get_country_distribution_for_agent(agent)
+    plot_country_distribution_for_agent(rows, agent)
 
-    # Example: agent share by country (percentage of total agents)
-    # rows = get_country_share_for_agent(
-    #     counts,
-    #     agent,
-    #     min_country_total_agents=100,  # 国家总 agent 数量最小阈值
-    #     top_n=20,
-    #     min_count=10,
-    # )
-    # plot_country_share_for_agent(rows, agent)
+    # Example: agent share by country (percentage of total agents of all country)
+    rows = get_country_share_for_agent(agent)
+    plot_country_share_for_agent(rows, agent)
 
+def remote_main():
+    agent = "kubo/0.18.1/675f8bd/docker"
+    country = "US"
+    # CLI: show per-country counts of peers with / without agent
+    country_stats = get_remote_data("/agent-country-with-without")
+    print_country_agent_presence(country_stats, min_total=10)
+
+    # Example: agent distribution for a single country
+    cn_rows = get_remote_data("/agent-distribution-country?country=US")
+    plot_agent_distribution_for_country(cn_rows, country)
+
+    # Per-country: top agent count and its share of that country's total agents
+    top_rows = get_remote_data("/agent-country-top-share")
+    print_country_top_agent_share(top_rows, max_countries=10)
+
+    # Example: single agent distribution across countries
+    rows = get_remote_data("/agent-distribution-country?agent=kubo/0.18.1/675f8bd/docker")
+    plot_country_distribution_for_agent(rows, agent)
+
+    # Example: agent share by country (percentage of total agents of all country)
+    rows = get_remote_data("/agent-country-share?agent=kubo/0.18.1/675f8bd/docker")
+    plot_country_share_for_agent(rows, agent)
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 # Country         Total   With agent   Without agent
 # --------------------------------------------------

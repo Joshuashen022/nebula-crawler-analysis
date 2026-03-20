@@ -9,9 +9,9 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.agent_peer_count import fetch_agent_peer_count
+from src.api.get_remote_data import get_remote_data
 
-
-def main():
+def get_agent_peer_count():
     rows = fetch_agent_peer_count()
     # protocol -> set of multi_hash for distinct count
     agent_hashes: dict[str, set[str]] = defaultdict(set)
@@ -25,7 +25,16 @@ def main():
         agent_hashes.items(),
         key=lambda x: (-len(x[1]), x[0]),
     )
+    result = dict()
+    result["sorted_agents"] = sorted_agents
+    result["total_distinct_pairs"] = total_distinct_pairs
+    return result
 
+def remote_main():
+    result = get_remote_data("/agent-peer-count")
+    sorted_agents = result["sorted_agents"]
+    total_distinct_pairs = result["total_distinct_pairs"]
+    total_agents = len(result["sorted_agents"])
     print("=== Agent distinct multi_hash (peer) count ===\n")
     print(f"{'Agent':<60} {'Distinct multi_hash':>20} {'% of total':>10}")
     print("-" * 94)
@@ -33,13 +42,28 @@ def main():
         share = (len(hashes) / total_distinct_pairs * 100.0) if total_distinct_pairs else 0.0
         print(f"{agent:<60} {len(hashes):>20,} {share:>9.2f}%")
     print("-" * 94)
-    print(f"{'Total agents':<60} {len(agent_hashes):>20,}")
+    print(f"{'Total agents':<60} {total_agents:>20,}")
     print(f"{'Total distinct (agent, multi_hash) pairs':<60} {total_distinct_pairs:>20,}")
-    print(f"{'Total (agent, multi_hash) pairs':<60} {len(rows):>20,}")
+
+
+def main():
+    result = get_agent_peer_count()
+    sorted_agents = result["sorted_agents"]
+    total_distinct_pairs = result["total_distinct_pairs"]
+    total_agents = len(result["sorted_agents"])
+    print("=== Agent distinct multi_hash (peer) count ===\n")
+    print(f"{'Agent':<60} {'Distinct multi_hash':>20} {'% of total':>10}")
+    print("-" * 94)
+    for agent, hashes in sorted_agents:
+        share = (len(hashes) / total_distinct_pairs * 100.0) if total_distinct_pairs else 0.0
+        print(f"{agent:<60} {len(hashes):>20,} {share:>9.2f}%")
+    print("-" * 94)
+    print(f"{'Total agents':<60} {total_agents:>20,}")
+    print(f"{'Total distinct (agent, multi_hash) pairs':<60} {total_distinct_pairs:>20,}")
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 
 # Agent                                                                   Distinct      percent

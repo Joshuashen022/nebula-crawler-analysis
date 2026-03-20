@@ -11,7 +11,8 @@ import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
     global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
     peer_uptime_percentage, peer_uptime_country, peer_uptime_agent, multi_hash_prefix, multi_hash_prefix_country,\
-    multi_hash_prefix_asn, multi_hash_count_by_update_duration
+    multi_hash_prefix_asn, multi_hash_count_by_update_duration, agent_peer_count, \
+    agent_distribution_country
 import config
 
 HOST = "0.0.0.0"
@@ -236,6 +237,82 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "multi-hash-count-by-update-duration",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/agent-peer-count":
+            data = agent_peer_count.get_agent_peer_count()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-peer-count",
+                    "data": data,
+                },
+            )
+            return
+
+        if self.path == "/agent-country-with-without":
+            data = agent_distribution_country.get_country_with_without_agent()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-country-with-without",
+                    "data": data,
+                },
+            )
+            return
+        if self.path.startswith("/agent-distribution-country"):
+            qs = parse_qs(query)
+            country = (qs.get("country") or [None])[0]
+            logger.info(f"agent-distribution-country: {country}, {self.path}")
+            data = agent_distribution_country.get_agent_distribution_for_country(country)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-distribution-country",
+                    "data": data,
+                }, 
+            )
+            return
+        if self.path.startswith("/agent-distribution-country"):
+            qs = parse_qs(query)
+            agent = (qs.get("agent") or [None])[0]
+            logger.info(f"agent-distribution-country: {agent}, {self.path}")
+            data = agent_distribution_country.get_country_distribution_for_agent(agent)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-distribution-country",
+                    "data": data,
+                },
+            )
+            return
+        if self.path.startswith("/agent-country-top-share"):
+            data = agent_distribution_country.get_country_top_agent_share()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-country-top-share",
+                    "data": data,
+                },
+            )
+            return
+        if self.path.startswith("/agent-country-share"):
+            qs = parse_qs(query)
+            agent = (qs.get("agent") or [None])[0]
+            logger.info(f"agent-country-share: {agent}, {self.path}")
+            data = agent_distribution_country.get_country_share_for_agent(agent)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "agent-country-share",
                     "data": data,
                 },
             )
