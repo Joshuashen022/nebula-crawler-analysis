@@ -9,6 +9,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.protocol_peer_count import fetch_protocol_peer_count
+from src.api.get_remote_data import get_remote_data
 
 def sort_protocol_peer_count(rows):
     protocol_hashes: dict[str, set[str]] = defaultdict(set)
@@ -43,10 +44,22 @@ def main():
     print(f"{'Total protocols':<60} {result['total']:>20,}")
     print(f"{'Total (protocol, multi_hash) pairs':<60} {result['pair']:>20,}")
 
+def remote_main():
+    result = get_remote_data("/protocol-peer")
+
+    print("=== Protocol distinct multi_hash (peer) count ===\n")
+    print(f"{'Protocol':<60} {'Distinct multi_hash':>20}")
+    print("-" * 82)
+    for protocol, count in result["counts"]:
+        print(f"{protocol:<60} {count:>20,}")
+    print("-" * 82)
+    print(result["total"])
+    print(f"{'Total protocols':<60} {result['total']:>20,}")
+    print(f"{'Total (protocol, multi_hash) pairs':<60} {result['pair']:>20,}")
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 # Protocol                                                      Distinct multi_hash
 # ----------------------------------------------------------------------------------

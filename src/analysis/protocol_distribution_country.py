@@ -126,7 +126,7 @@ def plot_protocol_distribution_by_country(plot_rows):
     fig.show()
 
 
-def get_protocol_distribution_for_country(
+def _protocol_distribution_for_country(
     counts,
     country: str,
     top_n: int = 20,
@@ -211,7 +211,7 @@ def plot_protocol_distribution_for_country(
     fig.show()
 
 
-def get_country_distribution_for_protocol(
+def _country_distribution_for_protocol(
     counts,
     protocol: str,
     top_n: int = 40,
@@ -285,13 +285,20 @@ def plot_country_distribution_for_protocol(
     fig.show()
 
 
-def show_protocol_distribution_across_countries(
+def get_protocol_distribution_for_country(country: str, top_n: int = 30):
+    protocol_rows = fetch_protocol_peer_count()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
+
+    counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
+
+    cn_rows = _protocol_distribution_for_country(counts, country, top_n=top_n)
+    return cn_rows
+
+def get_country_distribution_for_protocol(
     protocol: str,
     *,
     top_n: int = 40,
     min_count: int = 1,
-    out_path: Optional[Path] = None,
-    title: Optional[str] = None,
 ):
     """
     One-shot helper: fetch data, build counts, then plot a single protocol's
@@ -301,48 +308,23 @@ def show_protocol_distribution_across_countries(
     peer_country_rows = fetch_peer_id_prefix_by_country()
     counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
 
-    rows = get_country_distribution_for_protocol(
+    rows = _country_distribution_for_protocol(
         counts,
         protocol,
         top_n=top_n,
         min_count=min_count,
     )
-    plot_country_distribution_for_protocol(
-        rows,
-        protocol,
-        out_path=out_path,
-        title=title,
-    )
     return rows
 
 
-def print_top3_per_country(plot_rows):
-    """Print a summary of top 3 protocols per country."""
-    from itertools import groupby
-
-    print("=== Top 3 protocols by country ===\n")
-    for country, rows in groupby(plot_rows, key=lambda r: r["country"]):
-        rows = list(rows)
-        total = sum(r["count"] for r in rows)
-        print(f"{country} (total: {total:,}):")
-        for r in rows:
-            print(f"  {r['rank']}: {r['protocol']} ({r['count']:,})")
-        print()
-
-
 def main():
-    protocol_rows = fetch_protocol_peer_count()
-    peer_country_rows = fetch_peer_id_prefix_by_country()
-
-    counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
-
     # protocol distribution for a single country
-    # counts = build_protocol_country_counts(protocol_rows, peer_country_rows)
-    cn_rows = get_protocol_distribution_for_country(counts, "US", top_n=30)
-    plot_protocol_distribution_for_country(cn_rows, "US")
+    rows = get_protocol_distribution_for_country("US", top_n=30)
+    plot_protocol_distribution_for_country(rows, "US")
 
     # single protocol distribution across countries
-    # show_protocol_distribution_across_countries("/sbptp/1.0.0", top_n=40)
+    rows =get_country_distribution_for_protocol("/sbptp/1.0.0", top_n=40)
+    plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
 
 

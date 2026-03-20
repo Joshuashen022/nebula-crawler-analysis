@@ -3,9 +3,11 @@ import json
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 import crawl
-from analysis import global_geographical, global_new_found, global_each_crawl, global_peer_neighbour, protocol_peer
+from analysis import global_geographical, global_new_found, global_each_crawl, \
+    global_peer_neighbour, protocol_peer, protocol_distribution_country
 import config
 
 HOST = "0.0.0.0"
@@ -107,6 +109,33 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "protocol-peer",
+                    "data": data,
+                },
+            )
+            return
+        if self.path.startswith("/protocol-distribution-country/"):
+            qs = parse_qs(self.path)
+            country = (qs.get("country") or [None])[0]
+
+            data = protocol_distribution_country.get_protocol_distribution_for_country(country, top_n=30)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "protocol-distribution-country",
+                    "data": data,
+                },
+            )
+            return
+        if self.path.startswith("/country-distribution-protocol/"):
+            qs = parse_qs(self.path)
+            protocol = (qs.get("protocol") or [None])[0]
+            data = protocol_distribution_country.get_country_distribution_for_protocol(protocol, top_n=30)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "country-distribution-protocol",
                     "data": data,
                 },
             )
