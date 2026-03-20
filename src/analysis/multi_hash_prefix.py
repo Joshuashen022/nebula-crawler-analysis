@@ -24,6 +24,7 @@ def main():
 
     count_qm = sum(1 for h in hashes if h and h.startswith("Qm"))
     count_12d3 = sum(1 for h in hashes if h and h.startswith("12D3"))
+    count_koow = sum(1 for h in hashes if h and h.startswith("12D3KooW"))
 
     # Count all prefixes (first 4 chars to distinguish 12D3 vs Qmxx etc.)
     prefix_counter = Counter(get_prefix(h, 4) for h in hashes if h)
@@ -39,6 +40,7 @@ def main():
     print(f"Total rows: {total:,}")
     print(f"  Starting with Qm:  {count_qm:,}, percentage: {count_qm / total * 100:.2f}%")
     print(f"  Starting with 12D3: {count_12d3:,} percentage: {count_12d3 / total * 100:.2f}%")
+    print(f"  Starting with 12D3KooW: {count_koow:,} percentage: {count_koow / total * 100:.2f}%")
     print()
     print("--- Duplicate check ---")
     print(f"Unique count: {unique_count:,}")

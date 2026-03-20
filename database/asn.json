@@ -29453,5 +29453,165 @@
                 }
             }
         }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 15081,
+                "asn": "202623",
+                "asnName": "CLOUDFLARENET-CORE",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": -10.2129185622896,
+                "latitude": 60.2485030521323,
+                "organization": {
+                    "orgId": "b0da6e64b5"
+                },
+                "cone": {
+                    "numberAsns": 1,
+                    "numberPrefixes": 10,
+                    "numberAddresses": 30208
+                },
+                "country": {
+                    "iso": "US"
+                },
+                "asnDegree": {
+                    "total": 5,
+                    "customer": 0,
+                    "peer": 0,
+                    "provider": 5
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 2240,
+                "asn": "36947",
+                "asnName": "ALGTEL-AS",
+                "source": "AFRINIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 3.41328735009519,
+                "latitude": 35.9267025646513,
+                "organization": {
+                    "orgId": "3fa8d03024"
+                },
+                "cone": {
+                    "numberAsns": 12,
+                    "numberPrefixes": 3274,
+                    "numberAddresses": 6515456
+                },
+                "country": {
+                    "iso": "DZ"
+                },
+                "asnDegree": {
+                    "total": 35,
+                    "customer": 9,
+                    "peer": 22,
+                    "provider": 4
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 450,
+                "asn": "12297",
+                "asnName": "TELECOM-ARMENIA",
+                "source": "RIPE",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 44.5037172491153,
+                "latitude": 40.2027711427503,
+                "organization": {
+                    "orgId": "25a8af5757"
+                },
+                "cone": {
+                    "numberAsns": 100,
+                    "numberPrefixes": 3332,
+                    "numberAddresses": 2084608
+                },
+                "country": {
+                    "iso": "AM"
+                },
+                "asnDegree": {
+                    "total": 172,
+                    "customer": 39,
+                    "peer": 130,
+                    "provider": 3
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 7579,
+                "asn": "138754",
+                "asnName": "KVBPL-AS-IN",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 76.1909040459339,
+                "latitude": 11.1824952744846,
+                "organization": {
+                    "orgId": "29f9cadb6a"
+                },
+                "cone": {
+                    "numberAsns": 2,
+                    "numberPrefixes": 2566,
+                    "numberAddresses": 1783040
+                },
+                "country": {
+                    "iso": "IN"
+                },
+                "asnDegree": {
+                    "total": 8,
+                    "customer": 1,
+                    "peer": 2,
+                    "provider": 5
+                }
+            }
+        }
+    },
+    {
+        "data": {
+            "asn": {
+                "rank": 3226,
+                "asn": "64300",
+                "asnName": "JSN-AS-ID",
+                "source": "APNIC",
+                "cliqueMember": true,
+                "seen": true,
+                "ixp": null,
+                "longitude": 110.039741215865,
+                "latitude": -5.59035593117841,
+                "organization": {
+                    "orgId": "fbb0e04019"
+                },
+                "cone": {
+                    "numberAsns": 8,
+                    "numberPrefixes": 38,
+                    "numberAddresses": 6912
+                },
+                "country": {
+                    "iso": "ID"
+                },
+                "asnDegree": {
+                    "total": 12,
+                    "customer": 7,
+                    "peer": 1,
+                    "provider": 4
+                }
+            }
+        }
     }
 ]

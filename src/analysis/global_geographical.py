@@ -28,19 +28,19 @@ iso2_to_iso3 = {
     "BY": "BLR", "UY": "URY", "IQ": "IRQ", "MT": "MLT"
 }
 
-BRACKET_ORDER = ["0–9", "10–99", "100–999", "1k–9,999", "10k+"]
+BRACKET_ORDER = ["<10", "<10²", "<10³", "<10⁴", "<10⁵+"]
 
 
 def _bracket_count(value: int) -> str:
     if value < 10:
-        return "0–9"
+        return "<10"
     if value < 100:
-        return "10–99"
+        return "<10²"
     if value < 1000:
-        return "100–999"
+        return "<10³"
     if value < 10000:
-        return "1k–9,999"
-    return "10k+"
+        return "<10⁴"
+    return "<10⁵+"
 
 
 def fetch_geographical_data():
@@ -111,30 +111,31 @@ def main():
         hover_data={"count": True, "bracket": True},
         category_orders={"bracket": BRACKET_ORDER},
         color_discrete_map={
-            "0–9": "#ffffcc",   # pale yellow
-            "10–99": "#a1dab4",  # light green
-            "100–999": "#41b6c4",  # teal
-            "1k–9,999": "#225ea8",  # blue
-            "10k+": "#081d58",   # dark blue
+            "<10": "#ffcc00",   # brighter gold for low-rank bucket
+            "<10²": "#a1dab4",  # light green
+            "<10³": "#41b6c4",  # teal
+            "<10⁴": "#225ea8",  # blue
+            "<10⁵+": "#081d58",   # dark blue
         },
     )
     fig.update_layout(
+        font=dict(size=18),
         legend_title_text="",
         legend=dict(
             x=1.0,
             y=0.5,
             xanchor="left",
             yanchor="middle",
-            font=dict(size=50),
+            font=dict(size=34),
             itemsizing="constant",
-            itemwidth=36,
+            itemwidth=40,
         ),
         margin=dict(r=220),
     )
     out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_geographical.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=1600, height=800, scale=2)
-    # fig.show()
+    fig.show()
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, Union
 
 import plotly.graph_objects as go
-
+from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 
@@ -41,6 +41,31 @@ def load_crawl_stats(results_dir: Union[str, Path]) -> Dict[str, Dict[str, int]]
             "dialable_peers": dialable_peers,
             "undialable_peers": undialable_peers,
         }
+    return stats
+
+# iterthrough each neighbors.ndjson file and get the sybil clusters
+# no attack is found, return empty dict
+def load_crawl_neighors(results_dir: Union[str, Path]) -> Dict[str, Dict[str, int]]:
+    """
+    Read all *neighbors.ndjson files under results_dir and collect stats.
+
+    Only records entries where state == "succeeded".
+    Returns a dict keyed by started_at ISO string, preserving chronological order.
+    """
+    base = Path(results_dir)
+    stats: Dict[str, Dict[str, int]] = {}
+
+    # Sort by filename to roughly follow time order
+    for path in sorted(base.glob("*neighbors.ndjson")):
+        print("path", path)
+        with path.open("r", encoding="utf-8") as f:
+            for line in f:
+                data = json.loads(line)
+                neighbors = data.get("NeighborIDs", [])
+                clusters, suspicious = _get_sybil_clusters(neighbors)
+                if suspicious:
+                    print(data.get("PeerID"),"Original", len(neighbors), "Clusters", len(clusters), "Sybil", suspicious)
+                
     return stats
 
 
@@ -101,12 +126,32 @@ def plot_crawl_peers_over_time(
     fig.write_image(str(out_path), width=800, height=400, scale=2)
     fig.show()
 
+def _get_sybil_clusters(all_ids, prefix_length=3):
+    header = "12D3KooW"
+    header2 = "Qm"
+    clusters = defaultdict(list)
+
+    for pid in all_ids:
+        if pid.startswith(header):
+            # Extract the next few characters after the constant header
+            fingerprint = pid[len(header) : len(header) + prefix_length]
+            clusters[fingerprint].append(pid)
+        if pid.startswith(header2):
+            # Extract the next few characters after the constant header
+            fingerprint = pid[len(header2) : len(header2) + prefix_length]
+            clusters[fingerprint].append(pid)
+
+    # Filter for groups that have more than, say, 10 nodes with the same fingerprint
+    suspicious = {k: v for k, v in clusters.items() if len(v) > 10}
+    
+    return clusters, suspicious
 
 def main():
     """Main entry: load stats and show figure."""
     results_dir = Path(__file__).resolve().parent.parent / "results"
-    stats = load_crawl_stats(results_dir)
-    plot_crawl_peers_over_time(stats)
+    # stats = load_crawl_stats(results_dir)
+    # plot_crawl_peers_over_time(stats)
+    load_crawl_neighors(results_dir)
 
 
 if __name__ == "__main__":
