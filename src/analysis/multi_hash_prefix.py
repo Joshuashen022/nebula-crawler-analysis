@@ -114,7 +114,7 @@ def remote_main():
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 # Total rows: 27,202
 #   Starting with Qm:  1,872, percentage: 6.88%

@@ -86,7 +86,7 @@ def remote_main():
     print_peer_id_prefix_by_country(filtered_countries)
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 
 # Countries with Total > 100, sorted by Qm/Total desc

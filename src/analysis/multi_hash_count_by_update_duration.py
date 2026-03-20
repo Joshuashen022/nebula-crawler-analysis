@@ -38,13 +38,13 @@ def print_multi_hash_count_by_update_duration(bucket_count):
 
     step_hours = step_length_seconds / 3600
     print(f"\n=== multi_hash count by update_duration (step = {step_length_seconds}s = {step_hours:.2f}h) ===\n")
-    print(f"{'Bucket start (+08)':<28} {'Bucket':>8} {'Count':>12}")
+    print(f"{'Bucket':>8} \t {'Count':>12}")
     print("-" * 50)
 
     for bucket_id in sorted(bucket_count.keys()):
-        bucket_duration = bucket_id * step_length_seconds
+        # bucket_duration = bucket_id * step_length_seconds
         count = bucket_count[bucket_id]
-        print(f"{bucket_duration:<10} {count:>12,}")
+        print(f"{bucket_id} hours \t {count:>12,}")
     print("-" * 50)
     print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
 
@@ -62,4 +62,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    remote_main()

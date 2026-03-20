@@ -10,7 +10,8 @@ logger = logging.getLogger("crawler.api")
 import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
     global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
-    peer_uptime_percentage, peer_uptime_country, peer_uptime_agent, multi_hash_prefix, multi_hash_prefix_country, multi_hash_prefix_asn, multi_hash_count_by_update_duration
+    peer_uptime_percentage, peer_uptime_country, peer_uptime_agent, multi_hash_prefix, multi_hash_prefix_country,\
+    multi_hash_prefix_asn, multi_hash_count_by_update_duration
 import config
 
 HOST = "0.0.0.0"
