@@ -91,50 +91,28 @@ def build_compromized_peer_metadata() -> Dict[str, PeerMeta]:
 def main():
     data = build_compromized_peer_metadata()
     print("compromized_peers:", len(data))
-    # Print a few samples deterministically.
-    # for i, peer_id in enumerate(sorted(data.keys())[:10]):
-    #     print(peer_id, "=>", data[peer_id])
-    agent_count = 0
-    country_count = 0
+    result = dict()
     for peer_id, (agent_version, asn, country) in data.items():
-        if agent_version == "go-ipfs/0.8.0/48f94e2":
-            agent_count += 1
-        if country == "TW":
-            country_count += 1
-    print("agent_count:", agent_count)
-    print("country_count:", country_count)
-    # # Optional: write JSON if a path is provided
-    # if len(sys.argv) >= 2:
-    #     out_path = Path(sys.argv[1]).expanduser().resolve()
-    #     out_path.parent.mkdir(parents=True, exist_ok=True)
-    #     with out_path.open("w", encoding="utf-8") as f:
-    #         json.dump(data, f, ensure_ascii=False, indent=2)
-    #     print("wrote:", str(out_path))
+        result[agent_version] = result.get(agent_version, 0) + 1
+
+    sorted_result = sorted(result.items(), key=lambda x: x[1], reverse=True)
+    for agent_version, count in sorted_result:
+        print(f"{agent_version:<60} {count:>20,}")
 
 
 def remote_main():
     data = get_remote_data("/compromized-peer-metadata")
     print("compromized_peers:", len(data))
     # Print a few samples deterministically.
-    # for i, peer_id in enumerate(sorted(data.keys())[:10]):
-    #     print(peer_id, "=>", data[peer_id])
-    agent_count = 0
-    country_count = 0
+
+    result = dict()
     for peer_id, (agent_version, asn, country) in data.items():
-        if agent_version == "go-ipfs/0.8.0/48f94e2":
-            agent_count += 1
-        if country == "TW":
-            country_count += 1
-    print("agent_count:", agent_count)
-    print("country_count:", country_count)
-    # # Optional: write JSON if a path is provided
-    # if len(sys.argv) >= 2:
-    #     out_path = Path(sys.argv[1]).expanduser().resolve()
-    #     out_path.parent.mkdir(parents=True, exist_ok=True)
-    #     with out_path.open("w", encoding="utf-8") as f:
-    #         json.dump(data, f, ensure_ascii=False, indent=2)
-    #     print("wrote:", str(out_path))
+        result[agent_version] = result.get(agent_version, 0) + 1
+
+    sorted_result = sorted(result.items(), key=lambda x: x[1], reverse=True)
+    for agent_version, count in sorted_result:
+        print(f"{agent_version:<60} {count:>20,}")
 
 if __name__ == "__main__":
-    remote_main()
+    main()
 

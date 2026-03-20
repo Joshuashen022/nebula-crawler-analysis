@@ -1,10 +1,12 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import config
 
+DB_HOST = config.DB_HOST
 
-def main():
+def fetch_protocols():
     conn = psycopg2.connect(
-        host="127.0.0.1",
+        host=DB_HOST,
         port=5432,
         dbname="nebula_local",
         user="joshua",
@@ -15,13 +17,9 @@ def main():
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
                 """
-                SELECT
-                    id,
-                    created_at,
-                    protocol
+                SELECT*
                 FROM protocols
-                ORDER BY id
-                LIMIT 10;
+                ORDER BY id;
                 """
             )
             rows = cur.fetchall()
@@ -33,5 +31,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    fetch_protocols()
 
