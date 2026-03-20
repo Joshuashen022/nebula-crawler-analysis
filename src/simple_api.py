@@ -118,7 +118,7 @@ class ApiHandler(BaseHTTPRequestHandler):
         if self.path.startswith("/protocol-distribution-country"):
             qs = parse_qs(self.path)
             country = (qs.get("country") or [None])[0]
-            logger.info(f"protocol-distribution-country: {country}")
+            logger.info(f"protocol-distribution-country: {country}, {self.path}")
             data = protocol_distribution_country.get_protocol_distribution_for_country(country, top_n=30)
             logger.info(f"protocol-distribution-country data: {len(data)}")
             self._send_json(
@@ -133,7 +133,7 @@ class ApiHandler(BaseHTTPRequestHandler):
         if self.path.startswith("/country-distribution-protocol"):
             qs = parse_qs(self.path)
             protocol = (qs.get("protocol") or [None])[0]
-            logger.info(f"country-distribution-protocol: {protocol}")
+            logger.info(f"country-distribution-protocol: {protocol}, {self.path}")
             data = protocol_distribution_country.get_country_distribution_for_protocol(protocol, top_n=30)
             logger.info(f"country-distribution-protocol data: {len(data)}")
             self._send_json(
