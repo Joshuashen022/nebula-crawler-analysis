@@ -5,7 +5,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import crawl
-from analysis import global_geographical, global_new_found, global_each_crawl, global_peer_neighbour
+from analysis import global_geographical, global_new_found, global_each_crawl, global_peer_neighbour, protocol_peer
 import config
 
 HOST = "0.0.0.0"
@@ -95,6 +95,18 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "peer-neighbour",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/protocol-peer":
+            raw = protocol_peer.fetch_protocol_peer_count()
+            data = protocol_peer.sort_protocol_peer_count(raw)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "protocol-peer",
                     "data": data,
                 },
             )
