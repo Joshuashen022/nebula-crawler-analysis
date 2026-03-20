@@ -334,6 +334,7 @@ class ApiHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/dbs/protocols":
             data = fetch_protocols()
+            logger.info(f"protocols: {len(data)}")
             self._send_json(
                 200,
                 {
