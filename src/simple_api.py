@@ -10,7 +10,7 @@ logger = logging.getLogger("crawler.api")
 import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
     global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
-    peer_uptime_percentage
+    peer_uptime_percentage, peer_uptime_country
 import config
 
 HOST = "0.0.0.0"
@@ -169,6 +169,17 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "uptime-percentage-distributions",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/reliable-peers-by-country":
+            data = peer_uptime_country.get_reliable_peers_by_country()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "reliable-peers-by-country",
                     "data": data,
                 },
             )

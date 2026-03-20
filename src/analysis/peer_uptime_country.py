@@ -12,6 +12,7 @@ import plotly.express as px
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
 from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+from src.api.get_remote_data import get_remote_data
 
 
 def aggregate_uptime_by_multi_hash(rows, threshold: float = 0.8):
@@ -65,8 +66,9 @@ def count_reliable_peers_by_country(reliable_peers, peer_country_rows):
     return dict(sorted(country_counts.items(), key=lambda x: (-x[1], x[0])))
 
 
-def plot_reliable_peers_by_country(rows, peer_country_rows):
-    """Build a grouped bar chart for reliable peers by country at different thresholds."""
+def get_reliable_peers_by_country():
+    rows = fetch_uptime_duration()
+    peer_country_rows = fetch_peer_id_prefix_by_country()
     thresholds = [0.9, 0.8, 0.7]
     plot_rows = []
 
@@ -85,6 +87,10 @@ def plot_reliable_peers_by_country(rows, peer_country_rows):
                     "threshold": str(threshold),
                 }
             )
+    return plot_rows
+
+def plot_reliable_peers_by_country(plot_rows):
+    """Build a grouped bar chart for reliable peers by country at different thresholds."""
 
     fig = px.bar(
         plot_rows,
@@ -129,11 +135,12 @@ def plot_reliable_peers_by_country(rows, peer_country_rows):
 
 def main():
     """Fetch data and show reliable peers by country chart."""
-    rows = fetch_uptime_duration()
-    peer_country_rows = fetch_peer_id_prefix_by_country()
-    plot_reliable_peers_by_country(rows, peer_country_rows)
+    plot_rows = get_reliable_peers_by_country()
+    plot_reliable_peers_by_country(plot_rows)
 
-
+def remote_main():
+    plot_rows = get_remote_data("/reliable-peers-by-country")
+    plot_reliable_peers_by_country(plot_rows)
 
 if __name__ == "__main__":
     main()

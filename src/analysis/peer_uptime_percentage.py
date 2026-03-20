@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
-
+from src.api.get_remote_data import get_remote_data
 
 def aggregate_uptime_by_multi_hash(rows):
     """
@@ -149,6 +149,13 @@ def main():
     # Also show bar chart using plotly
     plot_ratio_histogram(bin_labels, bin_counts)
 
+def remote_main():
+    bin_labels, bin_counts = get_remote_data("/uptime-percentage-distributions")
+    print("Peer/Crawler uptime ratio distribution in 5% bins")
+    print("Bin\tCount")
+    for label, count in zip(bin_labels, bin_counts):
+        print(f"{label}\t{count}")
+    plot_ratio_histogram(bin_labels, bin_counts)
 
 if __name__ == "__main__":
     main()
