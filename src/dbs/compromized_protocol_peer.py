@@ -17,11 +17,29 @@ def get_conn():
         user="joshua",
         password="",
     )
-# compromised protocols
+# compromised protocols local
 # 20	/sbptp/1.0.0
 # 21	/sfst/2.0.0
 # 22	/sfst/1.0.0
 # 124	/sbst/1.0.0
+
+# compromised protocols remote
+#         {
+#             "id": 39,
+#             "protocol": "/sbptp/1.0.0"
+#         },
+#         {
+#             "id": 40,
+#             "protocol": "/sfst/1.0.0"
+#         },
+#         {
+#             "id": 43,
+#             "protocol": "/sfst/2.0.0"
+#         },
+#         {
+#             "id": 122,
+#             "protocol": "/sbst/1.0.0"
+#         },
 
 # Example output:
 # ('kubo/0.28.0/e7f0f340c', '12D3KooWBcKJSCmKvakuD1w6XVRKJcMPtR61SyfF4TQnPKLjHP9V')
@@ -36,14 +54,22 @@ def fetch_compromized_protocol_peer():
     conn = get_conn()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(
-                """
+            if DB_HOST == "localhost":
+                sql ="""
                 SELECT peers.multi_hash, protocols_sets.id, protocols_sets.protocol_ids
                 FROM protocols_sets
                 JOIN peers ON protocols_sets.id = peers.protocols_set_id
                 WHERE protocol_ids && ARRAY[20, 21, 22, 124]::int[]
                 """
-            )
+            else:
+                sql ="""
+                SELECT peers.multi_hash, protocols_sets.id, protocols_sets.protocol_ids
+                FROM protocols_sets
+                JOIN peers ON protocols_sets.id = peers.protocols_set_id
+                WHERE protocol_ids && ARRAY[39, 40, 43, 122]::int[]
+                """
+                
+            cur.execute(sql)
             rows = cur.fetchall()
         return [(row["multi_hash"], row["id"], row["protocol_ids"]) for row in rows]
     finally:
