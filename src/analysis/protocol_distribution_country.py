@@ -328,10 +328,11 @@ def main():
     plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
 def remote_main():
-    rows = get_remote_data("/protocol-distribution-country?country=US", top_n=30)
+    rows = get_remote_data("/protocol-distribution-country?country=US")
+    print(rows)
     plot_protocol_distribution_for_country(rows, "US")
-    rows =get_remote_data("/country-distribution-protocol?protocol=sbptp/1.0.0", top_n=40)
-    plot_country_distribution_for_protocol(rows,"sbptp/1.0.0",)
+    # rows =get_remote_data("/country-distribution-protocol?protocol=sbptp/1.0.0", top_n=40)
+    # plot_country_distribution_for_protocol(rows,"sbptp/1.0.0",)
 
 
 if __name__ == "__main__":
