@@ -23,12 +23,15 @@ def fetch_protocols():
                 """
             )
             rows = cur.fetchall()
-
+        return [(row["id"], row["protocol"]) for row in rows]
     finally:
         conn.close()
-    return rows
 
 
 if __name__ == "__main__":
-    fetch_protocols()
+    rows = fetch_protocols()
+    print(rows[0])
+    print(rows[1])
+    print(rows[2])
+    print(len(rows))
 
