@@ -9,6 +9,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.multi_hash_prefix_country import fetch_peer_id_prefix_by_country
+from src.api.get_remote_data import get_remote_data
 
 # Example output:
 # None: country is not selected
@@ -38,14 +39,8 @@ def split_peer_ids_by_country_count(rows):
             multi_country.append((multi_hash,) + countries_tuple)
     return single_country, multi_country
 
-
-def main():
-    """
-    Per-country counts of peerIds (multi_hash from peers) starting with Qm or 12D3.
-    Uses join via peers_x_multi_addresses (read_peers + read_multi_addresses).
-    """
+def get_peer_id_prefix_by_country():
     rows = fetch_peer_id_prefix_by_country()
-    # per country: {"Qm": count, "12D3": count}
     by_country = defaultdict(lambda: {"Qm": 0, "12D3": 0})
     for multi_hash, country in rows:
         if country is None:
@@ -55,33 +50,18 @@ def main():
         elif multi_hash.startswith("12D3"):
             by_country[country]["12D3"] += 1
 
-    # sort by total (Qm + 12D3) descending
-    sorted_countries = sorted(
-        by_country.keys(),
-        key=lambda c: by_country[c]["Qm"] + by_country[c]["12D3"],
-        reverse=True,
-    )
-    print(f"{'Country':<6} {'Qm':>10} {'12D3':>10} {'Total':>10}")
-    print("-" * 40)
-    for country in sorted_countries:
-        qm = by_country[country]["Qm"]
-        d3 = by_country[country]["12D3"]
-        print(f"{country:<6} {qm:>10,}({qm/(qm+d3)* 100:.2f}%) {d3:>10,} {qm + d3:>10,}")
-    total_qm = sum(by_country[c]["Qm"] for c in by_country)
-    total_d3 = sum(by_country[c]["12D3"] for c in by_country)
-    print("-" * 40)
-    print(f"{'Total':<6} {total_qm:>10,} {total_d3:>10,} {total_qm + total_d3:>10,}")
-
     # Extra analysis: countries with Total > 100, sorted by Qm / Total descending
     filtered_countries = []
     for country in by_country:
         qm = by_country[country]["Qm"]
         d3 = by_country[country]["12D3"]
         total = qm + d3
-        if total > 100:
-            ratio = qm / total
-            filtered_countries.append((country, qm, d3, total, ratio))
+        ratio = qm / total
+        filtered_countries.append((country, qm, d3, total, ratio))
 
+    return filtered_countries
+
+def print_peer_id_prefix_by_country(filtered_countries):
     if filtered_countries:
         print()
         print("Countries with Total > 100, sorted by Qm/Total desc")
@@ -90,11 +70,20 @@ def main():
         for country, qm, d3, total, ratio in sorted(
             filtered_countries, key=lambda x: x[4], reverse=True
         ):
-            print(
-                f"{country:<6} {qm:>10,} {d3:>10,} {total:>10,} {ratio*100:>9.2f}%"
-            )
+            print(f"{country:<6} {qm:>10,} {d3:>10,} {total:>10,} {ratio*100:>9.2f}%")
 
+def main():
+    """
+    Per-country counts of peerIds (multi_hash from peers) starting with Qm or 12D3.
+    Uses join via peers_x_multi_addresses (read_peers + read_multi_addresses).
+    """
+    # Extra analysis: countries with Total > 100, sorted by Qm / Total descending
+    filtered_countries = get_peer_id_prefix_by_country()
+    print_peer_id_prefix_by_country(filtered_countries)
 
+def remote_main():
+    filtered_countries = get_remote_data("/multi-hash-prefix-country")
+    print_peer_id_prefix_by_country(filtered_countries)
 
 if __name__ == "__main__":
     main()

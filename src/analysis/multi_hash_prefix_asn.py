@@ -9,19 +9,21 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.multi_hash_prefix_asn import fetch_peer_id_prefix_by_asn
 from src.api.asn_lookup import lookup_asn
+from src.api.get_remote_data import get_remote_data
 try:
     import matplotlib.pyplot as plt  # type: ignore[reportMissingImports]
 except Exception:  # pragma: no cover
     plt = None
 
 
-def split_peer_ids_by_asn_count(rows):
+def split_peer_ids_by_asn_count():
     """
     Split (multi_hash, asn) pairs into (asn, count, qm_count, d3_count), sort by count desc, NULL last.
 
     total_count is distinct multi_hash across all rows (global unique peers). Same peer in multiple ASNs
     is counted once in total_count but can appear in several ASN buckets.
     """
+    rows = fetch_peer_id_prefix_by_asn()
     total_count = len({h for h, _ in rows if h})
     by_asn = defaultdict(set)
     for multi_hash, asn in rows:
@@ -35,8 +37,11 @@ def split_peer_ids_by_asn_count(rows):
         d3_count = sum(1 for h in peer_ids if h and h.startswith("12D3"))
         result.append((asn, count, qm_count, d3_count))
     result.sort(key=lambda x: (x[0] is None, -x[1]))
-    return result, total_count
 
+    diction = dict()
+    diction["result"] = result
+    diction["total_count"] = total_count
+    return diction
 
 def get_rank(asn) -> Optional[int]:
     """Get ASN rank from DB/API (data.asn.rank). Returns None if asn is None or rank missing."""
@@ -75,11 +80,7 @@ def plot_rank_vs_count(rows_with_rank, output_path: str):
     fig.show()
     return output_path
 
-
-def main():
-    rows = fetch_peer_id_prefix_by_asn()
-    result, total_count = split_peer_ids_by_asn_count(rows)
-
+def print_peer_id_prefix_by_asn(result, total_count):
     print("ASN\t\tcount\t\tcount/total\t\tQm\t\t12D3\t\trank")
     for asn, count, qm_count, d3_count in result:
         if count < 100:
@@ -88,11 +89,11 @@ def main():
         share = (count / total_count) if total_count else 0.0
         print(f"{asn}\t\t{count}\t\t{share:.6f}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
 
-def main2():
-    rows = fetch_peer_id_prefix_by_asn()
-    result, total_count = split_peer_ids_by_asn_count(rows)
-
-    # Filter count > 100, attach rank, sort by rank ascending (None last)
+def main():
+    diction = split_peer_ids_by_asn_count()
+    result = diction["result"]
+    total_count = diction["total_count"]
+    print_peer_id_prefix_by_asn(result, total_count)
     rows_with_rank = [
         (asn, count, qm_count, d3_count, get_rank(asn))
         for asn, count, qm_count, d3_count in result
@@ -100,22 +101,36 @@ def main2():
     ]
     rows_with_rank.sort(key=lambda x: (x[4] is None, x[4] or 0))
 
-    # print("ASN\t\tcount\t\tcount/total\t\tQm\t\t12D3\t\trank")
-    # for asn, count, qm_count, d3_count, rank in rows_with_rank:
-    #     share = (count / total_count) if total_count else 0.0
-    #     print(f"{asn}\t\t{count}\t\t{share:.6f}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
     project_root = Path(__file__).resolve().parents[2]
     output_path = project_root / "report" / "pics" / "multi_hash_prefix_asn.png"
-    # output_path = str(Path(__file__).with_suffix("")) + "_rank_scatter.png"
     try:
         saved_to = plot_rank_vs_count(rows_with_rank, output_path=output_path)
         print(f"\nSaved scatter plot to: {saved_to}")
     except Exception as e:
         print(f"\nPlot skipped: {e}")
 
+def remote_main():
+    diction = get_remote_data("/multi-hash-prefix-asn")
+    result = diction["result"]
+    total_count = diction["total_count"]
+    print_peer_id_prefix_by_asn(result, total_count)
+    rows_with_rank = [
+        (asn, count, qm_count, d3_count, get_rank(asn))
+        for asn, count, qm_count, d3_count in result
+        if count > 10
+    ]
+    rows_with_rank.sort(key=lambda x: (x[4] is None, x[4] or 0))
+
+    project_root = Path(__file__).resolve().parents[2]
+    output_path = project_root / "report" / "pics" / "multi_hash_prefix_asn.png"
+    try:
+        saved_to = plot_rank_vs_count(rows_with_rank, output_path=output_path)
+        print(f"\nSaved scatter plot to: {saved_to}")
+    except Exception as e:
+        print(f"\nPlot skipped: {e}")
 
 if __name__ == "__main__":
-    main2()
+    main()
 
 # main() output:
 # ASN             count           count/total     Qm              12D3            rank

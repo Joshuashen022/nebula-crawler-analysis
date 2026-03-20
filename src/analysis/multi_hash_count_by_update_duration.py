@@ -10,9 +10,10 @@ from datetime import datetime, timezone, timedelta
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from src.dbs.peers.read_multi_hashes_update_time import fetch_all_multi_hashes
+from src.api.get_remote_data import get_remote_data
 
 TZ_UTC8 = timezone(timedelta(hours=8))
-
+step_length_seconds = 3600
 
 def _to_timestamp(t) -> int:
     if hasattr(t, "timestamp"):
@@ -20,33 +21,21 @@ def _to_timestamp(t) -> int:
     return int(t)
 
 
-def fetch_multi_hash_count_by_update_duration(
-    rows: list[tuple[str, int, int]],
-    start_time: int,
-    step_length_seconds: int = 3600,
-):
+def get_multi_hash_count_by_update_duration():
     """
     start_time: Unix timestamp (seconds); the beginning of the first bucket (earliest time).
     step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
     """
+    rows = fetch_all_multi_hashes()
     bucket_count: dict[int, int] = {}
     for _multi_hash, updated_at, created_at in rows:
         ts = _to_timestamp(updated_at) - _to_timestamp(created_at)
         bucket_id = ts // step_length_seconds
         bucket_count[bucket_id] = bucket_count.get(bucket_id, 0) + 1
     return bucket_count
-    
 
-def main():
-    """
-    start_time: Unix timestamp (seconds). If None, use the min created_at in the data.
-    step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
-    """
-    rows = fetch_all_multi_hashes() # 1773294894
-    step_length_seconds = 3600
-    
-    bucket_count = fetch_multi_hash_count_by_update_duration(rows, step_length_seconds)
-    
+def print_multi_hash_count_by_update_duration(bucket_count):
+
     step_hours = step_length_seconds / 3600
     print(f"\n=== multi_hash count by update_duration (step = {step_length_seconds}s = {step_hours:.2f}h) ===\n")
     print(f"{'Bucket start (+08)':<28} {'Bucket':>8} {'Count':>12}")
@@ -58,6 +47,18 @@ def main():
         print(f"{bucket_duration:<10} {count:>12,}")
     print("-" * 50)
     print(f"{'Total buckets':<28} {'':>8} {sum(bucket_count.values()):>12,}")
+
+def remote_main():
+    bucket_count = get_remote_data("/multi-hash-count-by-update-duration")
+    print_multi_hash_count_by_update_duration(bucket_count)
+
+def main():
+    """
+    start_time: Unix timestamp (seconds). If None, use the min created_at in the data.
+    step_length_seconds: Length of each bucket in seconds (default 3600 = 1 hour).
+    """
+    bucket_count = get_multi_hash_count_by_update_duration()
+    print_multi_hash_count_by_update_duration(bucket_count)
 
 
 if __name__ == "__main__":

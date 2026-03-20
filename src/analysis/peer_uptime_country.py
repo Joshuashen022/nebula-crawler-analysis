@@ -143,7 +143,7 @@ def remote_main():
     plot_reliable_peers_by_country(plot_rows)
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 
 # Bin     Count
 # 0-5%    548

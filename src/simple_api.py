@@ -10,7 +10,7 @@ logger = logging.getLogger("crawler.api")
 import crawl
 from analysis import global_geographical, global_new_found, global_each_crawl, \
     global_peer_neighbour, protocol_peer, protocol_distribution_country, peer_uptime_protocol, \
-    peer_uptime_percentage, peer_uptime_country
+    peer_uptime_percentage, peer_uptime_country, peer_uptime_agent, multi_hash_prefix, multi_hash_prefix_country, multi_hash_prefix_asn, multi_hash_count_by_update_duration
 import config
 
 HOST = "0.0.0.0"
@@ -180,6 +180,61 @@ class ApiHandler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     "service": "reliable-peers-by-country",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/reliable-agent-counts":
+            data = peer_uptime_agent.get_reliable_agent_counts(0.9)
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "reliable-agent-counts",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/multi-hash-prefix":
+            data = multi_hash_prefix.fetch_all_multi_hashes()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "multi-hash-prefix",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/multi-hash-prefix-country":
+            data = multi_hash_prefix_country.get_peer_id_prefix_by_country()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "multi-hash-prefix-country",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/multi-hash-prefix-asn":
+            data = multi_hash_prefix_asn.split_peer_ids_by_asn_count()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "multi-hash-prefix-asn",
+                    "data": data,
+                },
+            )
+            return
+        if self.path == "/multi-hash-count-by-update-duration":
+            data = multi_hash_count_by_update_duration.get_multi_hash_count_by_update_duration()
+            self._send_json(
+                200,
+                {
+                    "ok": True,
+                    "service": "multi-hash-count-by-update-duration",
                     "data": data,
                 },
             )

@@ -9,6 +9,9 @@ from collections import defaultdict
 from datetime import timedelta
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
+from src.dbs.agent_peer_count import fetch_agent_peer_count
+from src.api.get_remote_data import get_remote_data
 
 
 def aggregate_uptime_by_multi_hash(rows, threshold: float = 0.8):
@@ -86,9 +89,11 @@ def plot_reliable_peers_by_agent(rows, agent_rows):
     thresholds = [0.9, 0.8, 0.7]
     plot_rows = []
 
+
     for threshold in thresholds:
         reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
         agent_counts = count_reliable_peers_by_agent(reliable_peers, agent_rows)
+
 
         for agent, count in agent_counts.items():
             # Skip agents with very few reliable peers
@@ -122,20 +127,19 @@ def plot_reliable_peers_by_agent(rows, agent_rows):
     fig.write_image(str(output_path), scale=2)
     fig.show()
 
+def get_reliable_agent_counts(threshold: float = 0.9):
+    rows = fetch_uptime_duration()
+    agent_rows = fetch_agent_peer_count()
+    reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
+    agent_counts = count_reliable_peers_by_agent(reliable_peers, agent_rows)
+    return agent_counts
 
-def print_reliable_agent_counts(threshold: float = 0.9):
+def print_reliable_agent_counts(agent_counts, threshold: float = 0.9):
     """
     Print (agent_version, percentage) for peers whose uptime ratio exceeds `threshold`,
     where percentage = count / total_count, sorted from highest count to lowest.
     """
-    from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
-    from src.dbs.agent_peer_count import fetch_agent_peer_count
 
-    rows = fetch_uptime_duration()
-    agent_rows = fetch_agent_peer_count()
-
-    reliable_peers, _totals = aggregate_uptime_by_multi_hash(rows, threshold)
-    agent_counts = count_reliable_peers_by_agent(reliable_peers, agent_rows)
     total_count = sum(agent_counts.values())
     print(f"=== Reliable agent % at threshold {threshold} (count/total_count) ===")
     print("Agent\tPercent")
@@ -148,13 +152,12 @@ def print_reliable_agent_counts(threshold: float = 0.9):
 
 def main():
     """Fetch data and show reliable peers by agent chart."""
-    from src.dbs.sessions.read_uptime_duration import fetch_uptime_duration
-    from src.dbs.agent_peer_count import fetch_agent_peer_count
+    agent_counts = get_reliable_agent_counts(0.9)
+    print_reliable_agent_counts(agent_counts, 0.9)
 
-    rows = fetch_uptime_duration()
-    agent_rows = fetch_agent_peer_count()
-    plot_reliable_peers_by_agent(rows, agent_rows)
-    print_reliable_agent_counts(0.9)
+def remote_main():
+    agent_counts = get_remote_data("/reliable-agent-counts")
+    print_reliable_agent_counts(agent_counts, 0.9)
 
 
 if __name__ == "__main__":
