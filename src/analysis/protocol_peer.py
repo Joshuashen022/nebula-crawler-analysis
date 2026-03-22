@@ -81,3 +81,24 @@ if __name__ == "__main__":
 # /libp2p/autonat/2/dial-request                                              2,454
 # /libp2p/circuit/relay/0.1.0                                                 1,384
 # /p2p/id/delta/1.0.0                                                         1,338
+
+# 
+# /ipfs/ping/1.0.0                                                            8,255
+# /ipfs/id/1.0.0                                                              8,251
+# /ipfs/id/push/1.0.0                                                         8,238
+# /ipfs/kad/1.0.0                                                             7,250
+# /libp2p/autonat/1.0.0                                                       7,100
+# /libp2p/circuit/relay/0.2.0/stop                                            6,755
+# /ipfs/bitswap/1.0.0                                                         6,426
+# /ipfs/bitswap/1.1.0                                                         6,426
+# /ipfs/bitswap                                                               6,395
+# /ipfs/bitswap/1.2.0                                                         6,394
+# /x/                                                                         6,376
+# /libp2p/dcutr                                                               6,266
+# /ipfs/lan/kad/1.0.0                                                         6,076
+# /libp2p/circuit/relay/0.2.0/hop                                             5,459
+# /libp2p/autonat/2/dial-back                                                 3,488
+# /libp2p/autonat/2/dial-request                                              3,488
+# /libp2p/circuit/relay/0.1.0                                                 2,121
+# /p2p/id/delta/1.0.0                                                         2,074
+# /sbptp/1.0.0                                                                1,149

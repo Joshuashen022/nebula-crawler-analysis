@@ -88,6 +88,9 @@ def print_peer_id_prefix_by_asn(result, total_count):
         rank = get_rank(asn)
         share = (count / total_count) if total_count else 0.0
         print(f"{asn}\t\t{count}\t\t{share:.6f}\t\t{qm_count}\t\t{d3_count}\t\t{rank}")
+    top_10_sum = sum(count for asn, count, _, _ in result[:10])
+    print("top 10 ASNs sum", top_10_sum, "/", total_count)
+    print("top 10 ASNs share", top_10_sum / total_count * 100, "%")
 
 def main():
     diction = split_peer_ids_by_asn_count()
@@ -122,7 +125,7 @@ def remote_main():
     rows_with_rank.sort(key=lambda x: (x[4] is None, x[4] or 0))
 
     project_root = Path(__file__).resolve().parents[2]
-    output_path = project_root / "report" / "pics" / "multi_hash_prefix_asn.png"
+    output_path = project_root / "report" / "pics_remote" / "multi_hash_prefix_asn.png"
     try:
         saved_to = plot_rank_vs_count(rows_with_rank, output_path=output_path)
         print(f"\nSaved scatter plot to: {saved_to}")

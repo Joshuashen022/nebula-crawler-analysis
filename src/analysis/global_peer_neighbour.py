@@ -42,7 +42,7 @@ def compute_neighbor_count_histogram(rows):
     return xs, ys
 
 
-def plot_neighbor_count_vs_nodes(rows):
+def plot_neighbor_count_vs_nodes(rows, out_path: str):
     """
     Plot X = neighbor count, Y = number of nodes (distinct multi_hash).
     """
@@ -59,8 +59,6 @@ def plot_neighbor_count_vs_nodes(rows):
             showlegend=False,
         ),
     )
-    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_peer_neighbour.png"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=1600, height=800, scale=2)
     fig.show()
 
@@ -70,13 +68,17 @@ def main():
     rows = dedupe_by_multi_hash(rows_raw)
     
     # Plot: X = neighbor count, Y = number of nodes
-    plot_neighbor_count_vs_nodes(rows=rows)
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_peer_neighbour.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    plot_neighbor_count_vs_nodes(rows=rows, out_path=out_path)
 
 
 def remote_main():
     rows = get_remote_data("/global-peer-neighbour")
     rows = dedupe_by_multi_hash(rows)
-    plot_neighbor_count_vs_nodes(rows)
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics_remote" / "global_peer_neighbour.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    plot_neighbor_count_vs_nodes(rows, out_path)
 
 if __name__ == "__main__":
     remote_main()

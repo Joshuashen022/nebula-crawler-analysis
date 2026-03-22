@@ -149,9 +149,20 @@ def _protocol_distribution_for_country(
             continue
         if count < min_count:
             continue
-        short_name = protocol.split("/")[-2] if "/" in protocol else protocol
-        if not short_name:
-            short_name = protocol[:20] + "…" if len(protocol) > 20 else protocol
+        if protocol in ["/kad/1.0.0", "/kad/2.0.0", "/kad/3.0.0"]:
+            short_name = "kad"
+        elif protocol.startswith("/libp2p/circuit/relay"):
+            short_name = "relay"
+        elif protocol.startswith("/ipfs/bitswap"):
+            short_name = "bitswap"
+        elif protocol.startswith("/libp2p/dcutr"):
+            short_name = "dcutr"
+        elif protocol.startswith("/libp2p/autonat"):
+            short_name = "autonat"
+        else:
+            short_name = protocol.split("/")[-2] if "/" in protocol else protocol
+            if not short_name:
+                short_name = protocol[:20] + "…" if len(protocol) > 20 else protocol
         rows.append(
             {
                 "country": c,
@@ -320,12 +331,14 @@ def get_country_distribution_for_protocol(
 
 def main():
     # protocol distribution for a single country
-    rows = get_protocol_distribution_for_country("US", top_n=30)
-    plot_protocol_distribution_for_country(rows, "US")
+    rows = get_protocol_distribution_for_country("CN", top_n=25)
+    # for row in rows:
+    #     print(row)
+    plot_protocol_distribution_for_country(rows, "CN")
 
     # single protocol distribution across countries
-    rows =get_country_distribution_for_protocol("/sbptp/1.0.0", top_n=40)
-    plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
+    # rows =get_country_distribution_for_protocol("/sbptp/1.0.0", top_n=40)
+    # plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
 def remote_main():
     rows = get_remote_data("/protocol-distribution-country?country=US")
@@ -336,4 +349,4 @@ def remote_main():
 
 
 if __name__ == "__main__":
-    remote_main()
+    main()

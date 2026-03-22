@@ -169,11 +169,11 @@ def remote_main():
         step_length_seconds=step_length_seconds,
         output_path=Path(__file__).resolve().parents[2]
         / "report"
-        / "pics"
+        / "pics_remote"
         / "global_new_found.png",
     )
     fig.show()
 
 
 if __name__ == "__main__":
-    remote_main()
+    main()

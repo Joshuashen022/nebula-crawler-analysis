@@ -114,5 +114,5 @@ def remote_main():
         print(f"{agent_version:<60} {count:>20,}")
 
 if __name__ == "__main__":
-    main()
+    remote_main()
 

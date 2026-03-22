@@ -95,7 +95,7 @@ def print_geographical_analysis(data: dict) -> None:
             if b in bracket_counts:
                 print(f"  {b}: {bracket_counts[b]} countries/regions")
 
-def illustrate_geographical_data(data: dict) -> None:
+def illustrate_geographical_data(data: dict, out_path: str) -> None:
     fig = px.choropleth(
         data,
         locations="country",
@@ -126,8 +126,6 @@ def illustrate_geographical_data(data: dict) -> None:
         ),
         margin=dict(r=220),
     )
-    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_geographical.png"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_image(str(out_path), width=1600, height=800, scale=2)
     fig.show()
 
@@ -135,30 +133,53 @@ def main():
     data = fetch_geographical_data()
 
     print_geographical_analysis(data)
-    illustrate_geographical_data(data)
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics" / "global_geographical.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    illustrate_geographical_data(data, out_path)
 
 def remote_main():
     data = get_remote_data("/global-geographical")
     print_geographical_analysis(data)
-    illustrate_geographical_data(data)
+    out_path = Path(__file__).resolve().parents[2] / "report" / "pics_remote" / "global_geographical.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    illustrate_geographical_data(data, out_path)
 
 
 if __name__ == "__main__":
     remote_main()
 
+# remote
 # --- Top 15 by count ---
-#    1. CHN: 5,844  (1k–9,999)
-#    2. USA: 3,257  (1k–9,999)
-#    3. FRA: 912  (100–999)
-#    4. DEU: 852  (100–999)
-#    5. GBR: 482  (100–999)
-#    6. FIN: 369  (100–999)
-#    7. KOR: 342  (100–999)
-#    8. CAN: 313  (100–999)
-#    9. NLD: 270  (100–999)
-#   10. SGP: 262  (100–999)
-#   11. RUS: 260  (100–999)
-#   12. IND: 182  (100–999)
-#   13. JPN: 173  (100–999)
-#   14. ESP: 165  (100–999)
-#   15. HKG: 164  (100–999)
+#    1. CHN: 6,229  (<10⁴)
+#    2. USA: 2,993  (<10⁴)
+#    3. FRA: 846  (<10³)
+#    4. DEU: 797  (<10³)
+#    5. GBR: 757  (<10³)
+#    6. FIN: 363  (<10³)
+#    7. CAN: 293  (<10³)
+#    8. NLD: 268  (<10³)
+#    9. KOR: 252  (<10³)
+#   10. SGP: 228  (<10³)
+#   11. RUS: 218  (<10³)
+#   12. IND: 159  (<10³)
+#   13. ESP: 153  (<10³)
+#   14. JPN: 150  (<10³)
+#   15. HKG: 107  (<10³)
+
+# local
+# --- Top 15 by count ---
+#    1. CHN: 13,428  (<10⁵+)
+#    2. USA: 4,340  (<10⁴)
+#    3. FRA: 1,107  (<10⁴)
+#    4. DEU: 1,057  (<10⁴)
+#    5. GBR: 1,018  (<10⁴)
+#    6. FIN: 548  (<10³)
+#    7. KOR: 389  (<10³)
+#    8. CAN: 386  (<10³)
+#    9. NLD: 335  (<10³)
+#   10. RUS: 328  (<10³)
+#   11. SGP: 309  (<10³)
+#   12. IND: 280  (<10³)
+#   13. ESP: 259  (<10³)
+#   14. JPN: 200  (<10³)
+#   15. HKG: 200  (<10³)
