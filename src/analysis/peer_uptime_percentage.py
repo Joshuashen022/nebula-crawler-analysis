@@ -92,7 +92,7 @@ def plot_ratio_histogram(bin_labels, bin_counts):
     # Draw bars at bin centers (2.5, 7.5, ..., 97.5) so that x-axis ticks at
     # 5%, 10%, ..., 100% fall between two adjacent bars.
     bin_centers = [i * 5 + 2.5 for i in range(len(bin_counts))]
-    tick_vals = list(range(5, 101, 5))
+    tick_vals = list(range(20, 101, 20))
     tick_text = [f"{v}%" for v in tick_vals]
 
     fig = go.Figure(
@@ -112,7 +112,7 @@ def plot_ratio_histogram(bin_labels, bin_counts):
             tickvals=tick_vals,
             ticktext=tick_text,
             range=[0, 100],
-            tickfont=dict(size=16),
+            tickfont=dict(size=25),
             tickangle=-30,
         ),
         yaxis=dict(
