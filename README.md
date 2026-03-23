@@ -84,7 +84,37 @@ Useful GET endpoints include:
 - `/protocol-peer`
 - `/dbs/protocols`
 
-## 4) Nebula CLI helper scripts
+## 4) Analysis usage (`src/analysis`)
+
+Analysis logic is implemented in `src/analysis` and exposed via the API.
+
+Run analysis from the API:
+
+```sh
+# Trigger resolve + analysis data refresh
+curl -X POST -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/analyze
+```
+
+Then fetch analysis outputs:
+
+```sh
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/global-geographical
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/global-new-found
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/global-peer-neighbour
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/protocol-peer
+curl -H "Authorization: Bearer $AUTH_TOKEN" "http://localhost:8080/protocol-distribution-country?country=US"
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/agent-peer-count
+```
+
+Run analysis modules directly (local debug):
+
+```sh
+cd ~/code/project/phd/crawler
+source .venv/bin/activate
+PYTHONPATH=. python -c "from src.analysis import global_geographical; print(global_geographical.fetch_geographical_data())"
+```
+
+## 5) Nebula CLI helper scripts
 
 From repo root:
 
@@ -99,7 +129,7 @@ From repo root:
 ./resolve.sh
 ```
 
-## 5) Database and result export
+## 6) Database and result export
 
 Dump local DB:
 
@@ -116,7 +146,7 @@ docker exec -t nebula-postgres pg_dump -U joshua nebula_local > nebula_backup.sq
 Copy remote result bundle:
 
 ```sh
-scp -i ../.ssh/crawler.pem root@8.216.32.203:~/results_bundle.tar ~/Downloads/
+scp -i ../.ssh/crawler.pem root@<remoteIP>:~/results_bundle.tar ~/Downloads/
 ```
 
 Remote SSH helper:

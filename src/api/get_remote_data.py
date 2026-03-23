@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = "http://8.216.32.203:8080"
+BASE_URL = os.getenv("BASE_URL")
 GEOGRAPHICAL_PATH = "/global-geographical"
 # Override with env GEOGRAPHICAL_AUTH_TOKEN if set
 AUTH_TOKEN = os.getenv("AUTH_TOKEN", "empty")
