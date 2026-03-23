@@ -116,3 +116,12 @@ def remote_main():
 if __name__ == "__main__":
     remote_main()
 
+# local
+# compromized_peers: 1154
+# go-ipfs/0.8.0/48f94e2                                                         973
+# storm                                                                         181
+
+# remote
+# compromized_peers: 707
+# go-ipfs/0.8.0/48f94e2                                                         546
+# storm                                                                         161

@@ -181,7 +181,6 @@ Specifically, the consistent detection of the  \texttt{/sbptp/} protocol in \ref
       \hline
   \end{tabular}
 \end{table}
-\mbox{} % Figures moved to last page to control placement.
 
 \clearpage
 \onecolumn
@@ -194,7 +193,7 @@ Specifically, the consistent detection of the  \texttt{/sbptp/} protocol in \ref
 \setlength{\abovecaptionskip}{2pt}
 \setlength{\belowcaptionskip}{0pt}
 
-\begin{figure}[H]
+\begin{figure*}[t] 
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
@@ -259,6 +258,10 @@ Specifically, the consistent detection of the  \texttt{/sbptp/} protocol in \ref
   \label{fig:global-metrics}
   \label{fig:protocol-distributions}
   \label{fig:peer-uptime-metrics}
-\end{figure}
+\end{figure*}
+
+\section{Future Analysis}
+By correlating specific protocols (sbptp, sfst, and sbst) with reported Agent Versions, we identified a cluster of 1,154 compromised peers—comprising 973 go-ipfs/0.8.0 and 181 storm nodes—establishing a definitive empirical footprint for the InterPlanetary Storm (IPStorm) botnet. This analysis reveals a significant geographic concentration within the Asia-Pacific region (specifically CN, TW, and KR), necessitating further investigation into node behavior to determine if these entities are centrally controlled for coordinated attacks. Moving forward, applying this Protocol-Agent Matrix to other vulnerable versions, such as kubo/0.18.0 and 0.22.0, will be critical in developing targeted mitigation strategies to preserve the security and high-performance standards of the global IPFS ecosystem.
+\mbox{} % Figures moved to last page to control placement.
 
 \end{document}
