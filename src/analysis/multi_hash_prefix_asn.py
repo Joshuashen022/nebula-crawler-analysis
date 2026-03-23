@@ -133,7 +133,7 @@ def remote_main():
         print(f"\nPlot skipped: {e}")
 
 if __name__ == "__main__":
-    remote_main()
+    main()
 
 # main() output:
 # ASN             count           count/total     Qm              12D3            rank

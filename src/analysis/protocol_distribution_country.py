@@ -331,9 +331,9 @@ def get_country_distribution_for_protocol(
 
 def main():
     # protocol distribution for a single country
-    rows = get_protocol_distribution_for_country("CN", top_n=25)
-    # for row in rows:
-    #     print(row)
+    rows = get_protocol_distribution_for_country("US", top_n=25)
+    for row in rows:
+        print(row)
     plot_protocol_distribution_for_country(rows, "CN")
 
     # single protocol distribution across countries
@@ -341,11 +341,11 @@ def main():
     # plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
 def remote_main():
-    rows = get_remote_data("/protocol-distribution-country?country=US")
-    plot_protocol_distribution_for_country(rows, "US")
+    rows = get_remote_data("/protocol-distribution-country?country=CN")
+    plot_protocol_distribution_for_country(rows, "CN")
 
-    rows =get_remote_data("/country-distribution-protocol?protocol=/sbptp/1.0.0")
-    plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
+    # rows =get_remote_data("/country-distribution-protocol?protocol=/sbptp/1.0.0")
+    # plot_country_distribution_for_protocol(rows,"/sbptp/1.0.0",)
 
 
 if __name__ == "__main__":

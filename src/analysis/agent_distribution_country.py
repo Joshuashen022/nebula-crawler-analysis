@@ -507,7 +507,7 @@ def main():
 
     # Per-country: top agent count and its share of that country's total agents
     top_rows = get_country_top_agent_share()
-    print_country_top_agent_share(top_rows, max_countries=10)
+    # print_country_top_agent_share(top_rows, max_countries=20)
 
     # # Example: agent distribution for a single country
     # cn_rows = get_agent_distribution_for_country(country)
@@ -547,41 +547,102 @@ def remote_main():
 if __name__ == "__main__":
     remote_main()
 
+# local
 # Country         Total   With agent   Without agent
 # --------------------------------------------------
-# CN              6,155          366           5,789
-# US              3,269        2,463             806
-# FR                925          732             193
-# DE                866          607             259
-# GB                483          291             192
-# FI                366          311              55
-# KR                310          244              66
-# CA                307          247              60
-# NL                270          199              71
-# SG                262          189              73
-# RU                235          148              87
-# IN                170           75              95
-# JP                168          123              45
-# ES                162           85              77
-# HK                140           88              52
-# TW                128           68              60
-# TH                114           60              54
+# CN             13,428          624          12,804
+# US              4,340        2,956           1,384
+# FR              1,107          855             252
+# DE              1,057          731             326
+# GB              1,018          383             635
+# FI                548          388             160
+# KR                389          310              79
+# CA                386          296              90
+# NL                335          240              95
+# RU                328          188             140
+# SG                309          227              82
+# IN                280          104             176
+# ES                259          119             140
+# HK                200          126              74
+# JP                200          155              45
+# TW                179           97              82
+# TH                140           81              59
+# UA                122           62              60
+# PL                117           72              45
+# CH                114           83              31
+# AU                106           84              22
+# SE                102           72              30
+# --------------------------------------------------
+# Total countries: 52
 
 
+# Country  Top agent                                               Top count  Top share
+# -------------------------------------------------------------------------------------
+# US       kubo/0.22.0/3f884d3/gala.games                                592     20.03%
+# CN       go-ipfs/0.8.0/48f94e2                                         446     71.47%
+# FR       kubo/0.22.0/3f884d3/gala.games                                171     20.00%
+# KR       go-ipfs/0.8.0/48f94e2                                         140     45.16%
+# GB       kubo/0.39.0/                                                   78     20.37%
+# DE       kubo/0.29.0/3f0947b                                            57      7.80%
+# TW       go-ipfs/0.8.0/48f94e2                                          39     40.21%
+# FI       kubo/0.25.0/                                                   39     10.05%
+# HK       go-ipfs/0.8.0/48f94e2                                          38     30.16%
+# CA       kubo/0.37.0/6898472/docker                                     37     12.50%
+# NL       kubo/0.32.1/                                                   34     14.17%
+# SG       kubo/0.22.0/3f884d3/gala.games                                 32     14.10%
+# IN       kubo/0.32.1/                                                   31     29.81%
+# JP       kubo/0.22.0/3f884d3/gala.games                                 31     20.00%
+# AR       kubo/0.32.1/                                                   29     46.77%
+# ES       kubo/0.37.0/6898472/docker                                     29     24.37%
+# RU       go-ipfs/0.8.0/48f94e2                                          29     15.43%
+# MX       go-ipfs/0.8.0/48f94e2                                          25     49.02%
+# AE       kubo/0.37.0/docker                                             23     51.11%
+# TH       kubo/0.32.1/                                                   23     28.40%
+# -------------------------------------------------------------------------------------
+
+
+# remote
+# === Per-country agent presence ===
+# Country         Total   With agent   Without agent
+# --------------------------------------------------
+# CN              9,338          403           8,935
+# US              3,646        2,613           1,033
+# FR                955          753             202
+# GB                888          333             555
+# DE                868          638             230
+# FI                449          328             121
+# KR                381          285              96
+# CA                344          251              93
+# RU                326          179             147
+# NL                304          219              85
+# SG                250          185              65
+# IN                237           52             185
+# ES                226          103             123
+# HK                182          143              39
+# --------------------------------------------------
+# Total countries: 51
 # === Per-country top agent share ===
 # Country  Top agent                                               Top count  Top share
 # -------------------------------------------------------------------------------------
-# US       kubo/0.22.0/3f884d3/gala.games                                551     22.36%
-# CN       go-ipfs/0.8.0/48f94e2                                         233     64.01%
-# FR       kubo/0.22.0/3f884d3/gala.games                                146     19.89%
-# KR       go-ipfs/0.8.0/48f94e2                                          98     40.00%
-# GB       kubo/0.39.0/                                                   47     16.67%
-# DE       kubo/0.22.0/3f884d3/gala.games                                 40      6.58%
-# FI       kubo/0.25.0/                                                   37     11.71%
-# CA       kubo/0.37.0/6898472/docker                                     33     13.31%
-# JP       kubo/0.22.0/3f884d3/gala.games                                 30     25.64%
-# SG       kubo/0.22.0/3f884d3/gala.games                                 30     16.30%
-# NL       kubo/0.22.0/3f884d3/gala.games                                 30     14.85%
-# TW       go-ipfs/0.8.0/48f94e2                                          23     34.33%
-# IN       kubo/0.32.1/                                                   23     31.51%
-# ES       kubo/0.37.0/6898472/docker                                     23     26.14%
+# US       kubo/0.22.0/3f884d3/gala.games                                557     21.32%
+# CN       go-ipfs/0.8.0/48f94e2                                         255     63.28%
+# FR       kubo/0.22.0/3f884d3/gala.games                                167     22.18%
+# KR       go-ipfs/0.8.0/48f94e2                                         108     37.89%
+# GB       kubo/0.39.0/                                                   86     25.83%
+# HK       go-ipfs/0.8.0/48f94e2                                          45     31.47%
+# DE       kubo/0.22.0/3f884d3/gala.games                                 44      6.90%
+# FI       kubo/0.25.0/                                                   38     11.59%
+# TW       storm                                                          34     36.17%
+# NL       kubo/0.22.0/3f884d3/gala.games                                 32     14.61%
+# CA       kubo/0.37.0/6898472/docker                                     31     12.35%
+# JP       kubo/0.22.0/3f884d3/gala.games                                 30     22.56%
+# SG       kubo/0.22.0/3f884d3/gala.games                                 30     16.22%
+# AR       kubo/0.32.1/                                                   25     51.02%
+# AE       kubo/0.37.0/docker                                             23     60.53%
+# ES       kubo/0.37.0/6898472/docker                                     22     21.36%
+# TH       kubo/0.32.1/                                                   21     27.63%
+# CH       kubo/0.37.0/6898472/docker                                     20     25.97%
+# RU       kubo/0.39.0/                                                   15      8.38%
+# BR       go-ipfs/0.8.0/48f94e2                                          14     33.33%
+# -------------------------------------------------------------------------------------
+# Total countries: 20

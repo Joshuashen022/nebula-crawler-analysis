@@ -166,3 +166,65 @@ def remote_main():
 if __name__ == "__main__":
     remote_main()
 
+
+# local
+# 4841    /ipfs/ping/1.0.0
+# 4837    /ipfs/id/1.0.0
+# 4834    /ipfs/id/push/1.0.0
+# 4360    /ipfs/kad/1.0.0
+# 4339    /libp2p/autonat/1.0.0
+# 4312    /libp2p/circuit/relay/0.2.0/stop
+# 4294    /ipfs/bitswap/1.0.0
+# 4294    /ipfs/bitswap/1.1.0
+# 4291    /ipfs/bitswap
+# 4280    /x/
+# 4249    /ipfs/bitswap/1.2.0
+# 4012    /libp2p/dcutr
+# 4000    /ipfs/lan/kad/1.0.0
+# 3681    /libp2p/circuit/relay/0.2.0/hop
+# 2027    /libp2p/autonat/2/dial-back
+# 2027    /libp2p/autonat/2/dial-request
+# 1154    /libp2p/circuit/relay/0.1.0
+# 1108    /p2p/id/delta/1.0.0
+# 344     /meshsub/1.0.0
+# 343     /meshsub/1.1.0
+# 342     /floodsub/1.0.0
+# 341     /sbptp/1.0.0
+# 221     /meshsub/1.2.0
+# 101     /libp2p/fetch/0.0.1
+# 47      /meshsub/1.3.0
+# 35      /sfst/1.0.0
+# 20      /sfst/2.0.0
+
+
+# remote
+# Count   Protocol
+# --------------------
+# 2123    /ipfs/ping/1.0.0
+# 2119    /ipfs/id/1.0.0
+# 2112    /ipfs/id/push/1.0.0
+# 1965    /libp2p/circuit/relay/0.2.0/stop
+# 1895    /ipfs/bitswap/1.0.0
+# 1895    /ipfs/bitswap/1.1.0
+# 1891    /ipfs/bitswap/1.2.0
+# 1888    /ipfs/bitswap
+# 1883    /ipfs/kad/1.0.0
+# 1881    /x/
+# 1867    /libp2p/autonat/1.0.0
+# 1829    /libp2p/dcutr
+# 1766    /ipfs/lan/kad/1.0.0
+# 1616    /libp2p/circuit/relay/0.2.0/hop
+# 1247    /libp2p/autonat/2/dial-back
+# 1247    /libp2p/autonat/2/dial-request
+# 366     /libp2p/circuit/relay/0.1.0
+# 361     /p2p/id/delta/1.0.0
+# 210     /floodsub/1.0.0
+# 210     /meshsub/1.0.0
+# 210     /meshsub/1.1.0
+# 179     /meshsub/1.2.0
+# 113     /sbptp/1.0.0
+# 58      /libp2p/fetch/0.0.1
+# 41      /meshsub/1.3.0
+# 13      /http/1.1
+# 11      /edgevpn/service/0.1
+# 8       /sfst/2.0.0

@@ -63,26 +63,6 @@ if __name__ == "__main__":
 
 # Protocol                                                      Distinct multi_hash
 # ----------------------------------------------------------------------------------
-# /ipfs/ping/1.0.0                                                            5,728
-# /ipfs/id/1.0.0                                                              5,721
-# /ipfs/id/push/1.0.0                                                         5,716
-# /ipfs/kad/1.0.0                                                             5,463
-# /libp2p/autonat/1.0.0                                                       5,247
-# /libp2p/circuit/relay/0.2.0/stop                                            4,846
-# /ipfs/bitswap/1.0.0                                                         4,796
-# /ipfs/bitswap/1.1.0                                                         4,796
-# /ipfs/bitswap                                                               4,791
-# /x/                                                                         4,772
-# /ipfs/bitswap/1.2.0                                                         4,756
-# /ipfs/lan/kad/1.0.0                                                         4,662
-# /libp2p/dcutr                                                               4,569
-# /libp2p/circuit/relay/0.2.0/hop                                             4,336
-# /libp2p/autonat/2/dial-back                                                 2,454
-# /libp2p/autonat/2/dial-request                                              2,454
-# /libp2p/circuit/relay/0.1.0                                                 1,384
-# /p2p/id/delta/1.0.0                                                         1,338
-
-# 
 # /ipfs/ping/1.0.0                                                            8,255
 # /ipfs/id/1.0.0                                                              8,251
 # /ipfs/id/push/1.0.0                                                         8,238
@@ -102,3 +82,26 @@ if __name__ == "__main__":
 # /libp2p/circuit/relay/0.1.0                                                 2,121
 # /p2p/id/delta/1.0.0                                                         2,074
 # /sbptp/1.0.0                                                                1,149
+
+
+# Protocol                                                      Distinct multi_hash
+# ----------------------------------------------------------------------------------
+# /ipfs/ping/1.0.0                                                            6,798
+# /ipfs/id/1.0.0                                                              6,795
+# /ipfs/id/push/1.0.0                                                         6,762
+# /ipfs/kad/1.0.0                                                             6,238
+# /libp2p/autonat/1.0.0                                                       6,074
+# /libp2p/circuit/relay/0.2.0/stop                                            5,754
+# /ipfs/bitswap/1.0.0                                                         5,632
+# /ipfs/bitswap/1.1.0                                                         5,632
+# /ipfs/bitswap/1.2.0                                                         5,601
+# /ipfs/bitswap                                                               5,582
+# /x/                                                                         5,560
+# /libp2p/dcutr                                                               5,393
+# /ipfs/lan/kad/1.0.0                                                         5,345
+# /libp2p/circuit/relay/0.2.0/hop                                             4,931
+# /libp2p/autonat/2/dial-back                                                 2,936
+# /libp2p/autonat/2/dial-request                                              2,935
+# /libp2p/circuit/relay/0.1.0                                                 1,611
+# /p2p/id/delta/1.0.0                                                         1,564
+# /sbptp/1.0.0                                                                  704
