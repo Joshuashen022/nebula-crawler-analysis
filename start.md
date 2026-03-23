@@ -1,32 +1,126 @@
-```shell
-# Install Python 3
-brew install python
-# Confirm it works
-python3 --version
+# Crawler Repo Usage
 
+This repository runs a Nebula crawler + monitor and exposes analysis endpoints over HTTP (`:8080`).
+
+## Prerequisites
+
+- Docker + Docker Compose
+- Python 3.12+ (for local development)
+- Optional: `make`
+
+## 1) Local Python setup (optional, for running without Docker)
+
+```sh
 cd ~/code/project/phd/crawler
-
-# Create virtual environment
 python3 -m venv .venv
-
-# Activate it
 source .venv/bin/activate
-# (you should now see (.venv) at the start of your terminal prompt)
+pip install -r requirements.txt
+```
 
-# Install pandas
-pip install pandas
+Create a `.env` file in the repo root (required by the API):
 
-export data
+```env
+AUTH_TOKEN=change-me
+INTERVAL_COUNT=6
+```
+
+## 2) Run with Docker (recommended)
+
+Build and start services:
+
+```sh
+make build
+make up
+```
+
+Or directly:
+
+```sh
+docker build -t crawler:latest .
+docker compose up -d
+```
+
+Check status/logs:
+
+```sh
+make ps
+make logs
+```
+
+Stop services:
+
+```sh
+make down
+```
+
+## 3) API usage
+
+The API runs on `http://localhost:8080` and requires:
+
+```text
+Authorization: Bearer <AUTH_TOKEN>
+```
+
+Examples:
+
+```sh
+# Health/status
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/status
+
+# Start crawl + monitor in background threads
+curl -X POST -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/crawl
+
+# Trigger analysis
+curl -X POST -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/analyze
+
+# View runtime config
+curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/config
+```
+
+Useful GET endpoints include:
+- `/global-geographical`
+- `/global-new-found`
+- `/global-each-crawl`
+- `/protocol-peer`
+- `/dbs/protocols`
+
+## 4) Nebula CLI helper scripts
+
+From repo root:
+
+```sh
+# Crawl into PostgreSQL + keep API alive
+./crawl.sh
+
+# Monitor mode
+./monitor.sh
+
+# Resolve mode (ASN/country database lookups)
+./resolve.sh
+```
+
+## 5) Database and result export
+
+Dump local DB:
+
+```sh
 pg_dump -U joshua -d nebula_local > nebula_backup.sql
+```
 
+Dump DB from dockerized PostgreSQL:
+
+```sh
 docker exec -t nebula-postgres pg_dump -U joshua nebula_local > nebula_backup.sql
+```
+
+Copy remote result bundle:
+
+```sh
 scp -i ../.ssh/crawler.pem root@8.216.32.203:~/results_bundle.tar ~/Downloads/
 ```
 
+Remote SSH helper:
 
-local data:
-https://bafybeico6jh7tqh4iavib73lv6mgk263vq4wmb727frskv34okdgwt2lc4.ipfs.dweb.link?filename=results_local.tar.gz
-QmTepp4mfnTRAfTjW2ytV1VoSv9hE8tLDUDDpb3nby6CWr
-server data:
-https://bafybeichuhco23no4oeaqc25kti6vgj4mi2nvv3wu5qffi4wm6om5uv5wq.ipfs.dweb.link?filename=results_server_server.tar
-QmTAGj3FAJVMbpVbCuRXwJGX1r5wJLX6kDxvwDy8cGwVN3
+```sh
+./connect.sh
+```
