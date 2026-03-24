@@ -3,15 +3,15 @@
 This repository runs a Nebula crawler + monitor and exposes analysis endpoints over HTTP (`:8080`).
 
 ## Prerequisites
-
+- ./dist/nebula: a compiled nebula file under a file from `https://github.com/dennis-tra/nebula`
 - Docker + Docker Compose
 - Python 3.12+ (for local development)
 - Optional: `make`
 
+
 ## 1) Local Python setup (optional, for running without Docker)
 
 ```sh
-cd ~/code/project/phd/crawler
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -109,27 +109,11 @@ curl -H "Authorization: Bearer $AUTH_TOKEN" http://localhost:8080/agent-peer-cou
 Run analysis modules directly (local debug):
 
 ```sh
-cd ~/code/project/phd/crawler
 source .venv/bin/activate
 PYTHONPATH=. python -c "from src.analysis import global_geographical; print(global_geographical.fetch_geographical_data())"
 ```
 
-## 5) Nebula CLI helper scripts
-
-From repo root:
-
-```sh
-# Crawl into PostgreSQL + keep API alive
-./crawl.sh
-
-# Monitor mode
-./monitor.sh
-
-# Resolve mode (ASN/country database lookups)
-./resolve.sh
-```
-
-## 6) Database and result export
+## 5) Database and result export
 
 Dump local DB:
 
@@ -147,10 +131,4 @@ Copy remote result bundle:
 
 ```sh
 scp -i ../.ssh/crawler.pem root@<remoteIP>:~/results_bundle.tar ~/Downloads/
-```
-
-Remote SSH helper:
-
-```sh
-./connect.sh
 ```
