@@ -229,28 +229,11 @@ def _country_distribution_for_agent(
 
 
 def _country_share_for_agent(counts,agent: str):
-    """
-    对于给定 agent，计算其在每个国家中占该国「总 agent 数量」的百分比。
-
-    - counts: 来自 build_agent_country_counts()，(country, agent) -> peer 数量
-    - agent: 目标 agent 版本字符串
-    - min_country_total_agents: 只展示该国总 agent 数量 >= 此阈值的国家
-    - top_n: 只保留前 top_n 个国家（按百分比排序）
-    - min_count: 该 agent 在该国最少 peer 数量
-
-    返回 list[dict]，包含:
-    - country
-    - agent
-    - count: 该 agent 在该国的 peer 数量
-    - total_agents: 该国所有 agent 的总 peer 数量
-    - share: 该 agent 在该国总 agent 数量中的占比（0-100，float）
-    """
     if not agent:
         return []
 
     agent_norm = agent.strip()
 
-    # 先按国家聚合，得到每个国家的 agent 总数量
     country_totals: dict[str, int] = defaultdict(int)
     for (country, a), count in counts.items():
         if not country or not a:
@@ -420,10 +403,6 @@ def plot_country_share_for_agent(
     out_path: Optional[Path] = None,
     title: Optional[str] = None,
 ):
-    """
-    绘制：同一 agent 在不同国家中占本国总 agent 数量百分比的柱状图。
-    y 轴为百分比，hover 中展示绝对数量信息。
-    """
     import plotly.express as px
 
     if not agent_share_rows:

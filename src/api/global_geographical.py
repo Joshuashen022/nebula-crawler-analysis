@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""GET http://8.216.32.203:8080/geographical with Bearer auth."""
 
 import json
 import os
