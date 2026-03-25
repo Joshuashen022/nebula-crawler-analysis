@@ -1,3 +1,19 @@
+# PhD Assignment: IPFS Network Analysis
+**Applicant: Joshua Shen** **Target Position: PhD in Network Security, Chalmers University of Technology**
+
+---
+
+## 📄 Final Report
+**The comprehensive analysis report can be found here:** 👉 **[report.pdf](./report/report.pdf)** *(Please click the file above to view the findings, visualizations, and methodology.)*
+
+---
+
+## 🔗 Submission Summary
+- **Primary Dataset (Local/Experimental):** [QmTepp4mfnTRAfTjW2ytV1VoSv9hE8tLDUDDpb3nby6CWr](https://bafybeico6jh7tqh4iavib73lv6mgk263vq4wmb727frskv34okdgwt2lc4.ipfs.dweb.link?filename=results_local.tar.gz)
+- **Baseline Dataset (Server/Control):** [QmTAGj3FAJVMbpVbCuRXwJGX1r5wJLX6kDxvwDy8cGwVN3](https://bafybeichuhco23no4oeaqc25kti6vgj4mi2nvv3wu5qffi4wm6om5uv5wq.ipfs.dweb.link?filename=results_server_server.tar)
+- **Focus:** Peer connectivity and NAT traversal challenges in residential network environments.
+
+
 # Crawler Repo Usage
 
 This repository runs a Nebula crawler + monitor and exposes analysis endpoints over HTTP (`:8080`).
