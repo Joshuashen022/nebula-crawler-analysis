@@ -278,7 +278,7 @@ test.py
 *.synctex.gz
 *.synctex(busy)
 *.synctex.gz(busy)
-*.pdf
+
 
 pics/
 pics_remote/
